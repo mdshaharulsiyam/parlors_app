@@ -1,0 +1,30 @@
+import {StyleSheet, Text, useColorScheme, View} from 'react-native';
+import React, {createContext, ReactNode, useContext} from 'react';
+import {Colors, ITheme} from '../constant/colors';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
+interface GlobalContextType {
+  themeColors: ITheme;
+}
+
+interface GlobalProviderProps {
+  children: ReactNode;
+}
+const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
+const GlobalContextProvider = ({children}: GlobalProviderProps) => {
+  const colorScheme = useColorScheme();
+  const themeColors = Colors.light;
+  const values = {
+    themeColors,
+  };
+  return (
+    <GlobalContext.Provider value={values}>{children}</GlobalContext.Provider>
+  );
+};
+export const useGlobalContext = (): GlobalContextType => {
+  const context = useContext(GlobalContext);
+  if (!context)
+    throw new Error('useGlobalContext must be used within a GlobalProvider');
+  return context;
+};
+export default GlobalContextProvider;

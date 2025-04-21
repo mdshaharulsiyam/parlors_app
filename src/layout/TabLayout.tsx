@@ -1,0 +1,158 @@
+import React from 'react';
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+import StackLayout from './StackLayout';
+import Shops from '../screens/tab/Shops';
+import Home from '../screens/tab/Home';
+import {View, TouchableOpacity, Image, ImageSourcePropType} from 'react-native';
+import {
+  useLinkBuilder,
+  useNavigation,
+  useTheme,
+} from '@react-navigation/native';
+import {Text, PlatformPressable} from '@react-navigation/elements';
+import {commonStyles} from '../utils/styles/Styles';
+import {tabIcons} from '../constant/images';
+import {ScreenParamsType} from '../utils/types/ScreenParamsType';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+const Tab = createBottomTabNavigator();
+
+const TabLayout = () => {
+  return (
+    <Tab.Navigator
+      tabBar={props => (
+        <TabBarContent
+          {...props}
+          position={props.navigation.getState().index}
+        />
+      )}>
+      <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
+      <Tab.Screen
+        name="Shops"
+        component={Shops}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Stacks"
+        component={StackLayout}
+        options={{headerShown: false}}
+      />
+    </Tab.Navigator>
+  );
+};
+
+//  tab bar design
+
+interface TabBarContentProps extends BottomTabBarProps {
+  position?: any;
+}
+
+const TabBarContent = ({
+  state,
+  descriptors,
+  navigation,
+  position,
+}: TabBarContentProps) => {
+  const navigate = useNavigation<DrawerNavigationProp<ScreenParamsType>>();
+
+  const {colors} = useTheme();
+  const {buildHref} = useLinkBuilder();
+
+  return (
+    <View style={{flexDirection: 'row', height: 'auto', width: '100%'}}>
+      {state.routes.map((route, index) => {
+        const {options} = descriptors[route.key];
+        const label =
+          options.tabBarLabel !== undefined
+            ? options.tabBarLabel
+            : options.title !== undefined
+            ? options.title
+            : route.name;
+
+        const isFocused = state.index === index;
+
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
+
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate(route.name, route.params);
+          }
+        };
+
+        const onLongPress = () => {
+          navigation.emit({
+            type: 'tabLongPress',
+            target: route.key,
+          });
+        };
+        if (route.name === 'Stacks') {
+          return (
+            <TouchableOpacity
+              onPress={() => navigate.openDrawer()}
+              style={{flex: 1, padding: 5, height: 45}}>
+              <View style={[commonStyles.flex1_center]}>
+                <Image
+                  source={tabIcons.Menu as ImageSourcePropType}
+                  style={{
+                    height: 20,
+                    width: 20,
+                    marginBottom: 2,
+                    tintColor: isFocused ? colors.primary : colors.text,
+                  }}
+                />
+                <Text style={{color: isFocused ? colors.primary : colors.text}}>
+                  More
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }
+        return (
+          <PlatformPressable
+            key={index}
+            href={buildHref(route.name, route.params)}
+            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityLabel={options.tabBarAccessibilityLabel}
+            testID={options.tabBarButtonTestID}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            style={{flex: 1, padding: 5, height: 45}}>
+            <View style={[commonStyles.flex1_center]}>
+              <Image
+                source={
+                  tabIcons[
+                    route.name as keyof typeof tabIcons
+                  ] as ImageSourcePropType
+                }
+                style={{
+                  height: 20,
+                  width: 20,
+                  marginBottom: 2,
+                  tintColor: isFocused ? colors.primary : colors.text,
+                }}
+              />
+              <Text style={{color: isFocused ? colors.primary : colors.text}}>
+                {typeof label === 'string'
+                  ? label
+                  : label({
+                      focused: isFocused,
+                      color: colors.text,
+                      position,
+                      children: route.name,
+                    })}
+              </Text>
+            </View>
+          </PlatformPressable>
+        );
+      })}
+    </View>
+  );
+};
+
+export default TabLayout;

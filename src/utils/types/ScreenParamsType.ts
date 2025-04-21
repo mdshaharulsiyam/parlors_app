@@ -1,0 +1,25 @@
+export type ScreenParamsType = {
+    Home: undefined;
+    Profile: undefined;
+    Settings: undefined;
+    Details: undefined;
+    Login: undefined;
+    Register: undefined;
+    ForgotPassword: undefined;
+    ResetPassword: undefined;
+    ChangePassword: undefined;
+    About: undefined;
+    Terms: undefined;
+    Privacy: undefined;
+    Contact: undefined;
+    FAQ: undefined;
+    Support: undefined;
+    Feedback: undefined;
+    Notifications: undefined;
+    Cart: undefined;
+    Checkout: undefined;
+    Shops: undefined;
+    Stacks: { screen: string };
+    Order: undefined;
+    Tabs: { screen: string };
+};
