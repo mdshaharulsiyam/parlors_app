@@ -5,10 +5,22 @@ import TopBerber from '../../components/Home/TopBerber';
 import Categories from '../../components/Home/Categories';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import Parlors from '../../components/Home/Parlors';
+import Input from '../../components/Shared/Input';
 
 const Home = () => {
   const {themeColors} = useGlobalContext();
-  const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];
+  const data = [
+    <Input
+      placeholder="Enter your name"
+      inputType="password"
+      validate={true}
+      style={{marginBottom: 10}}
+    />,
+    <Banner />,
+    <TopBerber />,
+    <Categories />,
+    <Parlors />,
+  ];
   return (
     <SafeAreaView style={{backgroundColor: themeColors.background2}}>
       <FlatList
