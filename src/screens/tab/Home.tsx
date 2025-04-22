@@ -5,6 +5,7 @@ import TopBerber from '../../components/Home/TopBerber';
 import Categories from '../../components/Home/Categories';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import Parlors from '../../components/Home/Parlors';
+import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 const Home = () => {
   const {themeColors} = useGlobalContext();
   const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];
@@ -13,6 +14,8 @@ const Home = () => {
       <FlatList
         data={data}
         renderItem={({item}) => item}
+        ListHeaderComponent={() => <SearchFilterTrigger />}
+        stickyHeaderIndices={[0]}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: 20, gap: 10}}

@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   ImageSourcePropType,
   StyleSheet,
@@ -10,8 +11,8 @@ import Input from './Input';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {hexToRGBA} from '../../utils/hexToRGBA';
 import {OtherIcons} from '../../constant/images';
-
 const SearchInput = () => {
+  const {width} = Dimensions.get('window');
   const {themeColors, search, setSearch} = useGlobalContext();
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
@@ -23,6 +24,7 @@ const SearchInput = () => {
         {
           paddingHorizontal: 3,
           position: 'relative',
+          width: width - 70,
         },
       ]}>
       <Input

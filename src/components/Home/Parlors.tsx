@@ -109,7 +109,12 @@ const Parlors = () => {
         data={topBarbers}
         keyExtractor={item => item?._id}
         renderItem={({item}) => (
-          <ParlorCard item={item} width={width / 2 - 30} height={100} />
+          <ParlorCard
+            key={item?._id}
+            item={item}
+            width={width / 2 - 30}
+            height={100}
+          />
         )}
       />
     </View>

@@ -1,9 +1,12 @@
 import {
   Dimensions,
   FlatList,
+  Image,
+  ImageSourcePropType,
   Modal,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
@@ -11,6 +14,8 @@ import {IParlor} from '../../utils/types/Types';
 import ParlorCard from '../../components/Shared/ParlorCard';
 import SearchInput from '../../components/Shared/SearchInput';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {OtherIcons} from '../../constant/images';
+import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 const Barbers: IParlor[] = [
   {
     _id: '1',
@@ -94,19 +99,15 @@ const Barbers: IParlor[] = [
   },
 ];
 const Parlors = () => {
-  const {width} = Dimensions.get('window');
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const {width, height} = Dimensions.get('window');
+  const {themeColors, modalOpen, setModalOpen} = useGlobalContext();
   return (
     <View>
       <FlatList
         onEndReached={e => {
           console.log(e);
         }}
-        ListHeaderComponent={() => (
-          <View style={styles.headerContainer}>
-            <SearchInput />
-          </View>
-        )}
+        ListHeaderComponent={() => <SearchFilterTrigger />}
         stickyHeaderIndices={[0]}
         onEndReachedThreshold={0.5}
         numColumns={2}
@@ -131,7 +132,16 @@ const Parlors = () => {
         visible={modalOpen}
         animationType="slide"
         transparent={true}
-        onRequestClose={() => setModalOpen(false)}></Modal>
+        onRequestClose={() => setModalOpen(false)}>
+        <View
+          style={{
+            width,
+            height, //: height - 200,
+            backgroundColor: themeColors.background,
+            // bottom: 0,
+            // position: 'absolute',
+          }}></View>
+      </Modal>
     </View>
   );
 };
@@ -141,8 +151,10 @@ export default Parlors;
 const styles = StyleSheet.create({
   headerContainer: {
     paddingVertical: 5,
-    justifyContent: 'center',
-    alignContent: 'center',
-    flex: 1,
+    paddingHorizontal: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    // flex: 1,
+    flexDirection: 'row',
   },
 });

@@ -7,6 +7,8 @@ interface GlobalContextType {
   themeColors: ITheme;
   setSearch: (arg1: string) => void;
   search: string;
+  setModalOpen: (arg1: boolean) => void;
+  modalOpen: boolean;
 }
 
 interface GlobalProviderProps {
@@ -16,11 +18,14 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 const GlobalContextProvider = ({children}: GlobalProviderProps) => {
   const colorScheme = useColorScheme();
   const [search, setSearch] = useState<string>('');
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = Colors.light;
   const values = {
     themeColors,
     setSearch,
     search,
+    setModalOpen,
+    modalOpen,
   };
   return (
     <GlobalContext.Provider value={values}>{children}</GlobalContext.Provider>
