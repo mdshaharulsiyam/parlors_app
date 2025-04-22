@@ -34,7 +34,7 @@ const SearchInput = () => {
         handleSubmit={handleSearch}
         setInputValue={value => setSearch(value)}
         bordersColor={themeColors.icon2}
-        placeholder="Search Parlors ..."
+        placeholder="Search by Location ..."
         placeholderTextColor={hexToRGBA(themeColors.text, 0.3)}
         backgroundColor={themeColors.background2}
       />

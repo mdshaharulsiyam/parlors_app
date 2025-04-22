@@ -1,7 +1,15 @@
-import {StyleSheet, Text, useColorScheme, View} from 'react-native';
+import {
+  Dimensions,
+  Modal,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {Colors, ITheme} from '../constant/colors';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import FilterOptions from '../components/Shared/FilterOptions';
 
 interface GlobalContextType {
   themeColors: ITheme;

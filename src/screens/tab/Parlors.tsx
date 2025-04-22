@@ -16,6 +16,7 @@ import SearchInput from '../../components/Shared/SearchInput';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {OtherIcons} from '../../constant/images';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
+import FilterOptions from '../../components/Shared/FilterOptions';
 const Barbers: IParlor[] = [
   {
     _id: '1',
@@ -140,7 +141,9 @@ const Parlors = () => {
             backgroundColor: themeColors.background,
             // bottom: 0,
             // position: 'absolute',
-          }}></View>
+          }}>
+          <FilterOptions />
+        </View>
       </Modal>
     </View>
   );

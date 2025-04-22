@@ -31,8 +31,12 @@ interface SelectProps {
   categoryOptions?: {label: string; value: string}[];
   searchText?: string;
   setSearchText?: (text: string) => void;
-  validate?: boolean; // Validation flag for required field
-  errorMessage?: string; // Error message for validation
+  borderColor?: string;
+  height?: any;
+  width?: any;
+  borderWidth?: number;
+  validate?: boolean;
+  errorMessage?: string;
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -60,55 +64,40 @@ const Select: React.FC<SelectProps> = ({
   categoryOptions = [],
   searchText = '',
   setSearchText = () => {},
+  borderColor = 'gray',
+  height = 40,
+  width = '100%',
+  borderWidth = 1,
   validate = false,
-  errorMessage = 'This field is required', // Default error message
+  errorMessage = 'This field is required',
 }) => {
-  const [animation] = useState(new Animated.Value(0)); // Animation for the dropdown
-  const [isTouched, setIsTouched] = useState(false); // Track if the field has been touched
-  const [clearSelection, setClearSelection] = useState(false);
+  const [animation] = useState(new Animated.Value(0));
+  const [isTouched, setIsTouched] = useState(false);
 
   const handleSelectChange = (item: any) => {
     setSelectedValue(item);
     if (validate) {
-      setIsTouched(true); // Mark the field as touched
+      setIsTouched(true);
     }
   };
 
-  // Handle dropdown visibility with animation
-  const handleDropdownToggle = () => {
-    Animated.timing(animation, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handleDropdownClose = () => {
-    Animated.timing(animation, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  // Function to clear selection
-  const clearDropdown = () => {
-    setSelectedValue([]);
-    setClearSelection(true);
-    setTimeout(() => setClearSelection(false), 500); // Reset the clear state after animation
-  };
-
-  // Determine if the field is invalid
-  const borderColor = isTouched && validate && !selectedValue ? 'red' : 'gray'; // Red border if invalid
-
-  // Show validation error message
-  const showValidationMessage = isTouched && validate && !selectedValue;
+  const borderColorDynamic =
+    isTouched && validate && !selectedValue ? 'red' : borderColor;
 
   return (
     <View style={styles.container}>
       {isMultiSelect ? (
         <MultiSelect
-          style={[styles.dropdown, {backgroundColor: themeColors.background2}]}
+          style={[
+            styles.dropdown,
+            {
+              backgroundColor: themeColors.background2,
+              borderColor: borderColorDynamic,
+              borderWidth,
+              height,
+              width,
+            },
+          ]}
           placeholderStyle={[
             styles.placeholderStyle,
             {color: themeColors.text},
@@ -134,7 +123,6 @@ const Select: React.FC<SelectProps> = ({
               />
             </View>
           )}
-          iconStyle={styles.iconStyle}
           data={categoryOptions.filter(item =>
             item.label.toLowerCase().includes(searchText.toLowerCase()),
           )}
@@ -145,15 +133,12 @@ const Select: React.FC<SelectProps> = ({
             backgroundColor: themeColors.background2,
             borderWidth: 0,
             width: '100%',
-          }} // Full width
+          }}
           activeColor={hexToRGBA(themeColors.icon, 0.1)}
           value={selectedValue}
           search
           searchPlaceholder={searchPlaceholder}
           onChange={handleSelectChange}
-          renderLeftIcon={() => (
-            <Text style={[styles.icon, {color: themeColors.icon}]}>F</Text>
-          )}
           renderItem={renderItem}
           renderSelectedItem={renderSelectedItem}
         />
@@ -161,8 +146,14 @@ const Select: React.FC<SelectProps> = ({
         <Dropdown
           style={[
             styles.dropdown,
-            {backgroundColor: themeColors.background2, width: '100%'},
-          ]} // Full width
+            {
+              backgroundColor: themeColors.background2,
+              borderColor: borderColorDynamic as string,
+              borderWidth,
+              height,
+              width,
+            },
+          ]}
           placeholderStyle={[
             styles.placeholderStyle,
             {color: themeColors.text},
@@ -181,38 +172,20 @@ const Select: React.FC<SelectProps> = ({
             backgroundColor: themeColors.background2,
             borderWidth: 0,
             width: '100%',
-          }} // Full width
+          }}
           activeColor={hexToRGBA(themeColors.icon, 0.1)}
           value={selectedValue}
           onChange={handleSelectChange}
-          renderLeftIcon={() => (
-            <Text style={[styles.icon, {color: themeColors.icon}]}>F</Text>
-          )}
           renderItem={renderItem}
         />
       )}
 
       {/* Validation error message */}
-      {showValidationMessage && (
+      {isTouched && validate && !selectedValue && (
         <Text style={{color: 'red', fontSize: 12, marginTop: 5}}>
           {errorMessage}
         </Text>
       )}
-
-      {/* Clear selection button */}
-      <TouchableOpacity onPress={clearDropdown} style={styles.clearButton}>
-        <Text style={{color: themeColors.red, fontSize: 16}}>
-          Clear Selection
-        </Text>
-      </TouchableOpacity>
-
-      {/* Animated dropdown */}
-      <Animated.View
-        style={{
-          opacity: animation,
-        }}>
-        <Text style={{color: themeColors.text}}>This is animated!</Text>
-      </Animated.View>
     </View>
   );
 };
@@ -225,9 +198,8 @@ const styles = StyleSheet.create({
     width: '100%', // Full width
   },
   dropdown: {
-    borderWidth: 1,
-    borderRadius: 5,
     padding: 10,
+    borderRadius: 5,
   },
   placeholderStyle: {
     fontSize: 14,
@@ -252,9 +224,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 10,
   },
-  searchIcon: {
-    marginRight: 10,
-  },
   icon: {
     paddingRight: 10,
   },
@@ -266,10 +235,5 @@ const styles = StyleSheet.create({
   textSelectedStyle: {
     fontSize: 14,
     marginRight: 5,
-  },
-  clearButton: {
-    marginTop: 10,
-    alignItems: 'center',
-    backgroundColor: 'transparent',
   },
 });

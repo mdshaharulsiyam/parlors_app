@@ -27,7 +27,7 @@ interface InputProps extends TextInputProps {
   inputType?: 'text' | 'password' | 'number' | 'email';
   [key: string]: any;
   handleSubmit?: (arg1?: any) => void;
-  setInputValue?: (arg1: any) => void;
+  setInputValue?: (arg1?: any) => void;
 }
 
 const Input: React.FC<InputProps> = ({

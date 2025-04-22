@@ -12,3 +12,25 @@ export interface ICategory {
     category: string;
     img: string
 }
+
+export interface IPostOffice {
+    _id: number;
+    name: string;
+};
+
+export interface IUnion {
+    _id: number;
+    name: string;
+};
+
+export interface IUpazila {
+    _id: number;
+    name: string;
+};
+
+export interface IJila {
+    _id: number;
+    name: string;
+    upazila: IUpazila[];
+};
+
