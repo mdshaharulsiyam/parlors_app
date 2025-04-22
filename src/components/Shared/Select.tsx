@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -31,6 +31,8 @@ interface SelectProps {
   categoryOptions?: {label: string; value: string}[];
   searchText?: string;
   setSearchText?: (text: string) => void;
+  validate?: boolean; // Validation flag for required field
+  errorMessage?: string; // Error message for validation
 }
 
 const Select: React.FC<SelectProps> = ({
@@ -58,11 +60,18 @@ const Select: React.FC<SelectProps> = ({
   categoryOptions = [],
   searchText = '',
   setSearchText = () => {},
+  validate = false,
+  errorMessage = 'This field is required', // Default error message
 }) => {
   const [animation] = useState(new Animated.Value(0)); // Animation for the dropdown
+  const [isTouched, setIsTouched] = useState(false); // Track if the field has been touched
+  const [clearSelection, setClearSelection] = useState(false);
 
   const handleSelectChange = (item: any) => {
     setSelectedValue(item);
+    if (validate) {
+      setIsTouched(true); // Mark the field as touched
+    }
   };
 
   // Handle dropdown visibility with animation
@@ -81,6 +90,19 @@ const Select: React.FC<SelectProps> = ({
       useNativeDriver: true,
     }).start();
   };
+
+  // Function to clear selection
+  const clearDropdown = () => {
+    setSelectedValue([]);
+    setClearSelection(true);
+    setTimeout(() => setClearSelection(false), 500); // Reset the clear state after animation
+  };
+
+  // Determine if the field is invalid
+  const borderColor = isTouched && validate && !selectedValue ? 'red' : 'gray'; // Red border if invalid
+
+  // Show validation error message
+  const showValidationMessage = isTouched && validate && !selectedValue;
 
   return (
     <View style={styles.container}>
@@ -103,7 +125,6 @@ const Select: React.FC<SelectProps> = ({
                   borderColor: themeColors.text,
                 },
               ]}>
-              <Text>s</Text>
               <TextInput
                 style={[styles.searchInput, {color: themeColors.text}]}
                 placeholder={searchPlaceholder}
@@ -123,8 +144,8 @@ const Select: React.FC<SelectProps> = ({
           containerStyle={{
             backgroundColor: themeColors.background2,
             borderWidth: 0,
-            width: '100%', // Full width
-          }}
+            width: '100%',
+          }} // Full width
           activeColor={hexToRGBA(themeColors.icon, 0.1)}
           value={selectedValue}
           search
@@ -159,8 +180,8 @@ const Select: React.FC<SelectProps> = ({
           containerStyle={{
             backgroundColor: themeColors.background2,
             borderWidth: 0,
-            width: '100%', // Full width
-          }}
+            width: '100%',
+          }} // Full width
           activeColor={hexToRGBA(themeColors.icon, 0.1)}
           value={selectedValue}
           onChange={handleSelectChange}
@@ -170,6 +191,20 @@ const Select: React.FC<SelectProps> = ({
           renderItem={renderItem}
         />
       )}
+
+      {/* Validation error message */}
+      {showValidationMessage && (
+        <Text style={{color: 'red', fontSize: 12, marginTop: 5}}>
+          {errorMessage}
+        </Text>
+      )}
+
+      {/* Clear selection button */}
+      <TouchableOpacity onPress={clearDropdown} style={styles.clearButton}>
+        <Text style={{color: themeColors.red, fontSize: 16}}>
+          Clear Selection
+        </Text>
+      </TouchableOpacity>
 
       {/* Animated dropdown */}
       <Animated.View
@@ -231,5 +266,10 @@ const styles = StyleSheet.create({
   textSelectedStyle: {
     fontSize: 14,
     marginRight: 5,
+  },
+  clearButton: {
+    marginTop: 10,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
 });

@@ -23,7 +23,11 @@ interface InputProps extends TextInputProps {
   isValid?: boolean;
   isInvalid?: boolean;
   errorMessage?: string;
+  bordersColor?: string;
   inputType?: 'text' | 'password' | 'number' | 'email';
+  [key: string]: any;
+  handleSubmit?: (arg1?: any) => void;
+  setInputValue?: (arg1: any) => void;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -40,6 +44,9 @@ const Input: React.FC<InputProps> = ({
   isInvalid = false,
   errorMessage = 'This field is required',
   inputType = 'text',
+  bordersColor = 'gray',
+  handleSubmit = value => {},
+  setInputValue = value => console.log('setting', value),
   ...props
 }: InputProps) => {
   const [text, setText] = React.useState('');
@@ -48,13 +55,16 @@ const Input: React.FC<InputProps> = ({
 
   const handleChangeText = (input: string) => {
     setText(input);
+    setInputValue(input);
     if (validate) {
       setIsTouched(true);
     }
   };
 
   const borderColor =
-    isInvalid || (validate && isTouched && text.trim() === '') ? 'red' : 'gray';
+    isInvalid || (validate && isTouched && text.trim() === '')
+      ? 'red'
+      : bordersColor;
   const showValidationMessage = isTouched && validate && text.trim() === '';
 
   const togglePasswordVisibility = () => {
@@ -73,7 +83,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   return (
-    <View style={{marginBottom: 10}}>
+    <View>
       <TextInput
         style={[
           {
@@ -83,14 +93,17 @@ const Input: React.FC<InputProps> = ({
             padding: 10,
             borderRadius: 5,
             textAlignVertical: multiline ? 'top' : 'center',
+            // color: 'black',
           },
           style,
         ]}
+        onSubmitEditing={() => handleSubmit(text)}
         onChangeText={handleChangeText}
         value={text}
         secureTextEntry={
           inputType === 'password' ? !showPassword : secureTextEntry
         }
+        placeholderTextColor={'gray'}
         placeholder={placeholder}
         keyboardType={getKeyboardType()}
         multiline={multiline}

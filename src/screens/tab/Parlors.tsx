@@ -1,10 +1,17 @@
-import {Dimensions, FlatList, Text, View} from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {IParlor} from '../../utils/types/Types';
-import ParlorCard from '../Shared/ParlorCard';
-import {commonStyles} from '../../utils/styles/Styles';
-const topBarbers: IParlor[] = [
+import ParlorCard from '../../components/Shared/ParlorCard';
+import SearchInput from '../../components/Shared/SearchInput';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+const Barbers: IParlor[] = [
   {
     _id: '1',
     name: 'John Doe',
@@ -88,16 +95,19 @@ const topBarbers: IParlor[] = [
 ];
 const Parlors = () => {
   const {width} = Dimensions.get('window');
-  const {themeColors} = useGlobalContext();
+  const [modalOpen, setModalOpen] = React.useState(false);
   return (
-    <View style={{paddingHorizontal: 5}}>
-      <Text style={[commonStyles.headerText, {color: themeColors.text}]}>
-        Parlors
-      </Text>
+    <View>
       <FlatList
         onEndReached={e => {
           console.log(e);
         }}
+        ListHeaderComponent={() => (
+          <View style={styles.headerContainer}>
+            <SearchInput />
+          </View>
+        )}
+        stickyHeaderIndices={[0]}
         onEndReachedThreshold={0.5}
         numColumns={2}
         columnWrapperStyle={{
@@ -106,14 +116,33 @@ const Parlors = () => {
           gap: 10,
         }}
         showsVerticalScrollIndicator={false}
-        data={topBarbers}
+        data={Barbers}
         keyExtractor={item => item?._id}
         renderItem={({item}) => (
-          <ParlorCard item={item} width={width / 2 - 30} height={100} />
+          <ParlorCard
+            key={item?._id}
+            item={item}
+            width={width / 2 - 30}
+            height={100}
+          />
         )}
       />
+      <Modal
+        visible={modalOpen}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalOpen(false)}></Modal>
     </View>
   );
 };
 
 export default Parlors;
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    paddingVertical: 5,
+    justifyContent: 'center',
+    alignContent: 'center',
+    flex: 1,
+  },
+});

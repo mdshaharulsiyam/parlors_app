@@ -5,7 +5,6 @@ import TopBerber from '../../components/Home/TopBerber';
 import Categories from '../../components/Home/Categories';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import Parlors from '../../components/Home/Parlors';
-
 const Home = () => {
   const {themeColors} = useGlobalContext();
   const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];

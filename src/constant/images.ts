@@ -3,12 +3,14 @@ import Shops from "../assets/shop.png";
 import Menu from "../assets/menu.png";
 import Eye from "../assets/eye.png";
 import EyeX from "../assets/eyeX.png";
+import Search from "../assets/search.png";
 export const tabIcons = {
     Home: Home,
-    Shops: Shops,
+    Parlors: Shops,
     Menu: Menu,
 }
 export const OtherIcons = {
     Eye: Eye,
     EyeX: EyeX,
+    Search: Search,
 };

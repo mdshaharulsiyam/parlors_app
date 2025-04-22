@@ -79,12 +79,10 @@ const Categories = () => {
   }, [ref, category?.length]);
 
   return (
-    <View>
-      <View style={{paddingHorizontal: 5}}>
-        <Text style={[commonStyles.headerText, {color: themeColors.text}]}>
-          Categories
-        </Text>
-      </View>
+    <View style={{paddingHorizontal: 5}}>
+      <Text style={[commonStyles.headerText, {color: themeColors.text}]}>
+        Categories
+      </Text>
       <FlatList
         ref={ref}
         data={category}

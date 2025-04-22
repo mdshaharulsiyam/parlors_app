@@ -1,10 +1,12 @@
 import {StyleSheet, Text, useColorScheme, View} from 'react-native';
-import React, {createContext, ReactNode, useContext} from 'react';
+import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {Colors, ITheme} from '../constant/colors';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface GlobalContextType {
   themeColors: ITheme;
+  setSearch: (arg1: string) => void;
+  search: string;
 }
 
 interface GlobalProviderProps {
@@ -13,9 +15,12 @@ interface GlobalProviderProps {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 const GlobalContextProvider = ({children}: GlobalProviderProps) => {
   const colorScheme = useColorScheme();
+  const [search, setSearch] = useState<string>('');
   const themeColors = Colors.light;
   const values = {
     themeColors,
+    setSearch,
+    search,
   };
   return (
     <GlobalContext.Provider value={values}>{children}</GlobalContext.Provider>

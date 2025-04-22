@@ -4,7 +4,6 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import StackLayout from './StackLayout';
-import Shops from '../screens/tab/Shops';
 import Home from '../screens/tab/Home';
 import {View, TouchableOpacity, Image, ImageSourcePropType} from 'react-native';
 import {
@@ -17,6 +16,7 @@ import {commonStyles} from '../utils/styles/Styles';
 import {tabIcons} from '../constant/images';
 import {ScreenParamsType} from '../utils/types/ScreenParamsType';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
+import Parlors from '../screens/tab/Parlors';
 const Tab = createBottomTabNavigator();
 
 const TabLayout = () => {
@@ -30,8 +30,8 @@ const TabLayout = () => {
       )}>
       <Tab.Screen name="Home" component={Home} options={{headerShown: false}} />
       <Tab.Screen
-        name="Shops"
-        component={Shops}
+        name="Parlors"
+        component={Parlors}
         options={{headerShown: false}}
       />
       <Tab.Screen
