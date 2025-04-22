@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,9 +6,13 @@ import {
   Image,
   ScrollView,
   FlatList,
+  TouchableOpacity,
+  Button,
 } from 'react-native';
-
+import DatePicker from 'react-native-date-picker';
 const Details = () => {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
   // Static data
   const shopDetails = {
     id: '1',
@@ -49,16 +53,21 @@ const Details = () => {
         userImage: 'https://placehold.co/100x100.png?text=user2',
         userName: 'Bob Johnson',
         rating: 4,
-        review:
-          'Great experience, but could improve the waiting time. The staff is friendly though.',
+        review: 'Great experience, but could improve the waiting time.',
       },
       {
         userImage: 'https://placehold.co/100x100.png?text=user3',
         userName: 'Charlie Brown',
         rating: 4.5,
-        review: 'Friendly staff and nice ambiance. Would love to come back!',
+        review: 'Friendly staff and nice ambiance.',
       },
     ],
+  };
+
+  // Handle book button press
+  const handleBookPress = () => {
+    console.log('Book button pressed!');
+    // Add your navigation or booking logic here
   };
 
   return (
@@ -135,6 +144,24 @@ const Details = () => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
+      <Button title="Select Date" onPress={() => setOpen(true)} />
+      <DatePicker
+        modal
+        mode="date"
+        open={open}
+        date={date}
+        onConfirm={date => {
+          setOpen(false);
+          setDate(date);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
+      {/* Book Button */}
+      <TouchableOpacity style={styles.bookButton} onPress={handleBookPress}>
+        <Text style={styles.bookButtonText}>Book Now</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -237,5 +264,18 @@ const styles = StyleSheet.create({
   rating: {
     fontSize: 14,
     color: '#f39c12', // Golden color for rating
+  },
+  bookButton: {
+    marginTop: 20,
+    backgroundColor: '#f39c12', // Gold color for the button
+    paddingVertical: 15,
+    borderRadius: 30,
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  bookButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
   },
 });
