@@ -1,8 +1,11 @@
+// export type StackScreenType = {
+//     Details: { id: string };
+// }
 export type ScreenParamsType = {
     Home: undefined;
     Profile: undefined;
     Settings: undefined;
-    Details: undefined;
+    Details: { id: string };
     Login: undefined;
     Register: undefined;
     ForgotPassword: undefined;
@@ -19,7 +22,7 @@ export type ScreenParamsType = {
     Cart: undefined;
     Checkout: undefined;
     Shops: undefined;
-    Stacks: { screen: string };
+    Stacks: { screen: string, params: { id: string } };
     Order: undefined;
     Tabs: { screen: string };
 };
