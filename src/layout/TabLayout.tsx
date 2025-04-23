@@ -17,6 +17,7 @@ import {tabIcons} from '../constant/images';
 import {ScreenParamsType} from '../utils/types/ScreenParamsType';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import Parlors from '../screens/tab/Parlors';
+import {useGlobalContext} from '../Provider/GlobalContextProvider';
 const Tab = createBottomTabNavigator();
 
 const TabLayout = () => {
@@ -56,7 +57,7 @@ const TabBarContent = ({
   position,
 }: TabBarContentProps) => {
   const navigate = useNavigation<DrawerNavigationProp<ScreenParamsType>>();
-
+  const {themeColors} = useGlobalContext();
   const {colors} = useTheme();
   const {buildHref} = useLinkBuilder();
 
@@ -106,7 +107,11 @@ const TabBarContent = ({
                     tintColor: isFocused ? colors.primary : colors.text,
                   }}
                 />
-                <Text style={{color: isFocused ? colors.primary : colors.text}}>
+                <Text
+                  style={{
+                    fontWeight: isFocused ? '700' : '400',
+                    color: isFocused ? themeColors.icon : themeColors.text,
+                  }}>
                   More
                 </Text>
               </View>
@@ -134,10 +139,14 @@ const TabBarContent = ({
                   height: 20,
                   width: 20,
                   marginBottom: 2,
-                  tintColor: isFocused ? colors.primary : colors.text,
+                  tintColor: isFocused ? themeColors.icon : themeColors.text,
                 }}
               />
-              <Text style={{color: isFocused ? colors.primary : colors.text}}>
+              <Text
+                style={{
+                  fontWeight: isFocused ? '700' : '400',
+                  color: isFocused ? themeColors.icon : themeColors.text,
+                }}>
                 {typeof label === 'string'
                   ? label
                   : label({
