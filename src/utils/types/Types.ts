@@ -34,3 +34,14 @@ export interface IJila {
     upazila: IUpazila[];
 };
 
+export interface IBooking {
+    _id: string;
+    parlor: string;
+    worker: string;
+    date: string;
+    time: string;
+    status: 'pending' | 'complete' | 'accepted' | 'canceled';
+    service: string;
+    parlorImage: string
+}
+

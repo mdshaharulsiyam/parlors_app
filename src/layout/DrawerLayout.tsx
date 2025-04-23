@@ -50,7 +50,10 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Booking"
         component={Booking}
-        options={{headerShown: false}}
+        options={{
+          headerShown: true,
+          headerTitle: 'My Bookings',
+        }}
       />
     </Drawer.Navigator>
   );
