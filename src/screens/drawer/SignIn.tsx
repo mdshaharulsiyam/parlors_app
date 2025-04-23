@@ -20,10 +20,7 @@ interface GoogleSignInResponse {
   type: 'success' | 'error';
 }
 
-// Configure Google SignIn
-
 const SignIn = () => {
-  const [userInfo, setUserInfo] = useState(null);
   const [isSigninInProgress, setIsSigninInProgress] = useState(false);
 
   const signIn = async () => {
@@ -53,16 +50,12 @@ const SignIn = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Sign In</Text>
-      {userInfo ? (
-        <View></View>
-      ) : (
-        <GoogleSigninButton
-          onPress={signIn}
-          disabled={isSigninInProgress}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-        />
-      )}
+      <GoogleSigninButton
+        onPress={signIn}
+        disabled={isSigninInProgress}
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+      />
     </View>
   );
 };

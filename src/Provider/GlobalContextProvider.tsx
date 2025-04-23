@@ -2,6 +2,8 @@ import {useColorScheme} from 'react-native';
 import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {Colors, ITheme} from '../constant/colors';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {Provider} from 'react-redux';
+import {store} from '../Redux/store';
 
 interface GlobalContextType {
   themeColors: ITheme;
@@ -34,7 +36,9 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
     modalOpen,
   };
   return (
-    <GlobalContext.Provider value={values}>{children}</GlobalContext.Provider>
+    <GlobalContext.Provider value={values}>
+      <Provider store={store}>{children}</Provider>
+    </GlobalContext.Provider>
   );
 };
 export const useGlobalContext = (): GlobalContextType => {
