@@ -5,7 +5,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-interface GoogleSignInResponse {
+export interface GoogleSignInResponse {
   idToken: string;
   scopes: string[];
   serverAuthCode: string | null;
@@ -27,32 +27,33 @@ import {useGet_profileQuery, useLoginMutation} from '../../Redux/Apis/authApis';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {hexToRGBA} from '../../utils/hexToRGBA';
+
+export const signIn = async () => {
+  try {
+    //   await GoogleSignin.hasPlayServices();
+    const response = await GoogleSignin.signIn();
+    console.log(response);
+    if (response) {
+    } else {
+      // sign in was cancelled by user
+    }
+  } catch (error: any) {
+    console.log(error);
+    if (error) {
+      switch (error?.code) {
+        case statusCodes.IN_PROGRESS:
+          break;
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          break;
+        default:
+      }
+    } else {
+    }
+  }
+};
+
 const SignIn = () => {
   const [isSigninInProgress, setIsSigninInProgress] = useState(false);
-
-  const signIn = async () => {
-    try {
-      //   await GoogleSignin.hasPlayServices();
-      const response = await GoogleSignin.signIn();
-      console.log(response);
-      if (response) {
-      } else {
-        // sign in was cancelled by user
-      }
-    } catch (error: any) {
-      console.log(error);
-      if (error) {
-        switch (error?.code) {
-          case statusCodes.IN_PROGRESS:
-            break;
-          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            break;
-          default:
-        }
-      } else {
-      }
-    }
-  };
   const {refetch} = useGet_profileQuery(undefined);
   const {themeColors} = useGlobalContext();
   const [email, setEmail] = useState('');
@@ -212,17 +213,7 @@ const SignIn = () => {
 };
 
 export default SignIn;
-/*
-  <View style={styles.container}>
-      <Text style={styles.header}>Sign In</Text>
-      <GoogleSigninButton
-        onPress={signIn}
-        disabled={isSigninInProgress}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-      />
-    </View>
-*/
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
