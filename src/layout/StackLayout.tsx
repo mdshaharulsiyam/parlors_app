@@ -3,6 +3,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Details from '../screens/stack/Details';
 import Checkout from '../screens/stack/Checkout';
 import Reset from '../screens/stack/Reset';
+import Verify from '../screens/stack/Verify';
+import Forget from '../screens/stack/Forget';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +19,16 @@ const StackLayout = () => {
       <Stack.Screen
         name="Reset"
         component={Reset}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Verify"
+        component={Verify}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Forget"
+        component={Forget}
         options={{headerShown: false}}
       />
       <Stack.Screen
