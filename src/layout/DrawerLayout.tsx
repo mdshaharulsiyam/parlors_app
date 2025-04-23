@@ -9,6 +9,8 @@ import TabLayout from './TabLayout'; // Contains tab navigation
 import Profile from '../screens/drawer/Profile';
 import Cart from '../screens/drawer/Cart';
 import About from '../screens/drawer/About';
+import SignIn from '../screens/drawer/SignIn';
+import Booking from '../screens/drawer/Booking';
 
 const Drawer = createDrawerNavigator();
 
@@ -40,6 +42,16 @@ const DrawerLayout = () => {
         component={About}
         options={{headerShown: false}}
       />
+      <Drawer.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="Booking"
+        component={Booking}
+        options={{headerShown: false}}
+      />
     </Drawer.Navigator>
   );
 };
@@ -55,6 +67,11 @@ function DrawerContent(props: DrawerContentComponentProps) {
         onPress={() => props.navigation.navigate('About')}
       />
       <DrawerItem
+        key={'Booking'}
+        label="Booking"
+        onPress={() => props.navigation.navigate('Booking')}
+      />
+      <DrawerItem
         key={'cart'}
         label="Cart"
         onPress={() => props.navigation.navigate('Cart')}
@@ -63,6 +80,11 @@ function DrawerContent(props: DrawerContentComponentProps) {
         label="Profile"
         key={'profile'}
         onPress={() => props.navigation.navigate('Profile')}
+      />
+      <DrawerItem
+        label="SignIn"
+        key={'SignIn'}
+        onPress={() => props.navigation.navigate('SignIn')}
       />
       <DrawerItem
         key={'Close Drawer'}

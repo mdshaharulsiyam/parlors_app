@@ -1,15 +1,7 @@
-import {
-  Dimensions,
-  Modal,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {useColorScheme} from 'react-native';
 import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {Colors, ITheme} from '../constant/colors';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import FilterOptions from '../components/Shared/FilterOptions';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 interface GlobalContextType {
   themeColors: ITheme;
@@ -24,6 +16,12 @@ interface GlobalProviderProps {
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 const GlobalContextProvider = ({children}: GlobalProviderProps) => {
+  GoogleSignin.configure({
+    webClientId:
+      '785669277913-sk3g9jodma9o3danl96a7g13kt4grenq.apps.googleusercontent.com', // Replace with your webClientId
+    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+    forceCodeForRefreshToken: false,
+  });
   const colorScheme = useColorScheme();
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
