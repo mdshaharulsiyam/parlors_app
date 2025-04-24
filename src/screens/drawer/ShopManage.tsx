@@ -10,7 +10,7 @@ import Address from '../../components/ManageShop/Address';
 import AvailableTme from '../../components/ManageShop/AvailableTme';
 import Profile from '../../components/ManageShop/Profile';
 import Workers from '../../components/ManageShop/Workers';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import { commonStyles } from '../../utils/styles/Styles';
 
 const tabs = ['profile', 'address', 'workers', 'available time']
 const ShopManage = () => {
@@ -56,23 +56,23 @@ const ShopManage = () => {
               <TouchableOpacity
                 onPress={() => setCurrentTab(item)}
                 activeOpacity={0.7}
-                style={{
-                  paddingVertical: 8,
-                  paddingHorizontal: 15,
-                  backgroundColor:
-                    item == currentTab
-                      ? themeColors.icon
-                      : hexToRGBA(themeColors.icon2, 0.5),
-                  borderRadius: 3,
-                  borderColor: themeColors.text,
-                  borderWidth: 0.5,
-                }}
+                style={[
+                  commonStyles.Button,
+                  {
+                    backgroundColor:
+                      item == currentTab
+                        ? themeColors.icon
+                        : themeColors.icon2,
+                    borderRadius: 3,
+                    borderColor: themeColors.icon,
+                    borderWidth: 0.5,
+                  }]}
                 key={item}>
                 <Text
                   style={{
                     textTransform: 'uppercase',
                     fontWeight: '600',
-                    color: themeColors.black,
+                    color: item == currentTab ? themeColors.white : themeColors.icon,
                   }}>
                   {item}
                 </Text>

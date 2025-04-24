@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   FlatList,
   Image,
@@ -6,10 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {IBooking} from '../../utils/types/Types';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { commonStyles } from '../../utils/styles/Styles';
+import { IBooking } from '../../utils/types/Types';
 
 const data: IBooking[] = [
   {
@@ -217,7 +217,7 @@ const allStatus = ['pending', 'complete', 'accepted', 'canceled'];
 
 const Booking = () => {
   const [status, setStatus] = useState<string>(allStatus[0]);
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   return (
     <FlatList
       ListHeaderComponent={() => (
@@ -242,27 +242,27 @@ const Booking = () => {
             }}
             showsHorizontalScrollIndicator={false}
             keyExtractor={item => item}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => setStatus(item)}
                 activeOpacity={0.7}
-                style={{
-                  paddingVertical: 8,
-                  paddingHorizontal: 15,
-                  backgroundColor:
-                    item == status
-                      ? themeColors.icon
-                      : hexToRGBA(themeColors.icon2, 0.5),
-                  borderRadius: 3,
-                  borderColor: themeColors.text,
-                  borderWidth: 0.5,
-                }}
+                style={[
+                  commonStyles.Button,
+                  {
+                    backgroundColor:
+                      item == status
+                        ? themeColors.icon
+                        : themeColors.icon2,
+                    borderRadius: 3,
+                    borderColor: themeColors.icon,
+                    borderWidth: 0.5,
+                  }]}
                 key={item}>
                 <Text
                   style={{
                     textTransform: 'uppercase',
                     fontWeight: '600',
-                    color: themeColors.black,
+                    color: item == status ? themeColors.white : themeColors.icon,
                   }}>
                   {item}
                 </Text>
@@ -276,10 +276,10 @@ const Booking = () => {
       }}
       data={data?.filter(item => item?.status == status)}
       keyExtractor={item => item?._id}
-      renderItem={({item}) => (
+      renderItem={({ item }) => (
         <View style={styles.card}>
           {/* Parlor Image */}
-          <Image source={{uri: item.parlorImage}} style={styles.image} />
+          <Image source={{ uri: item.parlorImage }} style={styles.image} />
 
           {/* Booking Details */}
           <View style={styles.detailsContainer}>
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     flexDirection: 'row',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
