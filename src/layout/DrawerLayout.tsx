@@ -1,18 +1,19 @@
-import React from 'react';
 import {
   createDrawerNavigator,
+  DrawerContentComponentProps,
   DrawerContentScrollView,
   DrawerItem,
-  DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import TabLayout from './TabLayout'; // Contains tab navigation
-import Profile from '../screens/drawer/Profile';
-import Cart from '../screens/drawer/Cart';
+import React from 'react';
 import About from '../screens/drawer/About';
-import SignIn from '../screens/drawer/SignIn';
 import Booking from '../screens/drawer/Booking';
-import SignUp from '../screens/drawer/SignUp';
+import Cart from '../screens/drawer/Cart';
+import Chat from '../screens/drawer/Chat';
+import Profile from '../screens/drawer/Profile';
 import ShopManage from '../screens/drawer/ShopManage';
+import SignIn from '../screens/drawer/SignIn';
+import SignUp from '../screens/drawer/SignUp';
+import TabLayout from './TabLayout'; // Contains tab navigation
 
 const Drawer = createDrawerNavigator();
 
@@ -27,37 +28,42 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Tabs"
         component={TabLayout}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="Profile"
         component={Profile}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={Chat}
+        options={{ headerShown: true }}
       />
       <Drawer.Screen
         name="ShopManage"
         component={ShopManage}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="Cart"
         component={Cart}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="About"
         component={About}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="SignIn"
         component={SignIn}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="SignUp"
         component={SignUp}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="Booking"
@@ -80,6 +86,11 @@ function DrawerContent(props: DrawerContentComponentProps) {
         key={'about'}
         label="About"
         onPress={() => props.navigation.navigate('About')}
+      />
+      <DrawerItem
+        key={'Chat'}
+        label="Chat"
+        onPress={() => props.navigation.navigate('Chat')}
       />
       <DrawerItem
         key={'Booking'}

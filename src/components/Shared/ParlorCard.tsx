@@ -1,10 +1,10 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {IParlor} from '../../utils/types/Types';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import { IParlor } from '../../utils/types/Types';
 
 const ParlorCard = ({
   item,
@@ -15,14 +15,14 @@ const ParlorCard = ({
   width?: any;
   height?: any;
 }) => {
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
   return (
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
           screen: 'Details',
-          params: {id: item?._id?.toString()},
+          params: { id: item?._id?.toString() },
         })
       }
       activeOpacity={0.8}
@@ -36,7 +36,7 @@ const ParlorCard = ({
         boxSizing: 'border-box',
       }}>
       <Image
-        source={{uri: item?.img}}
+        source={{ uri: item?.img }}
         resizeMode="contain"
         style={[
           {
@@ -46,8 +46,8 @@ const ParlorCard = ({
           },
         ]}
       />
-      <View style={{marginLeft: 10}}>
-        <Text style={{fontWeight: 'bold'}}>{item?.name}</Text>
+      <View style={{ marginLeft: 10 }}>
+        <Text style={{ fontWeight: 'bold' }}>{item?.name}</Text>
         <Text>{item?.address}</Text>
         <Text>{item?.category}</Text>
       </View>
