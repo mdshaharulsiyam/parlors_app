@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IJila } from '../../utils/types/Types';
 import Select from '../Shared/Select';
 const jila: IJila[] = [
@@ -69,6 +70,7 @@ const jila: IJila[] = [
 
 const Workers = () => {
   const { themeColors } = useGlobalContext()
+  const [totalWorkers, setTotalWorkers] = useState(1);
   const [isUpdating, setIsUpdating] = useState(false);
   return (
     <View>
@@ -90,6 +92,26 @@ const Workers = () => {
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
+        />
+      </View>
+
+      <View style={styles.selectContainer}>
+        <Text style={styles.selectHeading}>Number Of Workers</Text>
+        <TextInput
+          keyboardType="phone-pad"
+          maxLength={2}
+          style={[
+            styles.input,
+            {
+              borderColor: themeColors.icon,
+              color: themeColors.text,
+              borderWidth: 2,
+            },
+          ]}
+          placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+          placeholder="Number Of Workers"
+          value={totalWorkers?.toString()}
+          onChangeText={(v) => setTotalWorkers(Number(v))}
         />
       </View>
       <TouchableOpacity

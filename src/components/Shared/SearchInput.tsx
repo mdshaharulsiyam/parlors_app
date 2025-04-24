@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Dimensions,
   Image,
@@ -6,14 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import { OtherIcons } from '../../constant/images';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import Input from './Input';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
-import {OtherIcons} from '../../constant/images';
 const SearchInput = () => {
-  const {width} = Dimensions.get('window');
-  const {themeColors, search, setSearch} = useGlobalContext();
+  const { width } = Dimensions.get('window');
+  const { themeColors, search, setSearch } = useGlobalContext();
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
@@ -33,10 +33,10 @@ const SearchInput = () => {
         }}
         handleSubmit={handleSearch}
         setInputValue={value => setSearch(value)}
-        bordersColor={themeColors.icon2}
+        bordersColor={themeColors.icon}
         placeholder="Search by Location ..."
         placeholderTextColor={hexToRGBA(themeColors.text, 0.3)}
-        backgroundColor={themeColors.background2}
+        backgroundColor={themeColors.background}
       />
       <TouchableOpacity
         onPress={handleSubmit}
@@ -45,10 +45,10 @@ const SearchInput = () => {
           position: 'absolute',
           right: 15,
           top: '50%',
-          transform: [{translateY: '-50%'}],
+          transform: [{ translateY: '-50%' }],
         }}>
         <Image
-          tintColor={themeColors.icon2}
+          tintColor={themeColors.icon}
           source={OtherIcons.Search as ImageSourcePropType}
           height={10}
           width={10}

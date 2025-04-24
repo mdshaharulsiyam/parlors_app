@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   FlatList,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View
@@ -30,7 +29,9 @@ const ShopManage = () => {
   return (
     <FlatList
       ListHeaderComponent={() => (
-        <View>
+        <View style={{
+          marginBottom: 15
+        }}>
           <Text
             style={{
               color: themeColors.text,
@@ -95,11 +96,3 @@ const ShopManage = () => {
 };
 
 export default ShopManage;
-
-const styles = StyleSheet.create({
-  heading: {
-    fontSize: 20,
-    marginBottom: 5,
-    fontWeight: "600"
-  }
-});
