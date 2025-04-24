@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -5,13 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { OtherIcons } from '../../constant/images';
 import SearchInput from './SearchInput';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {OtherIcons} from '../../constant/images';
 
 const SearchFilterTrigger = () => {
-  const {themeColors, setModalOpen} = useGlobalContext();
+  const { themeColors, setModalOpen } = useGlobalContext();
   return (
     <View style={styles.headerContainer}>
       <SearchInput />
@@ -24,7 +24,7 @@ const SearchFilterTrigger = () => {
           borderRadius: 2,
         }}>
         <Image
-          tintColor={themeColors.icon2}
+          tintColor={themeColors.icon}
           source={OtherIcons.Filter as ImageSourcePropType}
           height={10}
           width={10}

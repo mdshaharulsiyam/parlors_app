@@ -15,7 +15,7 @@ export const Colors = {
     icon2: "#e0f7fa",
     text: "#000000",
     background: "#FFFFFF",
-    background2: "#f2fafa",
+    background2: "#f4f4f4",
     black: "#000000",
     white: "#FFFFFF",
     red: "#f70202",

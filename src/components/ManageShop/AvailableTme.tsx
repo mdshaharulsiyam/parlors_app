@@ -64,6 +64,7 @@ const AvailableTime: React.FC = () => {
       }));
     }
     setOpenFromPicker(false);
+    setTimeout(() => setOpenToPicker(true), 300); // Optional: Automatically open "to" picker next
   };
 
   const handleToTimeChange = (date: Date): void => {
@@ -100,7 +101,6 @@ const AvailableTime: React.FC = () => {
             <BouncyCheckbox
               size={22}
               fillColor="#2ecc71"
-              // unfillColor="#fff"
               text={day.charAt(0).toUpperCase() + day.slice(1)}
               textStyle={styles.dayText}
               isChecked={time.checked}
@@ -131,36 +131,30 @@ const AvailableTime: React.FC = () => {
               </TouchableOpacity>
             </View>
           )}
-
-          {/* Date Picker for "From" time */}
-          {Platform.OS !== 'web' && (
-            <DatePicker
-              modal
-              open={openFromPicker}
-              date={selectedTime[day as keyof SelectedTime]?.from || new Date()}
-              mode="time"
-              // textColor="#333"
-              // androidVariant="nativeAndroid"
-              onConfirm={handleFromTimeChange}
-              onCancel={() => setOpenFromPicker(false)}
-            />
-          )}
-
-          {/* Date Picker for "To" time */}
-          {Platform.OS !== 'web' && (
-            <DatePicker
-              modal
-              open={openToPicker}
-              date={selectedTime[day as keyof SelectedTime]?.to || new Date()}
-              mode="time"
-              // textColor="#333"
-              // androidVariant="nativeAndroid"
-              onConfirm={handleToTimeChange}
-              onCancel={() => setOpenToPicker(false)}
-            />
-          )}
         </View>
       ))}
+
+      {/* Render single DatePickers outside of the loop */}
+      {Platform.OS !== 'web' && currentDayForPicker && (
+        <>
+          <DatePicker
+            modal
+            open={openFromPicker}
+            date={selectedTime[currentDayForPicker]?.from || new Date()}
+            mode="time"
+            onConfirm={handleFromTimeChange}
+            onCancel={() => setOpenFromPicker(false)}
+          />
+          <DatePicker
+            modal
+            open={openToPicker}
+            date={selectedTime[currentDayForPicker]?.to || new Date()}
+            mode="time"
+            onConfirm={handleToTimeChange}
+            onCancel={() => setOpenToPicker(false)}
+          />
+        </>
+      )}
     </View>
   );
 };
