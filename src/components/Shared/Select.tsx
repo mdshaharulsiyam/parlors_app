@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
+  Animated,
   StyleSheet,
-  View,
-  TouchableOpacity,
   Text,
   TextInput,
-  Animated,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 
 interface SelectProps {
   isMultiSelect?: boolean;
-  data?: {label: string; value: string}[];
+  data?: { label: string; value: string }[];
   selectedValue?: any;
   setSelectedValue?: (value: any) => void;
   placeholder?: string;
@@ -28,7 +28,7 @@ interface SelectProps {
     icon: string;
     red: string;
   };
-  categoryOptions?: {label: string; value: string}[];
+  categoryOptions?: { label: string; value: string }[];
   searchText?: string;
   setSearchText?: (text: string) => void;
   borderColor?: string;
@@ -41,17 +41,23 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = ({
   isMultiSelect = false,
-  data = [{label: 'Select', value: ''}],
+  data = [{ label: 'Select', value: '' }],
   selectedValue = '',
-  setSelectedValue = () => {},
+  setSelectedValue = () => { },
   placeholder = 'Select',
   searchPlaceholder = 'Search...',
-  renderItem = (item: any) => <Text>{item.label}</Text>,
+  renderItem = (item: any) => <Text style={{
+    padding: 5,
+
+  }}>{item.label}</Text>,
   renderSelectedItem = (item: any, unSelect?: (item: any) => void) => (
-    <TouchableOpacity onPress={() => unSelect?.(item)}>
+    <TouchableOpacity style={{
+      padding: 8,
+      marginVertical: 5
+    }} onPress={() => unSelect?.(item)}>
       <View style={styles.selectedStyle}>
         <Text style={styles.textSelectedStyle}>{item.label}</Text>
-        <Text style={{color: 'red'}}> - </Text>
+        <Text style={{ color: 'red' }}> - </Text>
       </View>
     </TouchableOpacity>
   ),
@@ -63,7 +69,7 @@ const Select: React.FC<SelectProps> = ({
   },
   categoryOptions = [],
   searchText = '',
-  setSearchText = () => {},
+  setSearchText = () => { },
   borderColor = 'gray',
   height = 40,
   width = '100%',
@@ -100,7 +106,7 @@ const Select: React.FC<SelectProps> = ({
           ]}
           placeholderStyle={[
             styles.placeholderStyle,
-            {color: themeColors.text},
+            { color: themeColors.text },
           ]}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -115,7 +121,7 @@ const Select: React.FC<SelectProps> = ({
                 },
               ]}>
               <TextInput
-                style={[styles.searchInput, {color: themeColors.text}]}
+                style={[styles.searchInput, { color: themeColors.text }]}
                 placeholder={searchPlaceholder}
                 placeholderTextColor={themeColors.text}
                 value={searchText}
@@ -156,11 +162,11 @@ const Select: React.FC<SelectProps> = ({
           ]}
           placeholderStyle={[
             styles.placeholderStyle,
-            {color: themeColors.text},
+            { color: themeColors.text },
           ]}
           selectedTextStyle={[
             styles.selectedTextStyle,
-            {color: themeColors.text},
+            { color: themeColors.text },
           ]}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
@@ -171,7 +177,7 @@ const Select: React.FC<SelectProps> = ({
           containerStyle={{
             backgroundColor: themeColors.background2,
             borderWidth: 0,
-            width: '100%',
+            // width: '100%',
           }}
           activeColor={hexToRGBA(themeColors.icon, 0.1)}
           value={selectedValue}
@@ -182,7 +188,7 @@ const Select: React.FC<SelectProps> = ({
 
       {/* Validation error message */}
       {isTouched && validate && !selectedValue && (
-        <Text style={{color: 'red', fontSize: 12, marginTop: 5}}>
+        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
           {errorMessage}
         </Text>
       )}
@@ -231,6 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 5,
+    marginVertical: 8
   },
   textSelectedStyle: {
     fontSize: 14,

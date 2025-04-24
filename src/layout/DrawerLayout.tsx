@@ -12,6 +12,7 @@ import About from '../screens/drawer/About';
 import SignIn from '../screens/drawer/SignIn';
 import Booking from '../screens/drawer/Booking';
 import SignUp from '../screens/drawer/SignUp';
+import ShopManage from '../screens/drawer/ShopManage';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,6 +32,11 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Profile"
         component={Profile}
+        options={{headerShown: false}}
+      />
+      <Drawer.Screen
+        name="ShopManage"
+        component={ShopManage}
         options={{headerShown: false}}
       />
       <Drawer.Screen
@@ -89,6 +95,11 @@ function DrawerContent(props: DrawerContentComponentProps) {
         label="Profile"
         key={'profile'}
         onPress={() => props.navigation.navigate('Profile')}
+      />
+      <DrawerItem
+        label="Manage Shop"
+        key={'ShopManage'}
+        onPress={() => props.navigation.navigate('ShopManage')}
       />
       <DrawerItem
         label="Sign in"

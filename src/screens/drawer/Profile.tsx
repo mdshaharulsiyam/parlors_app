@@ -264,6 +264,7 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
       )}
+      {/* Shop Tab */}
 
       {/* Change Password Tab */}
       {activeTab === 'password' && (
