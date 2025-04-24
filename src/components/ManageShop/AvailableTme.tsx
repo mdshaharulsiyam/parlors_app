@@ -102,7 +102,7 @@ const AvailableTime: React.FC = () => {
               size={22}
               fillColor="#2ecc71"
               text={day.charAt(0).toUpperCase() + day.slice(1)}
-              textStyle={styles.dayText}
+              textStyle={[styles.dayText, { textDecorationLine: 'none' }]}
               isChecked={time.checked}
               onPress={() => handleCheckboxChange(day as keyof SelectedTime)}
               bounceEffect={1.3}
