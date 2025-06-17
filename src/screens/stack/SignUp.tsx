@@ -204,7 +204,9 @@ const SignUp = () => {
           }
           return (
             <View key={key} style={{}}>
-              <Text style={globalStyles.inputLabel}>
+              <Text style={[globalStyles.inputLabel, {
+                color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string
+              }]}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </Text>
               <View style={{ position: 'relative' }}>
@@ -215,6 +217,7 @@ const SignUp = () => {
                     setError({ ...error, [key]: false });
                   }}
                   placeholder={`Enter your ${key}`}
+                  placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
                   secureTextEntry={
                     key === 'password'
                       ? passShow
@@ -222,10 +225,12 @@ const SignUp = () => {
                         ? cPassShow
                         : false
                   }
-                  placeholderTextColor={globalStyles.inputPlaceholder.color}
                   style={[
                     globalStyles.input,
-                    error[key as keyof ILogin] ? globalStyles.inputError : {},
+                    {
+                      color: themeColors.black as string,
+                      borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
+                    }
                   ]}
                 />
                 {(key === 'password' || key === 'confirmPassword') && (
@@ -275,7 +280,9 @@ const SignUp = () => {
         </View>
 
         <View style={[globalStyles.flex, { marginTop: 20, }]}>
-          <Text style={globalStyles.text}>Already have an account? {"  "}</Text>
+          <Text style={[globalStyles.text, {
+            color: themeColors.black as string
+          }]}>Already have an account? {"  "}</Text>
           <Link screen="SignIn" params={{}}>
             <Text style={[{ marginLeft: 5 }, globalStyles.text]}>Login</Text>
           </Link>
