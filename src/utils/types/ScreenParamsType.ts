@@ -23,4 +23,6 @@ export type ScreenParamsType = {
   Stacks: { screen: string, params: { id: string } };
   Order: undefined;
   Tabs: { screen: string, params: { screen: string, params: { id: string } } };
+  Verify: undefined;
+  Reset: undefined;
 };

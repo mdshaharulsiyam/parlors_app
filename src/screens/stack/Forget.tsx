@@ -1,20 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
+  View
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useForgetMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const Forget = () => {
+  const navigation = useNavigation<StackNavigationProp<ScreenParamsType>>();
   const { themeColors } = useGlobalContext();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -27,6 +32,8 @@ const Forget = () => {
       return;
     }
     setError('');
+    navigation.navigate('Verify');
+    return
     forget({ email })
       .unwrap()
       .then(async res => {
@@ -57,7 +64,7 @@ const Forget = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: themeColors.background }]}>
+      style={[styles.container, { backgroundColor: themeColors.white as string }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Title */}
         <Text style={[styles.title, { color: themeColors.black as string }]}>
@@ -83,7 +90,7 @@ const Forget = () => {
 
         {/* Error Message */}
         {error ? (
-          <Text style={[styles.errorText, { color: themeColors.red }]}>
+          <Text style={[styles.errorText, { color: themeColors.red as string }]}>
             {error}
           </Text>
         ) : null}
@@ -94,20 +101,19 @@ const Forget = () => {
             {successMessage}
           </Text>
         ) : null}
-
-        {/* Send Verification Email Button */}
-        <TouchableOpacity
-          disabled={isLoading}
-          style={[styles.button, { backgroundColor: themeColors.green as string }]}
-          onPress={handleSendVerificationEmail}>
-          {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.green as string} />
-          ) : (
-            <Text style={[styles.buttonText, { color: themeColors.white as string }]}>
-              Send Verification Email
-            </Text>
-          )}
-        </TouchableOpacity>
+        <View style={{
+          width: "100%"
+        }}>
+          <GradientButton handler={handleSendVerificationEmail}>
+            {isLoading ? (
+              <ActivityIndicator size="large" color={themeColors.green as string} />
+            ) : (
+              <Text style={[styles.buttonText, { color: themeColors.white as string, textAlign: "center" }]}>
+                Send Verification Email
+              </Text>
+            )}
+          </GradientButton>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
