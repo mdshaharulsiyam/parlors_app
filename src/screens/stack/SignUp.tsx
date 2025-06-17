@@ -171,6 +171,7 @@ const SignUp = () => {
                     }}
                     theme={{
                       onBackgroundTextColor: themeColors.black as string,
+                      backgroundColor: hexToRGBA(themeColors.white as string, 0.5),
                     }}
                   />
 
