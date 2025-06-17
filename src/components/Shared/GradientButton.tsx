@@ -17,6 +17,11 @@ const GradientButton = ({
       activeOpacity={0.8}
       onPress={() => {
         handler && handler();
+      }}
+      style={{
+        borderColor: themeColors.primary as string,
+        borderWidth: .5,
+        borderRadius: 15,
       }}>
       <LinearGradient
         colors={[
