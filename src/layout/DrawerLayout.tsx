@@ -13,6 +13,7 @@ import Profile from '../screens/drawer/Profile';
 import ShopManage from '../screens/drawer/ShopManage';
 import SignIn from '../screens/drawer/SignIn';
 import SignUp from '../screens/drawer/SignUp';
+import TextComponent from '../screens/drawer/TextComponent';
 import TabLayout from './TabLayout'; // Contains tab navigation
 
 const Drawer = createDrawerNavigator();
@@ -73,6 +74,14 @@ const DrawerLayout = () => {
           headerTitle: 'My Bookings',
         }}
       />
+      <Drawer.Screen
+        name="TextComponent"
+        component={TextComponent}
+        options={{
+          headerShown: true,
+          headerTitle: 'My Bookings',
+        }}
+      />
     </Drawer.Navigator>
   );
 };
@@ -121,6 +130,11 @@ function DrawerContent(props: DrawerContentComponentProps) {
         label="Sign up"
         key={'SignUp'}
         onPress={() => props.navigation.navigate('SignUp')}
+      />
+      <DrawerItem
+        key={'TextComponent'}
+        label="Text Component"
+        onPress={() => props.navigation.navigate('TextComponent')}
       />
       <DrawerItem
         key={'Close Drawer'}
