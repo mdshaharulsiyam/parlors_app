@@ -13,7 +13,7 @@ const Home = () => {
   const { themeColors, modalOpen, setModalOpen } = useGlobalContext();
   const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];
   return (
-    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       <FlatList
         data={data}
         renderItem={({ item }) => item}
@@ -21,7 +21,7 @@ const Home = () => {
         stickyHeaderIndices={[0]}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20, gap: 10 }}
+        contentContainerStyle={{ paddingBottom: 20, gap: 10, paddingHorizontal: 5 }}
       />
       <Modal
         visible={modalOpen}

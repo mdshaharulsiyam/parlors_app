@@ -16,6 +16,7 @@ const ParlorCard = ({
   width?: any;
   height?: any;
 }) => {
+  console.log(width, height);
   const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
   return (
@@ -38,7 +39,7 @@ const ParlorCard = ({
       }}>
       <Image
         source={{ uri: item?.img }}
-        resizeMode="contain"
+        resizeMode="cover"
         style={[
           {
             width: width,

@@ -44,7 +44,6 @@ export default SearchFilterTrigger;
 const styles = StyleSheet.create({
   headerContainer: {
     paddingVertical: 5,
-    paddingHorizontal: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
     // flex: 1,
