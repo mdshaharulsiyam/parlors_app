@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Link, NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
@@ -220,13 +220,29 @@ const SignIn = () => {
           </Link>
         </View>
 
-        <View style={{ marginTop: 20, alignItems: 'center' }}>
-          <GoogleSigninButton
+        <View style={{
+          paddingHorizontal: 25,
+          marginTop: 20,
+        }}>
+          {/* <GoogleSigninButton
             onPress={signIn}
             disabled={isSigninInProgress}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Dark}
-          />
+          /> */}
+          <GradientButton handler={() => signIn()}>
+            {
+              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 700,
+                  fontSize: 18,
+                }}>
+                Login with  Google
+              </Text>
+            }
+          </GradientButton>
         </View>
       </View>
     </SafeAreaView>
