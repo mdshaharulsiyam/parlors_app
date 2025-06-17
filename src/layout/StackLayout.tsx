@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import Forget from '../screens/stack/Forget';
 import Reset from '../screens/stack/Reset';
 import SignIn from '../screens/stack/SignIn';
 import SignUp from '../screens/stack/SignUp';
@@ -39,6 +40,20 @@ const StackLayout = () => {
           headerShown: true,
           headerTransparent: true,
           title: "Sign Up",
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            color: themeColors.black as string,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
+      />
+      <Stack.Screen
+        name="Forget"
+        component={Forget}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          title: "Forget Password",
           headerTitleAlign: 'center',
           headerTitleStyle: {
             color: themeColors.black as string,
