@@ -20,6 +20,7 @@ import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useLoginMutation } from '../../Redux/Apis/authApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 export const signIn = async () => {
   try {
@@ -61,7 +62,7 @@ export interface GoogleSignInResponse {
 }
 const SignIn = () => {
   const [isSigninInProgress, setIsSigninInProgress] = useState(false);
-  const { } = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const [login, { isLoading }] = useLoginMutation();
   const [passShow, setPassShow] = React.useState(true);
@@ -124,7 +125,7 @@ const SignIn = () => {
   };
   return (
     <SafeAreaView
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: hexToRGBA(themeColors.white as string, .95) }}>
       <View style={{ marginTop: -60 }}>
         <Image source={OtherIcons.Logo as ImageSourcePropType} height={100} width={100} />
       </View>
@@ -132,7 +133,9 @@ const SignIn = () => {
       <View style={{ width: '100%', paddingHorizontal: 20 }}>
         {Object.keys(inputValue).map((key, index) => (
           <View key={index}>
-            <Text style={[globalStyles.inputLabel]}>
+            <Text style={[globalStyles.inputLabel, {
+              color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string,
+            }]}>
               {key.charAt(0).toUpperCase() + key.slice(1)}
             </Text>
             <View style={{ position: 'relative' }}>
@@ -144,9 +147,13 @@ const SignIn = () => {
                 }}
                 placeholder={`Enter your ${key}`}
                 secureTextEntry={key === 'password' ? passShow : false}
-                placeholderTextColor={globalStyles.inputPlaceholder.color}
+                placeholderTextColor={hexToRGBA(themeColors.black as string, 0.3)}
                 style={[
                   globalStyles.input,
+                  {
+                    borderColor: hexToRGBA(themeColors.black as string, 0.3),
+                    color: themeColors.black as string,
+                  },
                   error[key as keyof ILogin] ? globalStyles.inputError : {},
                 ]}
               />
@@ -156,7 +163,7 @@ const SignIn = () => {
                     {
                       position: 'absolute',
                       right: 10,
-                      top: 15,
+                      top: 18,
                     },
                   ]}
                   onPress={() => setPassShow(!passShow)}>
@@ -166,7 +173,7 @@ const SignIn = () => {
                         ? (OtherIcons.Eye as ImageSourcePropType)
                         : (OtherIcons.EyeX as ImageSourcePropType)
                     }
-                    style={{ width: 20, height: 20 }}
+                    style={{ width: 20, height: 20, tintColor: themeColors.black as string }}
                   />
                 </TouchableOpacity>
               )}
@@ -175,10 +182,10 @@ const SignIn = () => {
         ))}
 
         <Link
-          style={{ textAlign: 'right', marginBottom: 20 }}
+          style={{ textAlign: 'right', marginBottom: 20, }}
           screen="Forget"
           params={{}}>
-          <Text>Forgot password?</Text>
+          <Text style={{ color: themeColors.primary as string }}>Forgot password?</Text>
         </Link>
 
         <View
@@ -201,12 +208,14 @@ const SignIn = () => {
         </View>
 
         <View style={[globalStyles.flex, { marginTop: 20 }]}>
-          <Text style={globalStyles.text}>
-            Don't have an account?
+          <Text style={[globalStyles.text, {
+            color: themeColors.black as string,
+          }]}>
+            Don't have an account ?
           </Text>
           <Link screen="SignUp" params={{}}>
-            <Text style={[{ marginLeft: 5 }, globalStyles.text]}>
-              {" "} Sign Up
+            <Text style={[{ marginLeft: 5, color: themeColors.primary as string }, globalStyles.text]}>
+              {"  "} Sign Up
             </Text>
           </Link>
         </View>
