@@ -5,6 +5,7 @@ import Forget from '../screens/stack/Forget';
 import Reset from '../screens/stack/Reset';
 import SignIn from '../screens/stack/SignIn';
 import SignUp from '../screens/stack/SignUp';
+import Verify from '../screens/stack/Verify';
 
 const Stack = createNativeStackNavigator();
 
@@ -66,11 +67,12 @@ const StackLayout = () => {
         component={Reset}
         options={{ headerShown: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Verify"
         component={Verify}
         options={{ headerShown: false }}
       />
+      {/* 
       <Stack.Screen
         name="Forget"
         component={Forget}

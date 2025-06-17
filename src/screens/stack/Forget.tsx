@@ -32,6 +32,8 @@ const Forget = () => {
       return;
     }
     setError('');
+    navigation.navigate('Verify');
+    return
     forget({ email })
       .unwrap()
       .then(async res => {

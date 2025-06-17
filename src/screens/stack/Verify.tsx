@@ -1,176 +1,117 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
+import { OtpInput } from 'react-native-otp-entry';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import GradientButton from '../../components/Shared/GradientButton';
+import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useVerify_otpMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const Verify = () => {
-  const [verify, { isLoading }] = useVerify_otpMutation();
+  const route = useRoute();
+  const params = route?.params as { params: { from: string; email: string } };
+  const from = params?.params?.from;
+  const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const { themeColors } = useGlobalContext();
-  const [verificationCode, setVerificationCode] = useState([
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-  ]);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [code, setCode] = useState('')
 
-  // Refs for the 6 input fields
-  const inputRefs = [
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-  ];
 
-  const handleChange = (text: string, index: number) => {
-    const updatedCode = [...verificationCode];
-    updatedCode[index] = text;
-    setVerificationCode(updatedCode);
 
-    if (text && index < 5) {
-      inputRefs[index + 1].current?.focus();
-    }
-  };
 
-  const handleVerification = async () => {
-    const code = verificationCode.join('');
-    if (code.length !== 6) {
-      setError('Please enter a valid 6-digit verification code');
-      setSuccessMessage('');
-      return;
-    }
-    const email = await AsyncStorage.getItem('email');
-
-    setError('');
-    verify({ code, email })
-      .unwrap()
-      .then(async res => {
-        if (res?.success) {
-          await AsyncStorage.removeItem('email');
-          await AsyncStorage.setItem(
-            'password_reset_token',
-            res?.password_reset_token,
-          );
-          Toast.show({
-            type: 'success',
-            text1: 'Email Verified',
-            text2: res?.message ?? 'email verified successfully',
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Email Verification failed',
-            text2: res?.message ?? 'something went wrong',
-          });
-        }
-      })
-      .catch(err => {
-        Toast.show({
-          type: 'error',
-          text1: 'Email Verification failed',
-          text2: err?.data?.message ?? 'something went wrong',
-        });
+  const handleOtpChange = useCallback(() => {
+    if (code?.length != 6) {
+      Toast.show({
+        type: 'error',
+        text1: "Invalid OTP",
+        text2: "Please enter a valid 6-digit OTP.",
       });
-    // setSuccessMessage("Your email has been verified successfully!");
-  };
+    };
+    navigate.navigate('Reset')
+  }, [code, from])
 
-  // Handle Back Button press
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: themeColors.background }]}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Back Button */}
-        <TouchableOpacity>
-          <Text style={[styles.backButton, { color: themeColors.black as string }]}>
-            Back
-          </Text>
-        </TouchableOpacity>
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ marginTop: -60 }}>
+        <Image source={OtherIcons.Logo as ImageSourcePropType} height={100} width={100} />
+      </View>
+      {/* form */}
+      <View style={{ width: '90%', paddingHorizontal: 20 }}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 500,
+            textAlign: 'center',
+            marginVertical: 20,
 
-        {/* Title */}
-        <Text style={[styles.title, { color: themeColors.black as string }]}>
-          Verify Your Email
+            color: themeColors.primary as string,
+          }}>
+          Enter the code sent to
         </Text>
+        <OtpInput
+          numberOfDigits={6}
+          focusColor="green"
+          autoFocus={false}
+          hideStick={true}
+          placeholder="******"
+          blurOnFilled={true}
+          disabled={false}
+          type="numeric"
+          secureTextEntry={false}
+          focusStickBlinkingDuration={500}
+          // onFocus={() => console.log('Focused')}
+          // onBlur={() => console.log('Blurred')}
+          // onTextChange={text => console.log(text)}
+          onFilled={text => setCode(text)}
+          textInputProps={{
+            accessibilityLabel: 'One-Time Password',
+          }}
+          textProps={{
+            accessibilityRole: 'text',
+            accessibilityLabel: 'OTP digit',
+            allowFontScaling: false,
+          }}
+          theme={{
+            pinCodeContainerStyle: {
+              backgroundColor: hexToRGBA(themeColors.primary as string, 0.2),
+            },
+            pinCodeTextStyle: {
+              color: hexToRGBA(themeColors.primary as string, 1),
+              fontWeight: 700,
+            },
+          }}
+        />
 
-        {/* Verification Message */}
-        <Text style={[styles.message, { color: themeColors.black as string }]}>
-          A verification code has been sent to your email. Please enter the
-          6-digit code below to verify your account.
-        </Text>
+        <View
+          style={{
+            paddingHorizontal: 25,
+            marginTop: 40,
+          }}>
+          <GradientButton
+            handler={handleOtpChange}>
+            {
+              false ? <ActivityIndicator size="small" color="#0000ff" /> : <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: '700',
+                  fontSize: 18,
+                }}>
+                Submit
+              </Text>
+            }
 
-        {/* Verification Code Input */}
-        <View style={styles.inputContainer}>
-          {verificationCode.map((digit, index) => (
-            <TextInput
-              key={index}
-              ref={inputRefs[index]}
-              style={[
-                styles.input,
-                {
-                  backgroundColor: themeColors.white as string,
-                  color: themeColors.black as string,
-                  borderColor: themeColors.black as string,
-                },
-              ]}
-              placeholder="-"
-              placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
-              keyboardType="numeric"
-              maxLength={1}
-              value={digit}
-              onChangeText={text => handleChange(text, index)}
-              autoFocus={index === 0}
-            />
-          ))}
+          </GradientButton>
         </View>
-
-        {/* Error Message */}
-        {error ? (
-          <Text style={[styles.errorText, { color: themeColors.red }]}>
-            {error}
-          </Text>
-        ) : null}
-
-        {/* Success Message */}
-        {successMessage ? (
-          <Text style={[styles.successText, { color: themeColors.green as string }]}>
-            {successMessage}
-          </Text>
-        ) : null}
-
-        {/* Verify Button */}
-        <TouchableOpacity
-          disabled={isLoading}
-          style={[styles.button, { backgroundColor: themeColors.green as string }]}
-          onPress={handleVerification}>
-          {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.green as string} />
-          ) : (
-            <Text style={[styles.buttonText, { color: themeColors.white as string }]}>
-              Verify Email
-            </Text>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
+
 
 export default Verify;
 
