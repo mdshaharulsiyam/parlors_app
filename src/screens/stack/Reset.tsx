@@ -33,6 +33,7 @@ const Reset = () => {
   });
 
   const submitHandler = () => {
+    navigate.navigate('Tabs', { screen: 'Home', });
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof INewPassword] === '') {
         setError(prev => ({ ...prev, [key]: true }));
@@ -40,7 +41,7 @@ const Reset = () => {
         setError(prev => ({ ...prev, [key]: false }));
       }
     });
-    navigate.navigate('Tabs', { screen: 'Stacks', });
+
   };
   return (
     <SafeAreaView

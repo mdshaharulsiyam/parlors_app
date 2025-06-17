@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { OtherIcons } from '../../constant/images';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import SearchInput from './SearchInput';
 
 const SearchFilterTrigger = () => {
@@ -18,7 +19,7 @@ const SearchFilterTrigger = () => {
       <TouchableOpacity
         onPress={() => setModalOpen(true)}
         style={{
-          backgroundColor: themeColors.background,
+          backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
           padding: 6,
           paddingHorizontal: 10,
           borderRadius: 2,

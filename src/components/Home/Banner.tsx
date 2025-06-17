@@ -1,18 +1,18 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
+  Dimensions,
   FlatList,
-  View,
   Image,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
-  Animated,
+  View,
 } from 'react-native';
-import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
-import {DrawerNavigationProp} from '@react-navigation/drawer';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const data = [
   'Item 1',
@@ -35,8 +35,8 @@ const Banner = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const handleScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {x: scrollX}}}],
-    {useNativeDriver: false},
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { useNativeDriver: false },
   );
 
   useEffect(() => {
@@ -49,10 +49,9 @@ const Banner = () => {
             animated: true,
           });
         }
-
         return nextIndex;
       });
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [data.length]);
@@ -61,28 +60,28 @@ const Banner = () => {
     <View>
       <FlatList
         ref={flatListRef}
-        onRefresh={() => {}}
+        onRefresh={() => { }}
         refreshing={false}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={data}
         keyExtractor={(item, index) => index.toString()}
         pagingEnabled={true}
-        viewabilityConfig={{itemVisiblePercentThreshold: 70}}
+        viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         snapToAlignment="center"
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity>
             <Image
-              source={{uri: 'https://placehold.co/400x400.png'}}
+              source={{ uri: 'https://placehold.co/400x400.png' }}
               style={styles.image}
             />
           </TouchableOpacity>
         )}
-        // onMomentumScrollEnd={event => {
-        //   const index = Math.round(event.nativeEvent.contentOffset.x / width);
-        //   setActiveIndex(index);
-        // }}
-        // onScroll={handleScroll}
+      // onMomentumScrollEnd={event => {
+      //   const index = Math.round(event.nativeEvent.contentOffset.x / width);
+      //   setActiveIndex(index);
+      // }}
+      // onScroll={handleScroll}
       />
     </View>
   );
@@ -91,7 +90,7 @@ const Banner = () => {
 const styles = StyleSheet.create({
   image: {
     width: width,
-    height: 300,
+    height: 250,
     marginRight: 10,
   },
   text: {
