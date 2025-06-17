@@ -5,9 +5,26 @@ const TextComponent = () => {
   return (
     <View style={{ flex: 1 }}>
       <WebView
+        originWhitelist={['*']}
         source={{
-          uri: 'https://github.com/facebook/react-native'
+          uri: 'https://personal-shop-ten.vercel.app/login'
         }}
+        onMessage={(event) => {
+          console.log('Message from WebView:', event?.nativeEvent?.data);
+        }}
+        javaScriptEnabled={true}
+        style={{ marginTop: 20 }}
+      />
+
+      <WebView
+        originWhitelist={['*']}
+        source={{
+          uri: 'https://ammur.vercel.app/auth/sign-in'
+        }}
+        onMessage={(event) => {
+          console.log('Message from WebView:', event?.nativeEvent?.data);
+        }}
+        javaScriptEnabled={true}
         style={{ marginTop: 20 }}
       />
 

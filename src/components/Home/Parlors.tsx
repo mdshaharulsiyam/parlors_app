@@ -1,9 +1,9 @@
-import {Dimensions, FlatList, Text, View} from 'react-native';
 import React from 'react';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {IParlor} from '../../utils/types/Types';
+import { Dimensions, FlatList, Text, View } from 'react-native';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { commonStyles } from '../../utils/styles/Styles';
+import { IParlor } from '../../utils/types/Types';
 import ParlorCard from '../Shared/ParlorCard';
-import {commonStyles} from '../../utils/styles/Styles';
 const topBarbers: IParlor[] = [
   {
     _id: '1',
@@ -87,11 +87,11 @@ const topBarbers: IParlor[] = [
   },
 ];
 const Parlors = () => {
-  const {width} = Dimensions.get('window');
-  const {themeColors} = useGlobalContext();
+  const { width } = Dimensions.get('window');
+  const { themeColors } = useGlobalContext();
   return (
-    <View style={{paddingHorizontal: 5}}>
-      <Text style={[commonStyles.headerText, {color: themeColors.text}]}>
+    <View style={{ paddingHorizontal: 5 }}>
+      <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
         Parlors
       </Text>
       <FlatList
@@ -108,7 +108,7 @@ const Parlors = () => {
         showsVerticalScrollIndicator={false}
         data={topBarbers}
         keyExtractor={item => item?._id}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <ParlorCard
             key={item?._id}
             item={item}

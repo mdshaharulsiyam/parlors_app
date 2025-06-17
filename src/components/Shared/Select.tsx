@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 
 interface SelectProps {
@@ -44,6 +45,7 @@ const Select: React.FC<SelectProps> = ({
   data = [{ label: 'Select', value: '' }],
   selectedValue = '',
   setSelectedValue = () => { },
+
   placeholder = 'Select',
   searchPlaceholder = 'Search...',
   renderItem = (item: any) => <Text style={{
@@ -61,12 +63,7 @@ const Select: React.FC<SelectProps> = ({
       </View>
     </TouchableOpacity>
   ),
-  themeColors = {
-    background2: '#fff',
-    text: '#000',
-    icon: '#000',
-    red: '#ff0000',
-  },
+
   categoryOptions = [],
   searchText = '',
   setSearchText = () => { },
@@ -77,6 +74,7 @@ const Select: React.FC<SelectProps> = ({
   validate = false,
   errorMessage = 'This field is required',
 }) => {
+  const { themeColors } = useGlobalContext();
   const [animation] = useState(new Animated.Value(0));
   const [isTouched, setIsTouched] = useState(false);
 
@@ -97,7 +95,7 @@ const Select: React.FC<SelectProps> = ({
           style={[
             styles.dropdown,
             {
-              backgroundColor: themeColors.background2,
+              backgroundColor: themeColors.white as string,
               borderColor: borderColorDynamic,
               borderWidth,
               height,
@@ -106,7 +104,7 @@ const Select: React.FC<SelectProps> = ({
           ]}
           placeholderStyle={[
             styles.placeholderStyle,
-            { color: themeColors.text },
+            { color: themeColors.black as string },
           ]}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -115,15 +113,15 @@ const Select: React.FC<SelectProps> = ({
               style={[
                 styles.searchContainer,
                 {
-                  backgroundColor: themeColors.background2,
+                  backgroundColor: themeColors.white as string,
                   borderWidth: 0.3,
-                  borderColor: themeColors.text,
+                  borderColor: themeColors.black as string,
                 },
               ]}>
               <TextInput
-                style={[styles.searchInput, { color: themeColors.text }]}
+                style={[styles.searchInput, { color: themeColors.black as string }]}
                 placeholder={searchPlaceholder}
-                placeholderTextColor={themeColors.text}
+                placeholderTextColor={themeColors.black as string}
                 value={searchText}
                 onChangeText={setSearchText}
               />
@@ -136,11 +134,11 @@ const Select: React.FC<SelectProps> = ({
           valueField="value"
           placeholder={placeholder}
           containerStyle={{
-            backgroundColor: themeColors.background2,
+            backgroundColor: themeColors.white as string,
             borderWidth: 0,
             width: '100%',
           }}
-          activeColor={hexToRGBA(themeColors.icon, 0.1)}
+          activeColor={hexToRGBA(themeColors.green as string, 0.1)}
           value={selectedValue}
           search
           searchPlaceholder={searchPlaceholder}
@@ -153,7 +151,7 @@ const Select: React.FC<SelectProps> = ({
           style={[
             styles.dropdown,
             {
-              backgroundColor: themeColors.background2,
+              backgroundColor: themeColors.white as string,
               borderColor: borderColorDynamic as string,
               borderWidth,
               height,
@@ -162,11 +160,11 @@ const Select: React.FC<SelectProps> = ({
           ]}
           placeholderStyle={[
             styles.placeholderStyle,
-            { color: themeColors.text },
+            { color: themeColors.black as string },
           ]}
           selectedTextStyle={[
             styles.selectedTextStyle,
-            { color: themeColors.text },
+            { color: themeColors.black as string },
           ]}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
@@ -175,11 +173,11 @@ const Select: React.FC<SelectProps> = ({
           valueField="value"
           placeholder={placeholder}
           containerStyle={{
-            backgroundColor: themeColors.background2,
+            backgroundColor: themeColors.white as string,
             borderWidth: 0,
             // width: '100%',
           }}
-          activeColor={hexToRGBA(themeColors.icon, 0.1)}
+          activeColor={hexToRGBA(themeColors.green as string, 0.1)}
           value={selectedValue}
           onChange={handleSelectChange}
           renderItem={renderItem}

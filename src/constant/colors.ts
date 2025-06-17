@@ -1,26 +1,44 @@
-
 export interface ITheme {
-  text: string;
-  background: string;
-  background2: string;
-  icon: string;
-  icon2: string;
-  black: string;
-  white: string;
-  red: string;
+  primary: String;
+  secondary: String;
+  black: String;
+  white: String;
+  yellow: String;
+  red: String;
+  green: String;
 }
 export const Colors = {
   light: {
-    icon: "#00bcd4",
-    icon2: "#e0f7fa",
-    text: "#000000",
-    background: "#FFFFFF",
-    background2: "#f4f4f4",
-    black: "#000000",
-    white: "#FFFFFF",
-    red: "#f70202",
-  } as ITheme
-}
+    // primary: '#017FF4',
+    // secondary: '#E2E8F0',
+    primary: '#10B981', // emerald
+    secondary: '#D1FAE5', // minty green
+
+    // primary: '#8B5CF6', // violet
+    // secondary: '#EDE9FE', // lavender
+
+    // primary: '#4CAF50', // medium green
+    // secondary: '#F0FDF4', // light green tint
+
+
+
+
+    black: '#000000',
+    white: '#FFFFFF',
+    yellow: '#FF9B17',
+    red: '#FF0000',
+    green: '#00FF00',
+  } as ITheme,
+  dark: {
+    primary: '#017FF4',
+    secondary: '#E2E8F0',
+    black: '#FFFFFF',
+    white: '#000000',
+    yellow: '#FF9B17',
+    red: '#FF0000',
+    green: '#00FF00',
+  } as ITheme,
+};
 
 // export const Colors = {
 //     light: {

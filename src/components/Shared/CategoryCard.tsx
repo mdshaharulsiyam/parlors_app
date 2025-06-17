@@ -1,11 +1,10 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {ICategory} from '../../utils/types/Types';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { ICategory } from '../../utils/types/Types';
 
-const CategoryCard = ({item}: {item: ICategory}) => {
-  const {themeColors} = useGlobalContext();
+const CategoryCard = ({ item }: { item: ICategory }) => {
+  const { themeColors } = useGlobalContext();
   return (
     <View
       style={[
@@ -16,7 +15,7 @@ const CategoryCard = ({item}: {item: ICategory}) => {
       ]}>
       <Image
         resizeMode="contain"
-        source={{uri: item?.img}}
+        source={{ uri: item?.img }}
         style={[styles.image]}
       />
       <View
@@ -29,7 +28,7 @@ const CategoryCard = ({item}: {item: ICategory}) => {
         <Text
           style={[
             {
-              color: themeColors.text,
+              color: themeColors.black as string,
             },
             styles.text,
           ]}>

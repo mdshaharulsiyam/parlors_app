@@ -5,15 +5,6 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React from 'react';
-import About from '../screens/drawer/About';
-import Booking from '../screens/drawer/Booking';
-import Cart from '../screens/drawer/Cart';
-import Chat from '../screens/drawer/Chat';
-import Profile from '../screens/drawer/Profile';
-import ShopManage from '../screens/drawer/ShopManage';
-import SignIn from '../screens/drawer/SignIn';
-import SignUp from '../screens/drawer/SignUp';
-import TextComponent from '../screens/drawer/TextComponent';
 import TabLayout from './TabLayout'; // Contains tab navigation
 
 const Drawer = createDrawerNavigator();
@@ -31,7 +22,7 @@ const DrawerLayout = () => {
         component={TabLayout}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Profile"
         component={Profile}
         options={{ headerShown: false }}
@@ -56,16 +47,7 @@ const DrawerLayout = () => {
         component={About}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        name="SignIn"
-        component={SignIn}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{ headerShown: false }}
-      />
+   
       <Drawer.Screen
         name="Booking"
         component={Booking}
@@ -81,7 +63,7 @@ const DrawerLayout = () => {
           headerShown: true,
           headerTitle: 'My Bookings',
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };
@@ -124,12 +106,12 @@ function DrawerContent(props: DrawerContentComponentProps) {
       <DrawerItem
         label="Sign in"
         key={'SignIn'}
-        onPress={() => props.navigation.navigate('SignIn')}
+        onPress={() => props.navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'SignIn' } })}
       />
       <DrawerItem
         label="Sign up"
         key={'SignUp'}
-        onPress={() => props.navigation.navigate('SignUp')}
+        onPress={() => props.navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'SignUp' } })}
       />
       <DrawerItem
         key={'TextComponent'}

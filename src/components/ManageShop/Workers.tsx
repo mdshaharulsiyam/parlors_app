@@ -88,7 +88,7 @@ const Workers = () => {
           searchPlaceholder="search district"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -103,12 +103,12 @@ const Workers = () => {
           style={[
             styles.input,
             {
-              borderColor: themeColors.icon,
-              color: themeColors.text,
+              borderColor: themeColors.green as string,
+              color: themeColors.black as string,
               borderWidth: 2,
             },
           ]}
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
           placeholder="Number Of Workers"
           value={totalWorkers?.toString()}
           onChangeText={(v) => setTotalWorkers(Number(v))}
@@ -119,17 +119,17 @@ const Workers = () => {
         style={[
           styles.button,
           {
-            backgroundColor: themeColors.icon,
+            backgroundColor: themeColors.green as string,
           },
         ]}>
         {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.white} />
+          <ActivityIndicator size="small" color={themeColors.white as string} />
         ) : (
           <Text
             style={[
               styles.buttonText,
               {
-                color: themeColors?.white,
+                color: themeColors.white as string,
               },
             ]}>
             Update Profile

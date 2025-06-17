@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Dimensions,
   Image,
@@ -8,98 +9,97 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
-import {IJila, IPostOffice, IUnion, IUpazila} from '../../utils/types/Types';
-import Select from './Select';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {OtherIcons} from '../../constant/images';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { OtherIcons } from '../../constant/images';
+import { hexToRGBA } from '../../utils/hexToRGBA';
+import { IJila, IPostOffice, IUnion, IUpazila } from '../../utils/types/Types';
 import Input from './Input';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import Select from './Select';
 const jila: IJila[] = [
   {
     _id: 1,
     name: 'Dhaka',
     upazila: [
-      {_id: 1, name: 'Dhaka City'},
-      {_id: 2, name: 'Narayanganj'},
-      {_id: 3, name: 'Keraniganj'},
-      {_id: 4, name: 'Dhamrai'},
-      {_id: 5, name: 'Savar'},
-      {_id: 6, name: 'Madhupur'},
-      {_id: 7, name: 'Tongi'},
+      { _id: 1, name: 'Dhaka City' },
+      { _id: 2, name: 'Narayanganj' },
+      { _id: 3, name: 'Keraniganj' },
+      { _id: 4, name: 'Dhamrai' },
+      { _id: 5, name: 'Savar' },
+      { _id: 6, name: 'Madhupur' },
+      { _id: 7, name: 'Tongi' },
     ],
   },
   {
     _id: 2,
     name: 'Faridpur',
     upazila: [
-      {_id: 1, name: 'Faridpur Sadar'},
-      {_id: 2, name: 'Boalmari'},
-      {_id: 3, name: 'Alfadanga'},
-      {_id: 4, name: 'Nagarkanda'},
-      {_id: 5, name: 'Charbhadrasan'},
-      {_id: 6, name: 'Sadar Upazila'},
+      { _id: 1, name: 'Faridpur Sadar' },
+      { _id: 2, name: 'Boalmari' },
+      { _id: 3, name: 'Alfadanga' },
+      { _id: 4, name: 'Nagarkanda' },
+      { _id: 5, name: 'Charbhadrasan' },
+      { _id: 6, name: 'Sadar Upazila' },
     ],
   },
   {
     _id: 3,
     name: 'Chattogram',
     upazila: [
-      {_id: 1, name: 'Chattogram City'},
-      {_id: 2, name: 'Anwara'},
-      {_id: 3, name: 'Banshkhali'},
-      {_id: 4, name: 'Boalkhali'},
-      {_id: 5, name: 'Fatikchhari'},
-      {_id: 6, name: 'Sandwip'},
+      { _id: 1, name: 'Chattogram City' },
+      { _id: 2, name: 'Anwara' },
+      { _id: 3, name: 'Banshkhali' },
+      { _id: 4, name: 'Boalkhali' },
+      { _id: 5, name: 'Fatikchhari' },
+      { _id: 6, name: 'Sandwip' },
     ],
   },
   {
     _id: 4,
     name: 'Rajshahi',
     upazila: [
-      {_id: 1, name: 'Rajshahi Sadar'},
-      {_id: 2, name: 'Bagha'},
-      {_id: 3, name: 'Puthia'},
-      {_id: 4, name: 'Durgapur'},
-      {_id: 5, name: 'Tanore'},
-      {_id: 6, name: 'Godagari'},
+      { _id: 1, name: 'Rajshahi Sadar' },
+      { _id: 2, name: 'Bagha' },
+      { _id: 3, name: 'Puthia' },
+      { _id: 4, name: 'Durgapur' },
+      { _id: 5, name: 'Tanore' },
+      { _id: 6, name: 'Godagari' },
     ],
   },
   {
     _id: 5,
     name: 'Khulna',
     upazila: [
-      {_id: 1, name: 'Khulna City'},
-      {_id: 2, name: 'Dighalia'},
-      {_id: 3, name: 'Koyra'},
-      {_id: 4, name: 'Paikgachha'},
-      {_id: 5, name: 'Batiaghata'},
-      {_id: 6, name: 'Rupsha'},
+      { _id: 1, name: 'Khulna City' },
+      { _id: 2, name: 'Dighalia' },
+      { _id: 3, name: 'Koyra' },
+      { _id: 4, name: 'Paikgachha' },
+      { _id: 5, name: 'Batiaghata' },
+      { _id: 6, name: 'Rupsha' },
     ],
   },
 ];
 
 const union: IUnion[] = [
-  {_id: 1, name: 'Dhandi Union'},
-  {_id: 2, name: 'Khatra Union'},
-  {_id: 3, name: 'Madhpur Union'},
-  {_id: 4, name: 'Nandigram Union'},
-  {_id: 5, name: 'Bholahat Union'},
-  {_id: 6, name: 'Banshbari Union'},
-  {_id: 7, name: 'Manikdi Union'},
-  {_id: 8, name: 'Mathurapur Union'},
+  { _id: 1, name: 'Dhandi Union' },
+  { _id: 2, name: 'Khatra Union' },
+  { _id: 3, name: 'Madhpur Union' },
+  { _id: 4, name: 'Nandigram Union' },
+  { _id: 5, name: 'Bholahat Union' },
+  { _id: 6, name: 'Banshbari Union' },
+  { _id: 7, name: 'Manikdi Union' },
+  { _id: 8, name: 'Mathurapur Union' },
 ];
 const postOffice: IPostOffice[] = [
-  {_id: 1, name: 'Dhandi Dakghor'},
-  {_id: 2, name: 'Khatra Dakghor'},
-  {_id: 3, name: 'Madhpur Dakghor'},
-  {_id: 4, name: 'Bholahat Dakghor'},
-  {_id: 5, name: 'Manikdi Dakghor'},
+  { _id: 1, name: 'Dhandi Dakghor' },
+  { _id: 2, name: 'Khatra Dakghor' },
+  { _id: 3, name: 'Madhpur Dakghor' },
+  { _id: 4, name: 'Bholahat Dakghor' },
+  { _id: 5, name: 'Manikdi Dakghor' },
 ];
 
 const FilterOptions = () => {
-  const {width} = Dimensions.get('window');
-  const {themeColors, search, setSearch} = useGlobalContext();
+  const { width } = Dimensions.get('window');
+  const { themeColors, search, setSearch } = useGlobalContext();
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
@@ -132,10 +132,10 @@ const FilterOptions = () => {
           }}
           handleSubmit={handleSearch}
           setInputValue={value => setSearch(value)}
-          bordersColor={themeColors.icon2}
+          bordersColor={themeColors.green as string}
           placeholder="Search by Parlors Name ..."
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.3)}
-          backgroundColor={themeColors.background2}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.3)}
+          backgroundColor={themeColors.white as string}
         />
         <TouchableOpacity
           onPress={handleSubmit}
@@ -144,10 +144,10 @@ const FilterOptions = () => {
             position: 'absolute',
             right: 15,
             top: '50%',
-            transform: [{translateY: '-50%'}],
+            transform: [{ translateY: '-50%' }],
           }}>
           <Image
-            tintColor={themeColors.icon2}
+            tintColor={themeColors.green as string}
             source={OtherIcons.Search as ImageSourcePropType}
             height={10}
             width={10}
@@ -173,7 +173,7 @@ const FilterOptions = () => {
           searchPlaceholder="search district"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -194,7 +194,7 @@ const FilterOptions = () => {
           searchPlaceholder="search sub district"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -215,7 +215,7 @@ const FilterOptions = () => {
           searchPlaceholder="search union"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -236,7 +236,7 @@ const FilterOptions = () => {
           searchPlaceholder="search post office"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"

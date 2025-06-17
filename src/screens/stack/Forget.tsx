@@ -1,25 +1,25 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import {useForgetMutation} from '../../Redux/Apis/authApis';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useForgetMutation } from '../../Redux/Apis/authApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 
 const Forget = () => {
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [forget, {isLoading}] = useForgetMutation();
+  const [forget, { isLoading }] = useForgetMutation();
   const handleSendVerificationEmail = () => {
     if (!email) {
       setError('Please enter your email');
@@ -27,7 +27,7 @@ const Forget = () => {
       return;
     }
     setError('');
-    forget({email})
+    forget({ email })
       .unwrap()
       .then(async res => {
         if (res?.success) {
@@ -57,10 +57,10 @@ const Forget = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: themeColors.background}]}>
+      style={[styles.container, { backgroundColor: themeColors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Title */}
-        <Text style={[styles.title, {color: themeColors.text}]}>
+        <Text style={[styles.title, { color: themeColors.black as string }]}>
           Forgot Password
         </Text>
 
@@ -69,13 +69,13 @@ const Forget = () => {
           style={[
             styles.input,
             {
-              backgroundColor: themeColors.background2,
-              color: themeColors.text,
-              borderColor: themeColors.text,
+              backgroundColor: themeColors.white as string,
+              color: themeColors.black as string,
+              borderColor: themeColors.black as string,
             },
           ]}
           placeholder="Enter your email"
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
@@ -83,14 +83,14 @@ const Forget = () => {
 
         {/* Error Message */}
         {error ? (
-          <Text style={[styles.errorText, {color: themeColors.red}]}>
+          <Text style={[styles.errorText, { color: themeColors.red }]}>
             {error}
           </Text>
         ) : null}
 
         {/* Success Message */}
         {successMessage ? (
-          <Text style={[styles.successText, {color: themeColors.icon}]}>
+          <Text style={[styles.successText, { color: themeColors.green as string }]}>
             {successMessage}
           </Text>
         ) : null}
@@ -98,12 +98,12 @@ const Forget = () => {
         {/* Send Verification Email Button */}
         <TouchableOpacity
           disabled={isLoading}
-          style={[styles.button, {backgroundColor: themeColors.icon}]}
+          style={[styles.button, { backgroundColor: themeColors.green as string }]}
           onPress={handleSendVerificationEmail}>
           {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.icon} />
+            <ActivityIndicator size="large" color={themeColors.green as string} />
           ) : (
-            <Text style={[styles.buttonText, {color: themeColors.white}]}>
+            <Text style={[styles.buttonText, { color: themeColors.white as string }]}>
               Send Verification Email
             </Text>
           )}

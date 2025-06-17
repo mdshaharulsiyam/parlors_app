@@ -224,7 +224,7 @@ const Booking = () => {
         <View>
           <Text
             style={{
-              color: themeColors.text,
+              color: themeColors.black as string,
               fontWeight: '600',
               fontSize: 20,
               textTransform: 'capitalize',
@@ -251,10 +251,10 @@ const Booking = () => {
                   {
                     backgroundColor:
                       item == status
-                        ? themeColors.icon
-                        : themeColors.icon2,
+                        ? themeColors.green as string
+                        : themeColors.yellow as string,
                     borderRadius: 3,
-                    borderColor: themeColors.icon,
+                    borderColor: themeColors.black as string,
                     borderWidth: 0.5,
                   }]}
                 key={item}>
@@ -262,7 +262,7 @@ const Booking = () => {
                   style={{
                     textTransform: 'uppercase',
                     fontWeight: '600',
-                    color: item == status ? themeColors.white : themeColors.icon,
+                    color: item == status ? themeColors.white as string as string : themeColors.black as string,
                   }}>
                   {item}
                 </Text>

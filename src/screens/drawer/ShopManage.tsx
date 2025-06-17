@@ -34,7 +34,7 @@ const ShopManage = () => {
         }}>
           <Text
             style={{
-              color: themeColors.text,
+              color: themeColors.black as string,
               fontWeight: '600',
               fontSize: 20,
               textTransform: 'capitalize',
@@ -61,10 +61,10 @@ const ShopManage = () => {
                   {
                     backgroundColor:
                       item == currentTab
-                        ? themeColors.icon
-                        : themeColors.icon2,
+                        ? themeColors.green as string
+                        : themeColors.green as string2,
                     borderRadius: 3,
-                    borderColor: themeColors.icon,
+                    borderColor: themeColors.green as string,
                     borderWidth: 0.5,
                   }]}
                 key={item}>
@@ -72,7 +72,7 @@ const ShopManage = () => {
                   style={{
                     textTransform: 'uppercase',
                     fontWeight: '600',
-                    color: item == currentTab ? themeColors.white : themeColors.icon,
+                    color: item == currentTab ? themeColors.white as string : themeColors.green as string,
                   }}>
                   {item}
                 </Text>

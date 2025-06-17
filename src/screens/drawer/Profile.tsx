@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Image,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  StyleSheet,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 
 import Toast from 'react-native-toast-message';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import {
   useChange_passwordMutation,
   useGet_profileQuery,
   useUpdateMutation,
 } from '../../Redux/Apis/authApis';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [name, setName] = useState('');
@@ -26,12 +26,12 @@ const Profile = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const [image, setImage] = useState<string | null>(null);
   const [newImage, setNewImage] = useState<any>(null);
-  const {data, isLoading} = useGet_profileQuery(undefined);
-  const [update, {isLoading: is_updating}] = useUpdateMutation();
-  const [change, {isLoading: is_changing}] = useChange_passwordMutation();
+  const { data, isLoading } = useGet_profileQuery(undefined);
+  const [update, { isLoading: is_updating }] = useUpdateMutation();
+  const [change, { isLoading: is_changing }] = useChange_passwordMutation();
   // console.log(data);
 
   useEffect(() => {
@@ -129,7 +129,7 @@ const Profile = () => {
   if (isLoading) {
     return (
       <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color={themeColors.icon} />
+        <ActivityIndicator size="large" color={themeColors.green as string} />
       </View>
     );
   }
@@ -141,7 +141,7 @@ const Profile = () => {
           style={[
             styles.tab,
             activeTab === 'profile' && {
-              borderColor: themeColors.icon,
+              borderColor: themeColors.green as string,
             },
           ]}
           onPress={() => setActiveTab('profile')}>
@@ -149,10 +149,10 @@ const Profile = () => {
             style={[
               styles.tabText,
               {
-                color: themeColors.text,
+                color: themeColors.black as string,
               },
               activeTab === 'profile' && {
-                color: themeColors.icon,
+                color: themeColors.green as string,
               },
             ]}>
             Profile
@@ -162,7 +162,7 @@ const Profile = () => {
           style={[
             styles.tab,
             activeTab === 'password' && {
-              borderColor: themeColors.icon,
+              borderColor: themeColors.green as string,
             },
           ]}
           onPress={() => setActiveTab('password')}>
@@ -170,10 +170,10 @@ const Profile = () => {
             style={[
               styles.tabText,
               {
-                color: themeColors.text,
+                color: themeColors.black as string,
               },
               activeTab === 'password' && {
-                color: themeColors.icon,
+                color: themeColors.green as string,
               },
             ]}>
             Change Password
@@ -187,7 +187,7 @@ const Profile = () => {
           <TouchableOpacity style={styles.profileImageContainer}>
             <View
               style={{
-                backgroundColor: themeColors.background2,
+                backgroundColor: themeColors.white as string,
                 borderRadius: 6,
               }}>
               <Image
@@ -202,11 +202,11 @@ const Profile = () => {
             style={[
               styles.input,
               {
-                borderColor: themeColors.text,
-                color: themeColors.text,
+                borderColor: themeColors.black as string,
+                color: themeColors.black as string,
               },
             ]}
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
             placeholder="Full Name"
             value={name}
             onChangeText={setName}
@@ -216,11 +216,11 @@ const Profile = () => {
             style={[
               styles.input,
               {
-                borderColor: hexToRGBA(themeColors.text, 0.6),
-                color: hexToRGBA(themeColors.text, 0.6),
+                borderColor: hexToRGBA(themeColors.black as string, 0.6),
+                color: hexToRGBA(themeColors.black as string, 0.6),
               },
             ]}
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
@@ -230,11 +230,11 @@ const Profile = () => {
             style={[
               styles.input,
               {
-                borderColor: themeColors.text,
-                color: themeColors.text,
+                borderColor: themeColors.black as string,
+                color: themeColors.black as string,
               },
             ]}
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
             placeholder="Phone Number"
             value={phone}
             onChangeText={setPhone}
@@ -245,17 +245,17 @@ const Profile = () => {
             style={[
               styles.button,
               {
-                backgroundColor: themeColors.icon,
+                backgroundColor: themeColors.green as string,
               },
             ]}>
             {is_updating ? (
-              <ActivityIndicator size="small" color={themeColors.white} />
+              <ActivityIndicator size="small" color={themeColors.white as string} />
             ) : (
               <Text
                 style={[
                   styles.buttonText,
                   {
-                    color: themeColors?.white,
+                    color: themeColors.white as string,
                   },
                 ]}>
                 Update Profile
@@ -273,11 +273,11 @@ const Profile = () => {
             style={[
               styles.input,
               {
-                borderColor: themeColors.text,
-                color: themeColors.text,
+                borderColor: themeColors.black as string,
+                color: themeColors.black as string,
               },
             ]}
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
             placeholder="Old Password"
             value={oldPassword}
             onChangeText={setOldPassword}
@@ -287,11 +287,11 @@ const Profile = () => {
             style={[
               styles.input,
               {
-                borderColor: themeColors.text,
-                color: themeColors.text,
+                borderColor: themeColors.black as string,
+                color: themeColors.black as string,
               },
             ]}
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
             placeholder="New Password"
             value={password}
             onChangeText={setPassword}
@@ -301,11 +301,11 @@ const Profile = () => {
             style={[
               styles.input,
               {
-                borderColor: themeColors.text,
-                color: themeColors.text,
+                borderColor: themeColors.black as string,
+                color: themeColors.black as string,
               },
             ]}
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
             placeholder="Confirm Password"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -318,7 +318,7 @@ const Profile = () => {
               style={[
                 styles.toggleText,
                 {
-                  color: themeColors.text,
+                  color: themeColors.black as string,
                 },
               ]}>
               {showPassword ? 'Hide All Passwords' : 'Show All Passwords'}
@@ -329,18 +329,18 @@ const Profile = () => {
             style={[
               styles.button,
               {
-                backgroundColor: themeColors.icon,
+                backgroundColor: themeColors.green as string,
               },
             ]}>
             <Text
               style={[
                 styles.buttonText,
                 {
-                  color: themeColors?.white,
+                  color: themeColors.white as string,
                 },
               ]}>
               {is_changing ? (
-                <ActivityIndicator size="small" color={themeColors.white} />
+                <ActivityIndicator size="small" color={themeColors.white as string} />
               ) : (
                 'Change Password'
               )}
@@ -364,11 +364,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  tab: {padding: 10, borderBottomWidth: 2, borderColor: 'transparent'},
-  tabText: {fontSize: 16},
-  content: {alignItems: 'center', width: '100%'},
-  profileImageContainer: {position: 'relative', marginBottom: 20},
-  profileImage: {width: 100, height: 100, borderRadius: 50},
+  tab: { padding: 10, borderBottomWidth: 2, borderColor: 'transparent' },
+  tabText: { fontSize: 16 },
+  content: { alignItems: 'center', width: '100%' },
+  profileImageContainer: { position: 'relative', marginBottom: 20 },
+  profileImage: { width: 100, height: 100, borderRadius: 50 },
   uploadIcon: {
     position: 'absolute',
     bottom: 0,
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 15,
   },
-  uploadText: {fontSize: 18},
+  uploadText: { fontSize: 18 },
   input: {
     width: '90%',
     padding: 10,
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 200,
   },
-  buttonText: {fontSize: 16, fontWeight: 'bold'},
+  buttonText: { fontSize: 16, fontWeight: 'bold' },
   toggleButton: {
     marginTop: 10,
     padding: 5,
