@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 import { Link, NavigationProp, useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -18,13 +19,51 @@ import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useLoginMutation } from '../../redux/Apis/authApis';
+import { useLoginMutation } from '../../Redux/Apis/authApis';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+export const signIn = async () => {
+  try {
+    //   await GoogleSignin.hasPlayServices();
+    const response = await GoogleSignin.signIn();
+    console.log(response);
+    if (response) {
+    } else {
+      // sign in was cancelled by user
+    }
+  } catch (error: any) {
+    console.log(error);
+    if (error) {
+      switch (error?.code) {
+        case statusCodes.IN_PROGRESS:
+          break;
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          break;
+        default:
+      }
+    } else {
+    }
+  }
+};
 
+export interface GoogleSignInResponse {
+  idToken: string;
+  scopes: string[];
+  serverAuthCode: string | null;
+  user: {
+    email: string;
+    familyName: string;
+    givenName: string;
+    id: string;
+    name: string;
+    photo: string;
+  };
+  type: 'success' | 'error';
+}
 const SignIn = () => {
+  const [isSigninInProgress, setIsSigninInProgress] = useState(false);
   const { } = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
-  const [signIn, { isLoading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const [passShow, setPassShow] = React.useState(true);
 
   const [error, setError] = React.useState({
@@ -54,7 +93,7 @@ const SignIn = () => {
         text2: 'Please fill all fields',
       });
     }
-    signIn(inputValue)
+    login(inputValue)
       .unwrap()
       .then(async (res) => {
         console.log(res)
@@ -163,64 +202,30 @@ const SignIn = () => {
 
         <View style={[globalStyles.flex, { marginTop: 20 }]}>
           <Text style={globalStyles.text}>
-            Don't have an account
+            Don't have an account?
           </Text>
           <Link screen="SignUp" params={{}}>
             <Text style={[{ marginLeft: 5 }, globalStyles.text]}>
-              Sign Up
+              {" "} Sign Up
             </Text>
           </Link>
+        </View>
+
+        <View style={{ marginTop: 20, alignItems: 'center' }}>
+          <GoogleSigninButton
+            onPress={signIn}
+            disabled={isSigninInProgress}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Dark}
+          />
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-// export const signIn = async () => {
-//   try {
-//     //   await GoogleSignin.hasPlayServices();
-//     const response = await GoogleSignin.signIn();
-//     console.log(response);
-//     if (response) {
-//     } else {
-//       // sign in was cancelled by user
-//     }
-//   } catch (error: any) {
-//     console.log(error);
-//     if (error) {
-//       switch (error?.code) {
-//         case statusCodes.IN_PROGRESS:
-//           break;
-//         case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-//           break;
-//         default:
-//       }
-//     } else {
-//     }
-//   }
-// };
 
-// export interface GoogleSignInResponse {
-//   idToken: string;
-//   scopes: string[];
-//   serverAuthCode: string | null;
-//   user: {
-//     email: string;
-//     familyName: string;
-//     givenName: string;
-//     id: string;
-//     name: string;
-//     photo: string;
-//   };
-//   type: 'success' | 'error';
-// }
-// const [isSigninInProgress, setIsSigninInProgress] = useState(false); 
-{/* <GoogleSigninButton
-  onPress={signIn}
-  disabled={isSigninInProgress}
-  size={GoogleSigninButton.Size.Wide}
-  color={GoogleSigninButton.Color.Dark}
-/> */}
+
 export default SignIn;
 
 const styles = StyleSheet.create({
