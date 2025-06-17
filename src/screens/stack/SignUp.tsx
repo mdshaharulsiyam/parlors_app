@@ -18,7 +18,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { ILogin, ISignUp } from '../../../types/loginType';
 import GradientButton from '../../components/Shared/GradientButton';
-import { Colors } from '../../constant/colors';
 import { genderData } from '../../constant/data';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
@@ -46,8 +45,8 @@ const SignUp = () => {
 
   const [inputValue, setInputValue] = React.useState<ISignUp>({
     'name': 'shaharul',
-    email: 'siyamoffice0273@gmail.com',
     contact: '01700000000',
+    email: 'siyamoffice0273@gmail.com',
     gender: 'male',
     password: '123456',
     confirmPassword: '123456',
@@ -75,8 +74,8 @@ const SignUp = () => {
     }
     const data = {
       "name": inputValue['name'],
-      "email": inputValue['email'],
       "contact": inputValue['contact'],
+      "email": inputValue['email'],
       "gender": inputValue['gender'],
       "password": inputValue['password']
     }
@@ -112,12 +111,13 @@ const SignUp = () => {
           paddingHorizontal: 20,
           paddingVertical: 20,
           marginTop: 40,
+          zIndex: 1
         }}>
         {Object.keys(inputValue).map((key, index, arr) => {
 
           if (key === 'gender') {
             return (
-              <View key={key}>
+              <View key={key} style={{ zIndex: 100000000 }}>
                 <Text style={[globalStyles.inputLabel, { color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string }]}>
                   {key.charAt(0).toUpperCase() + key.slice(1)}
                 </Text>
@@ -125,6 +125,9 @@ const SignUp = () => {
                   style={[
                     globalStyles.input,
                     error[key as keyof ILogin] ? globalStyles.inputError : {},
+                    {
+                      borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
+                    },
                   ]}
                   data={genderData}
                   labelField="label"
@@ -138,7 +141,7 @@ const SignUp = () => {
                   placeholderStyle={{
                     color: globalStyles.inputPlaceholder.color,
                   }}
-                  selectedTextStyle={{ color: '#000' }}
+                  selectedTextStyle={{ color: themeColors.black as string }}
                   containerStyle={{ borderRadius: 5 }}
                   dropdownPosition="auto"
                 />
@@ -165,10 +168,9 @@ const SignUp = () => {
                       height: 50,
                       paddingHorizontal: 10,
                       justifyContent: 'center',
-                      backgroundColor: hexToRGBA(
-                        Colors.light.white as string,
-                        0.4,
-                      ),
+                    }}
+                    theme={{
+                      onBackgroundTextColor: themeColors.black as string,
                     }}
                   />
 
@@ -179,8 +181,9 @@ const SignUp = () => {
                       setError({ ...error, contact: false });
                     }}
                     placeholder={`Enter your ${key}`}
-                    keyboardType="phone-pad"
-                    placeholderTextColor={globalStyles.inputPlaceholder.color}
+                    // keyboardType="phone-pad"
+                    keyboardType="decimal-pad"
+                    placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
                     style={[
                       globalStyles.input,
                       {
@@ -189,8 +192,10 @@ const SignUp = () => {
                         borderWidth: 1,
                         width: width - 150,
                         marginBottom: 0,
+                        color: themeColors.black as string,
+                        borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
                       },
-                      error.contact ? globalStyles.inputError : {},
+                      // error.contact ? globalStyles.inputError : {},
                     ]}
                   />
                 </View>
