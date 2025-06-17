@@ -1,8 +1,8 @@
-import {Animated, FlatList, Text, View} from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {ICategory} from '../../utils/types/Types';
-import {commonStyles} from '../../utils/styles/Styles';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, Text, View } from 'react-native';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { commonStyles } from '../../utils/styles/Styles';
+import { ICategory } from '../../utils/types/Types';
 import CategoryCard from '../Shared/CategoryCard';
 const category: ICategory[] = [
   {
@@ -58,7 +58,7 @@ const category: ICategory[] = [
 ];
 
 const Categories = () => {
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const ref = useRef<FlatList<any | null>>(null);
   const [Index, setIndex] = useState(0);
 
@@ -79,8 +79,8 @@ const Categories = () => {
   }, [ref, category?.length]);
 
   return (
-    <View style={{paddingHorizontal: 5}}>
-      <Text style={[commonStyles.headerText, {color: themeColors.text}]}>
+    <View style={{ paddingHorizontal: 5 }}>
+      <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
         Categories
       </Text>
       <FlatList
@@ -88,9 +88,9 @@ const Categories = () => {
         data={category}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{gap: 10}}
+        contentContainerStyle={{ gap: 10 }}
         keyExtractor={item => item?._id}
-        renderItem={({item}) => <CategoryCard item={item} />}
+        renderItem={({ item }) => <CategoryCard item={item} />}
       />
     </View>
   );

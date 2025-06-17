@@ -1,217 +1,226 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-export interface GoogleSignInResponse {
-  idToken: string;
-  scopes: string[];
-  serverAuthCode: string | null;
-  user: {
-    email: string;
-    familyName: string;
-    givenName: string;
-    id: string;
-    name: string;
-    photo: string;
-  };
-  type: 'success' | 'error';
-}
-import Toast from 'react-native-toast-message';
-import {TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useGet_profileQuery, useLoginMutation} from '../../Redux/Apis/authApis';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {hexToRGBA} from '../../utils/hexToRGBA';
-
-export const signIn = async () => {
-  try {
-    //   await GoogleSignin.hasPlayServices();
-    const response = await GoogleSignin.signIn();
-    console.log(response);
-    if (response) {
-    } else {
-      // sign in was cancelled by user
-    }
-  } catch (error: any) {
-    console.log(error);
-    if (error) {
-      switch (error?.code) {
-        case statusCodes.IN_PROGRESS:
-          break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          break;
-        default:
-      }
-    } else {
-    }
-  }
-};
+import { Link, NavigationProp, useNavigation } from '@react-navigation/native';
+import React from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { ILogin } from '../../../types/loginType';
+import GradientButton from '../../components/Shared/GradientButton';
+import { OtherIcons } from '../../constant/images';
+import { globalStyles } from '../../constant/styles';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useLoginMutation } from '../../redux/Apis/authApis';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const SignIn = () => {
-  const [isSigninInProgress, setIsSigninInProgress] = useState(false);
-  const {refetch} = useGet_profileQuery(undefined);
-  const {themeColors} = useGlobalContext();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [login, {isLoading}] = useLoginMutation();
-  const [error, setError] = useState('');
+  const { } = useGlobalContext();
+  const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
+  const [signIn, { isLoading }] = useLoginMutation();
+  const [passShow, setPassShow] = React.useState(true);
 
-  const handleLogin = () => {
-    setError('');
-    if (!email || !password) {
-      setError('All fields are required.');
-      return;
+  const [error, setError] = React.useState({
+    email: false,
+    password: false,
+  });
+
+  const [inputValue, setInputValue] = React.useState<ILogin>({
+    email: 'siyamoffice0273@gmail.com',
+    password: '123456',
+  });
+
+  const submitHandler = () => {
+    let isInvalid = false;
+    Object.keys(inputValue).forEach(key => {
+      if (inputValue[key as keyof ILogin] === '') {
+        setError(prev => ({ ...prev, [key]: true }));
+        isInvalid = true;
+      } else {
+        setError(prev => ({ ...prev, [key]: false }));
+      }
+    });
+    if (isInvalid) {
+      Toast.show({
+        type: 'error',
+        text1: 'failed to login',
+        text2: 'Please fill all fields',
+      });
     }
-
-    if (password !== password) {
-      setError('Passwords do not match!');
-      return;
-    }
-
-    setError('');
-    login({email, password})
+    signIn(inputValue)
       .unwrap()
-      .then(async res => {
-        if (res?.success) {
-          await AsyncStorage.setItem('token', res?.token);
-          Toast.show({
-            type: 'success',
-            text1: 'Logged In',
-            text2: res?.message ?? 'Logged in successfully',
-          });
-          refetch();
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Log In Failed',
-            text2: res?.message ?? 'something went wrong',
-          });
-        }
-      })
+      .then(async (res) => {
+        console.log(res)
+        Toast.show({
+          type: 'success',
+          text1: 'Login successfully',
+          text2: res.data?.message || 'Welcome back!',
+        });
+        await Promise.all([
+          AsyncStorage.setItem('token', res.token),
+          AsyncStorage.setItem('user', JSON.stringify(res.user)),
+        ])
+        // navigate.navigate('Tabs');
+      }
+      )
       .catch(err => {
+        console.log(err)
         Toast.show({
           type: 'error',
-          text1: 'Log In Failed',
-          text2: err?.data?.message ?? 'something went wrong',
+          text1: 'Login failed',
+          text2: err.data?.message || 'An error occurred',
         });
-      });
+      }
+      );
+    // if (inputValue.email !== '' && inputValue.password !== '') {
+    //   navigate.navigate('Tabs');
+    // }
   };
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: themeColors.background}]}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Title */}
-        <Text style={[styles.title, {color: themeColors.text}]}>Login</Text>
-
-        {/* Email Input */}
-        <TextInput
-          style={[
-            styles.input,
-            {
-              backgroundColor: themeColors.background2,
-              color: themeColors.text,
-              borderColor: themeColors.text,
-            },
-          ]}
-          placeholder="Email"
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-
-        {/* Password Input with Show/Hide Feature */}
-        <View
-          style={[
-            styles.passwordContainer,
-            {
-              backgroundColor: themeColors.background2,
-              borderColor: themeColors.text,
-            },
-          ]}>
-          <TextInput
-            style={[styles.passwordInput, {color: themeColors.text}]}
-            placeholder="Password"
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
-            secureTextEntry={!isPasswordVisible}
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity
-            onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-            <Text style={[styles.eyeIcon, {color: themeColors.icon}]}>
-              {isPasswordVisible ? '🙉' : '🙈'}
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ marginTop: -60 }}>
+        <Image source={OtherIcons.Logo as ImageSourcePropType} height={100} width={100} />
+      </View>
+      {/* form */}
+      <View style={{ width: '100%', paddingHorizontal: 20 }}>
+        {Object.keys(inputValue).map((key, index) => (
+          <View key={index}>
+            <Text style={[globalStyles.inputLabel]}>
+              {key.charAt(0).toUpperCase() + key.slice(1)}
             </Text>
-          </TouchableOpacity>
+            <View style={{ position: 'relative' }}>
+              <TextInput
+                value={inputValue[key as keyof ILogin]}
+                onChangeText={text => {
+                  setInputValue({ ...inputValue, [key]: text });
+                  setError({ ...error, [key]: false });
+                }}
+                placeholder={`Enter your ${key}`}
+                secureTextEntry={key === 'password' ? passShow : false}
+                placeholderTextColor={globalStyles.inputPlaceholder.color}
+                style={[
+                  globalStyles.input,
+                  error[key as keyof ILogin] ? globalStyles.inputError : {},
+                ]}
+              />
+              {key === 'password' && (
+                <TouchableOpacity
+                  style={[
+                    {
+                      position: 'absolute',
+                      right: 10,
+                      top: 15,
+                    },
+                  ]}
+                  onPress={() => setPassShow(!passShow)}>
+                  <Image
+                    source={
+                      passShow
+                        ? (OtherIcons.Eye as ImageSourcePropType)
+                        : (OtherIcons.EyeX as ImageSourcePropType)
+                    }
+                    style={{ width: 20, height: 20 }}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
+        ))}
+
+        <Link
+          style={{ textAlign: 'right', marginBottom: 20 }}
+          screen="Forget"
+          params={{}}>
+          <Text>Forgot password?</Text>
+        </Link>
+
+        <View
+          style={{
+            paddingHorizontal: 25,
+          }}>
+          <GradientButton handler={() => submitHandler()}>
+            {
+              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 700,
+                  fontSize: 18,
+                }}>
+                Login
+              </Text>
+            }
+          </GradientButton>
         </View>
 
-        {/* Forgot Password */}
-        <TouchableOpacity
-          onPress={() => {}}
-          style={{
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            width: '100%',
-          }}>
-          <Text
-            style={[
-              styles.forgotPassword,
-              {color: hexToRGBA(themeColors.red, 0.8)},
-            ]}>
-            Forgot Password?
+        <View style={[globalStyles.flex, { marginTop: 20 }]}>
+          <Text style={globalStyles.text}>
+            Don't have an account
           </Text>
-        </TouchableOpacity>
-
-        {/* Login Button */}
-        <TouchableOpacity
-          onPress={handleLogin}
-          disabled={isLoading}
-          style={[styles.button, {backgroundColor: themeColors.icon2}]}>
-          {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.icon} />
-          ) : (
-            <Text style={[styles.buttonText, {color: themeColors.white}]}>
-              Login
-            </Text>
-          )}
-        </TouchableOpacity>
-        {error ? (
-          <Text style={[styles.errorText, {color: themeColors.red}]}>
-            {error}
-          </Text>
-        ) : null}
-        {/* Sign Up Link */}
-        <View style={styles.signupContainer}>
-          <Text style={{color: themeColors.text}}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => {}}>
-            <Text style={[styles.signupText, {color: themeColors.icon}]}>
-              {' '}
+          <Link screen="SignUp" params={{}}>
+            <Text style={[{ marginLeft: 5 }, globalStyles.text]}>
               Sign Up
             </Text>
-          </TouchableOpacity>
+          </Link>
         </View>
-        <View
-          style={{
-            marginTop: 10,
-          }}>
-          <GoogleSigninButton
-            onPress={signIn}
-            disabled={isSigninInProgress}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-          />
-        </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
 
+// export const signIn = async () => {
+//   try {
+//     //   await GoogleSignin.hasPlayServices();
+//     const response = await GoogleSignin.signIn();
+//     console.log(response);
+//     if (response) {
+//     } else {
+//       // sign in was cancelled by user
+//     }
+//   } catch (error: any) {
+//     console.log(error);
+//     if (error) {
+//       switch (error?.code) {
+//         case statusCodes.IN_PROGRESS:
+//           break;
+//         case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+//           break;
+//         default:
+//       }
+//     } else {
+//     }
+//   }
+// };
+
+// export interface GoogleSignInResponse {
+//   idToken: string;
+//   scopes: string[];
+//   serverAuthCode: string | null;
+//   user: {
+//     email: string;
+//     familyName: string;
+//     givenName: string;
+//     id: string;
+//     name: string;
+//     photo: string;
+//   };
+//   type: 'success' | 'error';
+// }
+// const [isSigninInProgress, setIsSigninInProgress] = useState(false); 
+{/* <GoogleSigninButton
+  onPress={signIn}
+  disabled={isSigninInProgress}
+  size={GoogleSigninButton.Size.Wide}
+  color={GoogleSigninButton.Color.Dark}
+/> */}
 export default SignIn;
 
 const styles = StyleSheet.create({

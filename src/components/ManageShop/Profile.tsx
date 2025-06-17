@@ -21,7 +21,7 @@ const Profile = () => {
         <TouchableOpacity style={styles.profileImageContainer}>
           <View
             style={{
-              backgroundColor: hexToRGBA(themeColors.icon, .5),
+              backgroundColor: hexToRGBA(themeColors.primary as string, .5),
               borderRadius: 100,
             }}>
             <Image
@@ -40,12 +40,12 @@ const Profile = () => {
           style={[
             styles.input,
             {
-              borderColor: themeColors.icon,
-              color: themeColors.text,
+              borderColor: themeColors.green as string,
+              color: themeColors.black as string,
               borderWidth: 2,
             },
           ]}
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
           placeholder="Shop Name"
           value={name}
           onChangeText={setName}
@@ -59,12 +59,12 @@ const Profile = () => {
           style={[
             styles.input,
             {
-              borderColor: themeColors.icon,
-              color: themeColors.text,
+              borderColor: themeColors.green as string,
+              color: themeColors.black as string,
               borderWidth: 2,
             },
           ]}
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
           placeholder="Shop Email"
           value={email}
           onChangeText={setEmail}
@@ -77,12 +77,12 @@ const Profile = () => {
           style={[
             styles.input,
             {
-              borderColor: themeColors.icon,
-              color: themeColors.text,
+              borderColor: themeColors.green as string,
+              color: themeColors.black as string,
               borderWidth: 2,
             },
           ]}
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.6)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
           placeholder="Shop Phone Number"
           value={phone}
           onChangeText={setPhone}
@@ -94,17 +94,17 @@ const Profile = () => {
         style={[
           styles.button,
           {
-            backgroundColor: themeColors.icon,
+            backgroundColor: themeColors.green as string,
           },
         ]}>
         {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.white} />
+          <ActivityIndicator size="small" color={themeColors.white as string} />
         ) : (
           <Text
             style={[
               styles.buttonText,
               {
-                color: themeColors?.white,
+                color: themeColors.white as string,
               },
             ]}>
             Update Profile

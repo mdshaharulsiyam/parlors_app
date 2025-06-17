@@ -104,7 +104,7 @@ const Address = () => {
           searchPlaceholder="search district"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -125,7 +125,7 @@ const Address = () => {
           searchPlaceholder="search sub district"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -146,7 +146,7 @@ const Address = () => {
           searchPlaceholder="search union"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -167,7 +167,7 @@ const Address = () => {
           searchPlaceholder="search post office"
           height={50}
           width="100%"
-          borderColor={themeColors.icon}
+          borderColor={themeColors.green as string}
           borderWidth={2}
           validate={true}
           errorMessage="This field is required"
@@ -178,17 +178,17 @@ const Address = () => {
         style={[
           styles.button,
           {
-            backgroundColor: themeColors.icon,
+            backgroundColor: themeColors.green as string,
           },
         ]}>
         {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.white} />
+          <ActivityIndicator size="small" color={themeColors.white as string} />
         ) : (
           <Text
             style={[
               styles.buttonText,
               {
-                color: themeColors?.white,
+                color: themeColors.white as string,
               },
             ]}>
             Update Profile

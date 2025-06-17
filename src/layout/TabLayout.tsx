@@ -14,7 +14,6 @@ import { Image, ImageSourcePropType, TouchableOpacity, View } from 'react-native
 import { tabIcons } from '../constant/images';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
 import Home from '../screens/tab/Home';
-import Parlors from '../screens/tab/Parlors';
 import { commonStyles } from '../utils/styles/Styles';
 import { ScreenParamsType } from '../utils/types/ScreenParamsType';
 import StackLayout from './StackLayout';
@@ -30,11 +29,11 @@ const TabLayout = () => {
         />
       )}>
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Parlors"
         component={Parlors}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Tab.Screen
         name="Stacks"
         component={StackLayout}
@@ -111,7 +110,7 @@ const TabBarContent = ({
                 <Text
                   style={{
                     fontWeight: isFocused ? '700' : '400',
-                    color: isFocused ? themeColors.icon : themeColors.text,
+                    color: isFocused ? themeColors.green as string : themeColors.black as string,
                   }}>
                   More
                 </Text>
@@ -140,13 +139,13 @@ const TabBarContent = ({
                   height: 20,
                   width: 20,
                   marginBottom: 2,
-                  tintColor: isFocused ? themeColors.icon : themeColors.text,
+                  tintColor: isFocused ? themeColors.green as string : themeColors.black as string,
                 }}
               />
               <Text
                 style={{
                   fontWeight: isFocused ? '700' : '400',
-                  color: isFocused ? themeColors.icon : themeColors.text,
+                  color: isFocused ? themeColors.green as string : themeColors.black as string,
                 }}>
                 {typeof label === 'string'
                   ? label

@@ -1,23 +1,23 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
-  View,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {useVerify_otpMutation} from '../../Redux/Apis/authApis';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useVerify_otpMutation } from '../../Redux/Apis/authApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 
 const Verify = () => {
-  const [verify, {isLoading}] = useVerify_otpMutation();
-  const {themeColors} = useGlobalContext();
+  const [verify, { isLoading }] = useVerify_otpMutation();
+  const { themeColors } = useGlobalContext();
   const [verificationCode, setVerificationCode] = useState([
     '',
     '',
@@ -59,7 +59,7 @@ const Verify = () => {
     const email = await AsyncStorage.getItem('email');
 
     setError('');
-    verify({code, email})
+    verify({ code, email })
       .unwrap()
       .then(async res => {
         if (res?.success) {
@@ -95,22 +95,22 @@ const Verify = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: themeColors.background}]}>
+      style={[styles.container, { backgroundColor: themeColors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Back Button */}
         <TouchableOpacity>
-          <Text style={[styles.backButton, {color: themeColors.text}]}>
+          <Text style={[styles.backButton, { color: themeColors.black as string }]}>
             Back
           </Text>
         </TouchableOpacity>
 
         {/* Title */}
-        <Text style={[styles.title, {color: themeColors.text}]}>
+        <Text style={[styles.title, { color: themeColors.black as string }]}>
           Verify Your Email
         </Text>
 
         {/* Verification Message */}
-        <Text style={[styles.message, {color: themeColors.text}]}>
+        <Text style={[styles.message, { color: themeColors.black as string }]}>
           A verification code has been sent to your email. Please enter the
           6-digit code below to verify your account.
         </Text>
@@ -124,13 +124,13 @@ const Verify = () => {
               style={[
                 styles.input,
                 {
-                  backgroundColor: themeColors.background2,
-                  color: themeColors.text,
-                  borderColor: themeColors.text,
+                  backgroundColor: themeColors.white as string,
+                  color: themeColors.black as string,
+                  borderColor: themeColors.black as string,
                 },
               ]}
               placeholder="-"
-              placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+              placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
               keyboardType="numeric"
               maxLength={1}
               value={digit}
@@ -142,14 +142,14 @@ const Verify = () => {
 
         {/* Error Message */}
         {error ? (
-          <Text style={[styles.errorText, {color: themeColors.red}]}>
+          <Text style={[styles.errorText, { color: themeColors.red }]}>
             {error}
           </Text>
         ) : null}
 
         {/* Success Message */}
         {successMessage ? (
-          <Text style={[styles.successText, {color: themeColors.icon}]}>
+          <Text style={[styles.successText, { color: themeColors.green as string }]}>
             {successMessage}
           </Text>
         ) : null}
@@ -157,12 +157,12 @@ const Verify = () => {
         {/* Verify Button */}
         <TouchableOpacity
           disabled={isLoading}
-          style={[styles.button, {backgroundColor: themeColors.icon}]}
+          style={[styles.button, { backgroundColor: themeColors.green as string }]}
           onPress={handleVerification}>
           {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.icon} />
+            <ActivityIndicator size="large" color={themeColors.green as string} />
           ) : (
-            <Text style={[styles.buttonText, {color: themeColors.white}]}>
+            <Text style={[styles.buttonText, { color: themeColors.white as string }]}>
               Verify Email
             </Text>
           )}

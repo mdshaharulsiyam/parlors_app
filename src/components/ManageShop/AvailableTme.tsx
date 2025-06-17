@@ -95,12 +95,12 @@ const AvailableTime: React.FC = () => {
       backgroundColor: themeColors.background
     }]}>
       <TouchableOpacity style={[commonStyles.Button, {
-        backgroundColor: themeColors.icon2,
-        borderColor: themeColors.icon2,
+        backgroundColor: themeColors.green as string2,
+        borderColor: themeColors.green as string2,
         marginBottom: 20
       }]} onPress={handleSelectSameTimeForAll}>
         <Text style={[commonStyles.ButtonText, {
-          color: themeColors.icon
+          color: themeColors.green as string
         }]}>Set Same Time for All Days</Text>
       </TouchableOpacity>
 
@@ -109,19 +109,19 @@ const AvailableTime: React.FC = () => {
       {Object.entries(selectedTime).map(([day, time]) => (
         <View key={day} style={[styles.dayCard, {
           backgroundColor: themeColors.background,
-          shadowColor: themeColors.text,
-          borderColor: themeColors.white
+          shadowColor: themeColors.black as string,
+          borderColor: themeColors.white as string
         }]}>
           <View style={styles.dayHeader}>
             <BouncyCheckbox
               size={26}
-              fillColor={themeColors.icon}
+              fillColor={themeColors.green as string}
               text={day.charAt(0).toUpperCase() + day.slice(1)}
-              textStyle={[styles.dayText, { textDecorationLine: 'none', color: themeColors.text }]}
+              textStyle={[styles.dayText, { textDecorationLine: 'none', color: themeColors.black as string }]}
               isChecked={time.checked}
               onPress={() => handleCheckboxChange(day as keyof SelectedTime)}
               bounceEffect={1.3}
-              iconStyle={{ borderColor: themeColors.icon, borderRadius: 4 }}
+              iconStyle={{ borderColor: themeColors.green as string, borderRadius: 4 }}
               innerIconStyle={{ borderWidth: 2, borderRadius: 4 }}
             />
           </View>
@@ -130,15 +130,15 @@ const AvailableTime: React.FC = () => {
             <View style={styles.timeButtonsContainer}>
               <TouchableOpacity
                 style={[commonStyles.Button, {
-                  backgroundColor: themeColors.icon2,
-                  borderColor: themeColors.icon2
+                  backgroundColor: themeColors.green as string2,
+                  borderColor: themeColors.green as string2
                 }]}
                 onPress={() => openFromTimePicker(day as keyof SelectedTime)}
               >
                 <Text style={[
                   commonStyles.ButtonText,
                   {
-                    color: themeColors.icon
+                    color: themeColors.green as string
                   }
                 ]}>
                   From: {time.from ? time.from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Select'}
@@ -146,15 +146,15 @@ const AvailableTime: React.FC = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[commonStyles.Button, {
-                  backgroundColor: themeColors.icon2,
-                  borderColor: themeColors.icon2
+                  backgroundColor: themeColors.green as string2,
+                  borderColor: themeColors.green as string2
                 }]}
                 onPress={() => openToTimePicker(day as keyof SelectedTime)}
               >
                 <Text style={[
                   commonStyles.ButtonText,
                   {
-                    color: themeColors.icon
+                    color: themeColors.green as string
                   }
                 ]}>
                   To: {time.to ? time.to.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Select'}

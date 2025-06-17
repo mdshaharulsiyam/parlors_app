@@ -1,24 +1,24 @@
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
-  View,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import {useRegisterMutation} from '../../Redux/Apis/authApis';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
-import {GoogleSigninButton} from '@react-native-google-signin/google-signin';
-import {signIn} from './SignIn';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useRegisterMutation } from '../../Redux/Apis/authApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
+import { signIn } from './SignIn';
 
 const SignUp = () => {
   const [isSigninInProgress, setIsSigninInProgress] = useState(false);
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -28,7 +28,7 @@ const SignUp = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
-  const [register, {isLoading}] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
   const handleRegister = () => {
     setError('');
@@ -43,7 +43,7 @@ const SignUp = () => {
     }
 
     setError('');
-    register({name, email, phone, password, confirmPassword})
+    register({ name, email, phone, password, confirmPassword })
       .unwrap()
       .then(res => {
         if (res?.success) {
@@ -71,23 +71,23 @@ const SignUp = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: themeColors.background}]}>
+      style={[styles.container, { backgroundColor: themeColors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Title */}
-        <Text style={[styles.title, {color: themeColors.text}]}>Sign Up</Text>
+        <Text style={[styles.title, { color: themeColors.black as string }]}>Sign Up</Text>
 
         {/* Name Input */}
         <TextInput
           style={[
             styles.input,
             {
-              backgroundColor: themeColors.background2,
-              color: themeColors.text,
-              borderColor: themeColors.text,
+              backgroundColor: themeColors.white as string,
+              color: themeColors.black as string,
+              borderColor: themeColors.black as string,
             },
           ]}
           placeholder="Full Name"
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
           value={name}
           onChangeText={setName}
         />
@@ -97,13 +97,13 @@ const SignUp = () => {
           style={[
             styles.input,
             {
-              backgroundColor: themeColors.background2,
-              color: themeColors.text,
-              borderColor: themeColors.text,
+              backgroundColor: themeColors.white as string,
+              color: themeColors.black as string,
+              borderColor: themeColors.black as string,
             },
           ]}
           placeholder="Email"
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
@@ -114,13 +114,13 @@ const SignUp = () => {
           style={[
             styles.input,
             {
-              backgroundColor: themeColors.background2,
-              color: themeColors.text,
-              borderColor: themeColors.text,
+              backgroundColor: themeColors.white as string,
+              color: themeColors.black as string,
+              borderColor: themeColors.black as string,
             },
           ]}
           placeholder="Phone Number"
-          placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
           keyboardType="phone-pad"
           value={phone}
           onChangeText={setPhone}
@@ -132,14 +132,14 @@ const SignUp = () => {
             style={[
               styles.input,
               {
-                backgroundColor: themeColors.background2,
-                color: themeColors.text,
-                borderColor: themeColors.text,
+                backgroundColor: themeColors.white as string,
+                color: themeColors.black as string,
+                borderColor: themeColors.black as string,
                 paddingRight: 40, // Adds space on the right side for the icon
               },
             ]}
             placeholder="Password"
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
             secureTextEntry={!isPasswordVisible}
             value={password}
             onChangeText={setPassword}
@@ -147,7 +147,7 @@ const SignUp = () => {
           <TouchableOpacity
             style={styles.toggleVisibility}
             onPress={() => setIsPasswordVisible(prev => !prev)}>
-            <Text style={{color: themeColors.text}}>
+            <Text style={{ color: themeColors.black as string }}>
               {isPasswordVisible ? '🙉' : '🙈'}
             </Text>
           </TouchableOpacity>
@@ -159,14 +159,14 @@ const SignUp = () => {
             style={[
               styles.input,
               {
-                backgroundColor: themeColors.background2,
-                color: themeColors.text,
-                borderColor: themeColors.text,
+                backgroundColor: themeColors.white as string,
+                color: themeColors.black as string,
+                borderColor: themeColors.black as string,
                 paddingRight: 40, // Adds space on the right side for the icon
               },
             ]}
             placeholder="Confirm Password"
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
             secureTextEntry={!isConfirmPasswordVisible} // Same here, toggle visibility
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -174,7 +174,7 @@ const SignUp = () => {
           <TouchableOpacity
             style={styles.toggleVisibility}
             onPress={() => setIsConfirmPasswordVisible(prev => !prev)}>
-            <Text style={{color: themeColors.text}}>
+            <Text style={{ color: themeColors.black as string }}>
               {isConfirmPasswordVisible ? '🙉' : '🙈'}
             </Text>
           </TouchableOpacity>
@@ -182,7 +182,7 @@ const SignUp = () => {
 
         {/* Error Message */}
         {error ? (
-          <Text style={[styles.errorText, {color: themeColors.red}]}>
+          <Text style={[styles.errorText, { color: themeColors.red }]}>
             {error}
           </Text>
         ) : null}
@@ -190,12 +190,12 @@ const SignUp = () => {
         {/* Sign Up Button */}
         <TouchableOpacity
           disabled={isLoading}
-          style={[styles.button, {backgroundColor: themeColors.icon}]}
+          style={[styles.button, { backgroundColor: themeColors.green as string }]}
           onPress={handleRegister}>
           {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.icon} />
+            <ActivityIndicator size="large" color={themeColors.green as string} />
           ) : (
-            <Text style={[styles.buttonText, {color: themeColors.white}]}>
+            <Text style={[styles.buttonText, { color: themeColors.white as string }]}>
               Sign Up
             </Text>
           )}
@@ -203,11 +203,11 @@ const SignUp = () => {
 
         {/* Existing User? Login */}
         <View style={styles.signupContainer}>
-          <Text style={{color: themeColors.text}}>
+          <Text style={{ color: themeColors.black as string }}>
             Already have an account?
           </Text>
-          <TouchableOpacity onPress={() => {}}>
-            <Text style={[styles.signupText, {color: themeColors.icon}]}>
+          <TouchableOpacity onPress={() => { }}>
+            <Text style={[styles.signupText, { color: themeColors.green as string }]}>
               {' '}
               Login
             </Text>

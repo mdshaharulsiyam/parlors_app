@@ -24,7 +24,7 @@ const SearchFilterTrigger = () => {
           borderRadius: 2,
         }}>
         <Image
-          tintColor={themeColors.icon}
+          tintColor={themeColors.green as string}
           source={OtherIcons.Filter as ImageSourcePropType}
           height={10}
           width={10}

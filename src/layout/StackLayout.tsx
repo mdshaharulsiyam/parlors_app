@@ -12,17 +12,17 @@ const Stack = createNativeStackNavigator();
 const StackLayout = () => {
   return (
     <Stack.Navigator initialRouteName="Checkout">
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Checkout"
         component={Checkout}
         options={{ headerShown: false }}
-      />
+      /> */}
       <Stack.Screen
         name="Reset"
         component={Reset}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Verify"
         component={Verify}
         options={{ headerShown: false }}
@@ -41,7 +41,7 @@ const StackLayout = () => {
         name="Messages"
         component={Messages}
         options={{ headerShown: false }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

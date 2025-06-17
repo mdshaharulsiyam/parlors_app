@@ -1,28 +1,28 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
 import {
+  ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
-  View,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import {hexToRGBA} from '../../utils/hexToRGBA';
-import {useResetMutation} from '../../Redux/Apis/authApis';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useResetMutation } from '../../Redux/Apis/authApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 const Reset = () => {
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [reset, {isLoading}] = useResetMutation();
+  const [reset, { isLoading }] = useResetMutation();
   const handleResetPassword = async () => {
     setError('');
     if (newPassword !== confirmPassword) {
@@ -40,7 +40,7 @@ const Reset = () => {
       password: newPassword,
       confirm_password: confirmPassword,
     };
-    reset({data, token})
+    reset({ data, token })
       .unwrap()
       .then(async res => {
         if (res?.success) {
@@ -69,15 +69,15 @@ const Reset = () => {
 
   return (
     <SafeAreaView
-      style={[styles.container, {backgroundColor: themeColors.background}]}>
+      style={[styles.container, { backgroundColor: themeColors.background }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Title */}
-        <Text style={[styles.title, {color: themeColors.text}]}>
+        <Text style={[styles.title, { color: themeColors.black as string }]}>
           Reset Password
         </Text>
 
         {/* Instructions */}
-        <Text style={[styles.message, {color: themeColors.text}]}>
+        <Text style={[styles.message, { color: themeColors.black as string }]}>
           Please enter your new password and confirm it.
         </Text>
 
@@ -87,13 +87,13 @@ const Reset = () => {
             style={[
               styles.input,
               {
-                backgroundColor: themeColors.background2,
-                color: themeColors.text,
-                borderColor: themeColors.text,
+                backgroundColor: themeColors.white as string,
+                color: themeColors.black as string,
+                borderColor: themeColors.black as string,
               },
             ]}
             placeholder="New Password"
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
             secureTextEntry={!showNewPassword}
             value={newPassword}
             onChangeText={setNewPassword}
@@ -101,7 +101,7 @@ const Reset = () => {
           <TouchableOpacity
             style={styles.icon}
             onPress={() => setShowNewPassword(!showNewPassword)}>
-            <Text style={[styles.eyeIcon, {color: themeColors.icon}]}>
+            <Text style={[styles.eyeIcon, { color: themeColors.green as string }]}>
               {showNewPassword ? '🙉' : '🙈'}
             </Text>
           </TouchableOpacity>
@@ -113,13 +113,13 @@ const Reset = () => {
             style={[
               styles.input,
               {
-                backgroundColor: themeColors.background2,
-                color: themeColors.text,
-                borderColor: themeColors.text,
+                backgroundColor: themeColors.white as string,
+                color: themeColors.black as string,
+                borderColor: themeColors.black as string,
               },
             ]}
             placeholder="Confirm Password"
-            placeholderTextColor={hexToRGBA(themeColors.text, 0.2)}
+            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.2)}
             secureTextEntry={!showConfirmPassword}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -127,7 +127,7 @@ const Reset = () => {
           <TouchableOpacity
             style={styles.icon}
             onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-            <Text style={[styles.eyeIcon, {color: themeColors.icon}]}>
+            <Text style={[styles.eyeIcon, { color: themeColors.green as string }]}>
               {showConfirmPassword ? '🙉' : '🙈'}
             </Text>
           </TouchableOpacity>
@@ -135,14 +135,14 @@ const Reset = () => {
 
         {/* Error Message */}
         {error ? (
-          <Text style={[styles.errorText, {color: themeColors.red}]}>
+          <Text style={[styles.errorText, { color: themeColors.red }]}>
             {error}
           </Text>
         ) : null}
 
         {/* Success Message */}
         {successMessage ? (
-          <Text style={[styles.successText, {color: themeColors.icon}]}>
+          <Text style={[styles.successText, { color: themeColors.green as string }]}>
             {successMessage}
           </Text>
         ) : null}
@@ -150,12 +150,12 @@ const Reset = () => {
         {/* Reset Password Button */}
         <TouchableOpacity
           disabled={isLoading}
-          style={[styles.button, {backgroundColor: themeColors.icon}]}
+          style={[styles.button, { backgroundColor: themeColors.green as string }]}
           onPress={handleResetPassword}>
           {isLoading ? (
-            <ActivityIndicator size="large" color={themeColors.icon} />
+            <ActivityIndicator size="large" color={themeColors.green as string} />
           ) : (
-            <Text style={[styles.buttonText, {color: themeColors.white}]}>
+            <Text style={[styles.buttonText, { color: themeColors.white as string }]}>
               Reset Password
             </Text>
           )}
