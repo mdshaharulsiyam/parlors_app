@@ -33,10 +33,10 @@ const SearchInput = () => {
         }}
         handleSubmit={handleSearch}
         setInputValue={value => setSearch(value)}
-        bordersColor={themeColors.green as string}
-        placeholder="Search by Location ..."
-        placeholderTextColor={hexToRGBA(themeColors.black as string, 0.3)}
-        backgroundColor={themeColors.white as string}
+        bordersColor={hexToRGBA(themeColors.primary as string, 0.4)}
+        placeholder="Search by name ..."
+        placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
+        backgroundColor={hexToRGBA(themeColors.white as string, 0.95)}
       />
       <TouchableOpacity
         onPress={handleSubmit}
@@ -48,7 +48,7 @@ const SearchInput = () => {
           transform: [{ translateY: '-50%' }],
         }}>
         <Image
-          tintColor={themeColors.green as string}
+          tintColor={themeColors.primary as string}
           source={OtherIcons.Search as ImageSourcePropType}
           height={10}
           width={10}
