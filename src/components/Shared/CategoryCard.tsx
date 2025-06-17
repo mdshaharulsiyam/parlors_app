@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ICategory } from '../../utils/types/Types';
 
 const CategoryCard = ({ item }: { item: ICategory }) => {
@@ -9,7 +10,7 @@ const CategoryCard = ({ item }: { item: ICategory }) => {
     <View
       style={[
         {
-          backgroundColor: themeColors.background,
+          backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
         },
         styles.card,
       ]}>
@@ -22,7 +23,7 @@ const CategoryCard = ({ item }: { item: ICategory }) => {
         style={[
           styles.textContainer,
           {
-            backgroundColor: themeColors.background,
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.5),
           },
         ]}>
         <Text
@@ -43,8 +44,8 @@ export default CategoryCard;
 
 const styles = StyleSheet.create({
   image: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
   },
   card: {
     borderRadius: 10,
@@ -56,12 +57,14 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   textContainer: {
     position: 'absolute',
     top: 0,
     left: 0,
     fontSize: 16,
+    padding: 10,
     fontWeight: 'bold',
     width: '100%',
     height: '100%',
