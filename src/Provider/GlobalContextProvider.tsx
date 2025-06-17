@@ -1,6 +1,6 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { useColorScheme } from 'react-native';
+import { Dimensions, useColorScheme } from 'react-native';
 import { Provider } from 'react-redux';
 import { Colors, ITheme } from '../constant/colors';
 import { store } from '../Redux/store';
@@ -11,6 +11,7 @@ interface GlobalContextType {
   search: string;
   setModalOpen: (arg1: boolean) => void;
   modalOpen: boolean;
+  width: number;
 }
 
 interface GlobalProviderProps {
@@ -24,7 +25,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     forceCodeForRefreshToken: false,
   });
-  const colorScheme = useColorScheme();
+  const { width } = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() === 'dark' ? Colors.dark : Colors.light;
@@ -34,6 +35,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     search,
     setModalOpen,
     modalOpen,
+    width
   };
   return (
     <GlobalContext.Provider value={values}>

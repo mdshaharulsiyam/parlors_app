@@ -5,7 +5,6 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React from 'react';
-import SignIn from '../screens/drawer/SignIn';
 import TabLayout from './TabLayout'; // Contains tab navigation
 
 const Drawer = createDrawerNavigator();
@@ -21,11 +20,6 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Tabs"
         component={TabLayout}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="SignIn"
-        component={SignIn}
         options={{ headerShown: false }}
       />
       {/* <Drawer.Screen
@@ -53,11 +47,7 @@ const DrawerLayout = () => {
         component={About}
         options={{ headerShown: false }}
       />
-      <Drawer.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{ headerShown: false }}
-      />
+   
       <Drawer.Screen
         name="Booking"
         component={Booking}
@@ -116,12 +106,12 @@ function DrawerContent(props: DrawerContentComponentProps) {
       <DrawerItem
         label="Sign in"
         key={'SignIn'}
-        onPress={() => props.navigation.navigate('SignIn')}
+        onPress={() => props.navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'SignIn' } })}
       />
       <DrawerItem
         label="Sign up"
         key={'SignUp'}
-        onPress={() => props.navigation.navigate('SignUp')}
+        onPress={() => props.navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'SignUp' } })}
       />
       <DrawerItem
         key={'TextComponent'}
