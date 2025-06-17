@@ -65,19 +65,32 @@ const StackLayout = () => {
       <Stack.Screen
         name="Reset"
         component={Reset}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          title: "Reset Password",
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            color: themeColors.black as string,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
       <Stack.Screen
         name="Verify"
         component={Verify}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          title: "Verify Email",
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            color: themeColors.black as string,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
       {/* 
-      <Stack.Screen
-        name="Forget"
-        component={Forget}
-        options={{ headerShown: false }}
-      />
       <Stack.Screen
         name="Details"
         component={Details}
