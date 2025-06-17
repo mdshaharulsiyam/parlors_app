@@ -127,6 +127,7 @@ const SignUp = () => {
                     error[key as keyof ILogin] ? globalStyles.inputError : {},
                     {
                       borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
+                      ,
                     },
                   ]}
                   data={genderData}
@@ -139,10 +140,27 @@ const SignUp = () => {
                     setError({ ...error, gender: false });
                   }}
                   placeholderStyle={{
-                    color: globalStyles.inputPlaceholder.color,
+                    color: themeColors.black as string,
                   }}
-                  selectedTextStyle={{ color: themeColors.black as string }}
-                  containerStyle={{ borderRadius: 5 }}
+                  itemTextStyle={{ color: themeColors.black as string, }}
+                  selectedTextStyle={{ color: themeColors.black as string, }}
+                  containerStyle={{ borderRadius: 5, backgroundColor: hexToRGBA(themeColors.white as string, 1), marginTop: 40 }}
+                  renderItem={(item, selected) => (
+                    <View
+                      style={{
+                        padding: 10,
+                        backgroundColor: selected
+                          ? themeColors.secondary as string
+                          : "transparent",
+                        borderBottomWidth: 1,
+                        borderBottomColor: hexToRGBA(themeColors.white as string, 0.1),
+                      }}
+                    >
+                      <Text style={{ color: selected ? themeColors.white as string : themeColors.black as string }}>
+                        {item.label}
+                      </Text>
+                    </View>
+                  )}
                   dropdownPosition="auto"
                 />
               </View>
@@ -151,7 +169,9 @@ const SignUp = () => {
           if (key === 'contact') {
             return (
               <View key={key}>
-                <Text style={globalStyles.inputLabel}>{key.charAt(0).toUpperCase() + key.slice(1)}</Text>
+                <Text style={[globalStyles.inputLabel, {
+                  color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string
+                }]}>{key.charAt(0).toUpperCase() + key.slice(1)}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <CountryPicker
                     countryCode={countryCode as any}
