@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 //
 import {
-  Button,
   FlatList,
   Image,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 const Details = () => {
@@ -73,7 +72,7 @@ const Details = () => {
     console.log('Book button pressed!');
     // Add your navigation or booking logic here
   };
-
+  const textColor = themeColors.black as string;
   return (
     <ScrollView style={[styles.container, {
       backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
@@ -100,12 +99,16 @@ const Details = () => {
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>
+      <Text style={[styles.sectionTitle, {
+        color: themeColors.black as string,
+      }]}>
         Total Workers: {shopDetails.totalWorkers}
       </Text>
 
       {/* Worker Images Slider */}
-      <Text style={styles.sectionTitle}>Workers</Text>
+      <Text style={[styles.sectionTitle, {
+        color: themeColors.black as string,
+      }]}>Workers</Text>
       <FlatList
         data={shopDetails.workerImages}
         horizontal
@@ -117,19 +120,29 @@ const Details = () => {
 
       {/* Booking Information */}
       <View style={styles.bookingInfo}>
-        <Text>
-          Total Booking Possible at a Time: {shopDetails.totalBooking}
+        <Text style={{
+          color: textColor
+        }}>
+          Total Booking Possible at a Time: {[shopDetails.totalBooking]}
         </Text>
-        <Text>Completed Booking: {shopDetails.completedBooking}</Text>
-        <Text>Ongoing Booking: {shopDetails.ongoingBooking}</Text>
-        <Text>Canceled Booking: {shopDetails.canceledBooking}</Text>
+        <Text style={{
+          color: textColor
+        }}>Completed Booking: {shopDetails.completedBooking}</Text>
+        <Text style={{
+          color: textColor
+        }}>Ongoing Booking: {shopDetails.ongoingBooking}</Text>
+        <Text style={{
+          color: textColor
+        }}>Canceled Booking: {shopDetails.canceledBooking}</Text>
       </View>
 
       {/* Shop Timings */}
-      <Text style={styles.sectionTitle}>Opening Hours</Text>
+      <Text style={[styles.sectionTitle, { color: textColor }]}>Opening Hours</Text>
       <View style={styles.openDetails}>
         {shopDetails.openDetails.map((day, index) => (
-          <Text key={index} style={styles.openingTime}>
+          <Text key={index} style={[styles.openingTime, {
+            color: textColor
+          }]}>
             {day.day} - {day.hours}
           </Text>
         ))}
@@ -137,45 +150,78 @@ const Details = () => {
 
       {/* Rating & Review */}
       <View style={styles.ratingInfo}>
-        <Text>Total Rated: {shopDetails.totalRated}</Text>
-        <Text>Total Rating: {shopDetails.totalRating}</Text>
+        <Text style={{
+          color: textColor
+        }}>Total Rated: {shopDetails.totalRated}</Text>
+        <Text style={{
+          color: textColor
+        }}>Total Rating: {shopDetails.totalRating}</Text>
         <Text style={styles.sectionTitle}>Reviews</Text>
         <FlatList
           data={shopDetails.reviews}
           horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingVertical: 20
+          }}
           renderItem={({ item }) => (
-            <View style={styles.reviewCard}>
+            <View style={[styles.reviewCard, {
+              backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
+            }]}>
               <Image source={{ uri: item.userImage }} style={styles.userImage} />
               <View style={styles.reviewContent}>
-                <Text style={styles.userName}>{item.userName}</Text>
-                <Text numberOfLines={2} style={styles.reviewText}>
+                <Text style={[styles.userName, {
+                  color: textColor
+                }]}>{item.userName}</Text>
+                <Text numberOfLines={2} style={[styles.reviewText, {
+                  color: textColor
+                }]}>
                   {item.review}
                 </Text>
-                <Text style={styles.rating}>Rating: {item.rating} ★</Text>
+                <Text style={[styles.rating, {
+                  color: hexToRGBA(themeColors.yellow as string, 0.8)
+                }]}>Rating: {item.rating} ★</Text>
               </View>
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-      <Button title="Select Date" onPress={() => setOpen(true)} />
-      <DatePicker
-        modal
-        mode="date"
-        open={open}
-        date={date}
-        onConfirm={date => {
-          setOpen(false);
-          setDate(date);
-        }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
-      {/* Book Button */}
-      <TouchableOpacity style={styles.bookButton} onPress={handleBookPress}>
-        <Text style={styles.bookButtonText}>Book Now</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: "column", gap: 10, marginBottom: 70 }}>
+        <GradientButton handler={() => setOpen(true)}>
+          <Text style={{
+            color: textColor,
+            fontWeight: 'bold',
+            fontSize: 16,
+            textAlign: 'center'
+          }}>
+            Select Date
+          </Text>
+        </GradientButton>
+        <DatePicker
+          modal
+          mode="date"
+          open={open}
+          date={date}
+          onConfirm={date => {
+            setOpen(false);
+            setDate(date);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
+        <GradientButton handler={handleBookPress}>
+          <Text style={{
+            color: textColor,
+            fontWeight: 'bold',
+            fontSize: 16,
+            textAlign: 'center'
+          }}>
+            Book Now
+          </Text>
+        </GradientButton>
+      </View>
     </ScrollView>
   );
 };
@@ -278,7 +324,6 @@ const styles = StyleSheet.create({
   },
   rating: {
     fontSize: 14,
-    color: '#f39c12', // Golden color for rating
   },
   bookButton: {
     marginTop: 20,
