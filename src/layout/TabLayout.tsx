@@ -11,6 +11,7 @@ import {
 } from '@react-navigation/native';
 import React from 'react';
 import { Image, ImageSourcePropType, TouchableOpacity, View } from 'react-native';
+import Parlors from '../components/Home/Parlors';
 import { tabIcons } from '../constant/images';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
 import Home from '../screens/tab/Home';
@@ -29,11 +30,11 @@ const TabLayout = () => {
         />
       )}>
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Parlors"
         component={Parlors}
         options={{ headerShown: false }}
-      /> */}
+      />
       <Tab.Screen
         name="Stacks"
         component={StackLayout}
@@ -110,7 +111,7 @@ const TabBarContent = ({
                 <Text
                   style={{
                     fontWeight: isFocused ? '700' : '400',
-                    color: isFocused ? themeColors.green as string : themeColors.black as string,
+                    color: isFocused ? themeColors.primary as string : themeColors.black as string,
                   }}>
                   More
                 </Text>

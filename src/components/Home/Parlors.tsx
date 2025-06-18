@@ -2,6 +2,7 @@ import React from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { Ratio3_2 } from '../../utils/calculateHeight';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import { IParlor } from '../../utils/types/Types';
 import ParlorCard from '../Shared/ParlorCard';
@@ -91,11 +92,12 @@ const Parlors = () => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
   return (
-    <View style={{ paddingHorizontal: 5 }}>
+    <View style={{ paddingHorizontal: 5, backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
         Vendors
       </Text>
       <FlatList
+        ListFooterComponent={<View style={{ height: 50 }} />}
         onEndReached={e => {
           console.log(e);
         }}
@@ -117,6 +119,7 @@ const Parlors = () => {
             height={Ratio3_2(width / 2 - 30)}
           />
         )}
+
       />
     </View>
   );

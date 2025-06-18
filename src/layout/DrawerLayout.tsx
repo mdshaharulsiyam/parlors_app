@@ -6,6 +6,13 @@ import {
 } from '@react-navigation/drawer';
 import React from 'react';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import About from '../screens/drawer/About';
+import Booking from '../screens/drawer/Booking';
+import Cart from '../screens/drawer/Cart';
+import Chat from '../screens/drawer/Chat';
+import Profile from '../screens/drawer/Profile';
+import ShopManage from '../screens/drawer/ShopManage';
+import TextComponent from '../screens/drawer/TextComponent';
 import { hexToRGBA } from '../utils/hexToRGBA';
 import TabLayout from './TabLayout'; // Contains tab navigation
 
@@ -24,7 +31,7 @@ const DrawerLayout = () => {
         component={TabLayout}
         options={{ headerShown: false }}
       />
-      {/* <Drawer.Screen
+      <Drawer.Screen
         name="Profile"
         component={Profile}
         options={{ headerShown: false }}
@@ -49,7 +56,7 @@ const DrawerLayout = () => {
         component={About}
         options={{ headerShown: false }}
       />
-   
+
       <Drawer.Screen
         name="Booking"
         component={Booking}
@@ -65,7 +72,7 @@ const DrawerLayout = () => {
           headerShown: true,
           headerTitle: 'My Bookings',
         }}
-      /> */}
+      />
     </Drawer.Navigator>
   );
 };
