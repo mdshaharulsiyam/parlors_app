@@ -113,7 +113,9 @@ const Chat = () => {
   const renderItem = ({ item }: { item: IConversation }) => (
     <TouchableOpacity
       // onPressIn={ } 
-      style={styles.chatItem} onPress={() =>
+      style={[styles.chatItem, {
+        backgroundColor: hexToRGBA(black, 0.1),
+      }]} onPress={() =>
         navigate.navigate('Tabs', {
           screen: 'Stacks',
           params: {
@@ -124,8 +126,12 @@ const Chat = () => {
       }>
       <Image source={{ uri: item.img }} style={styles.avatar} />
       <View style={styles.chatDetails}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.message}>{item.message}</Text>
+        <Text style={[styles.name, {
+          color: hexToRGBA(black, 0.9),
+        }]}>{item.name}</Text>
+        <Text style={[styles.message, {
+          color: hexToRGBA(black, 0.7),
+        }]}>{item.message}</Text>
       </View>
     </TouchableOpacity >
   )
@@ -148,6 +154,7 @@ const Chat = () => {
 
       {/* Chat List */}
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={filteredConversations}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
@@ -179,11 +186,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#fff',
     borderRadius: 10,
     marginBottom: 10,
-    elevation: 3, // for Android shadow
-    shadowColor: '#000', // for iOS shadow
+    elevation: 3,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -200,11 +205,9 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
   },
   message: {
     fontSize: 14,
-    color: '#777',
     marginTop: 5,
   },
 })
