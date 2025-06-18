@@ -19,6 +19,7 @@ import TabLayout from './TabLayout'; // Contains tab navigation
 const Drawer = createDrawerNavigator();
 
 const DrawerLayout = () => {
+  const { themeColors } = useGlobalContext();
   return (
     <Drawer.Navigator
       drawerContent={props => <DrawerContent {...props} />}
@@ -39,7 +40,12 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Chat"
         component={Chat}
-        options={{ headerShown: true }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
       <Drawer.Screen
         name="ShopManage"
