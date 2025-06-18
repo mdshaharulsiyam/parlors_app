@@ -135,9 +135,13 @@ const Chat = () => {
       backgroundColor: hexToRGBA(white, 0.95),
     }]}>
       <TextInput
-        style={styles.searchBar}
+        style={[styles.searchBar, {
+          color: black,
+          backgroundColor: hexToRGBA(black, 0.1),
+          borderColor: hexToRGBA(themeColors.primary as string, 0.1),
+        }]}
         placeholder="Search..."
-        placeholderTextColor="black"
+        placeholderTextColor={hexToRGBA(black, 0.6)}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
@@ -166,12 +170,10 @@ const styles = StyleSheet.create({
   searchBar: {
     height: 50,
     margin: 10,
-    borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 8,
     paddingLeft: 15,
     fontSize: 16,
-    backgroundColor: '#fff',
   },
   chatItem: {
     flexDirection: 'row',
