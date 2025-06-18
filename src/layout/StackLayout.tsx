@@ -1,7 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import Details from '../screens/stack/Details';
 import Forget from '../screens/stack/Forget';
+import Messages from '../screens/stack/Messages';
 import Reset from '../screens/stack/Reset';
 import SignIn from '../screens/stack/SignIn';
 import SignUp from '../screens/stack/SignUp';
@@ -65,19 +67,32 @@ const StackLayout = () => {
       <Stack.Screen
         name="Reset"
         component={Reset}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          title: "Reset Password",
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            color: themeColors.black as string,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
       <Stack.Screen
         name="Verify"
         component={Verify}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTransparent: true,
+          title: "Verify Email",
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            color: themeColors.black as string,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
-      {/* 
-      <Stack.Screen
-        name="Forget"
-        component={Forget}
-        options={{ headerShown: false }}
-      />
+
       <Stack.Screen
         name="Details"
         component={Details}
@@ -87,7 +102,7 @@ const StackLayout = () => {
         name="Messages"
         component={Messages}
         options={{ headerShown: false }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

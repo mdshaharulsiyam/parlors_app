@@ -1,6 +1,8 @@
 import React from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { Ratio3_2 } from '../../utils/calculateHeight';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import { IParlor } from '../../utils/types/Types';
 import ParlorCard from '../Shared/ParlorCard';
@@ -11,7 +13,7 @@ const topBarbers: IParlor[] = [
     rating: 4.8,
     address: '123 Main St, New York, USA',
     category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=John+Doe',
+    img: 'https://placehold.co/186x124.png?text=John+Doe',
   },
   {
     _id: '2',
@@ -19,7 +21,7 @@ const topBarbers: IParlor[] = [
     rating: 4.7,
     address: '456 Oak Ave, Los Angeles, USA',
     category: 'Beard Styling', // Added category
-    img: 'https://placehold.co/400x400.png?text=Jane+Smith',
+    img: 'https://placehold.co/186x124.png?text=Jane+Smith',
   },
   {
     _id: '3',
@@ -27,7 +29,7 @@ const topBarbers: IParlor[] = [
     rating: 4.9,
     address: '789 Pine Blvd, Chicago, USA',
     category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Michael+Brown',
+    img: 'https://placehold.co/186x124.png?text=Michael+Brown',
   },
   {
     _id: '4',
@@ -35,7 +37,7 @@ const topBarbers: IParlor[] = [
     rating: 4.6,
     address: '101 Maple Rd, Houston, USA',
     category: "Women's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Emily+Davis',
+    img: 'https://placehold.co/186x124.png?text=Emily+Davis',
   },
   {
     _id: '5',
@@ -43,7 +45,7 @@ const topBarbers: IParlor[] = [
     rating: 4.5,
     address: '202 Birch Ln, Miami, USA',
     category: 'Beard Styling', // Added category
-    img: 'https://placehold.co/400x400.png?text=Chris+Wilson',
+    img: 'https://placehold.co/186x124.png?text=Chris+Wilson',
   },
   {
     _id: '6',
@@ -51,7 +53,7 @@ const topBarbers: IParlor[] = [
     rating: 4.7,
     address: '303 Cedar St, San Francisco, USA',
     category: "Women's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Sarah+Lee',
+    img: 'https://placehold.co/186x124.png?text=Sarah+Lee',
   },
   {
     _id: '7',
@@ -59,7 +61,7 @@ const topBarbers: IParlor[] = [
     rating: 4.8,
     address: '404 Elm Dr, Boston, USA',
     category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=David+Kim',
+    img: 'https://placehold.co/186x124.png?text=David+Kim',
   },
   {
     _id: '8',
@@ -67,7 +69,7 @@ const topBarbers: IParlor[] = [
     rating: 4.9,
     address: '505 Willow Ct, Dallas, USA',
     category: "Women's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Olivia+Taylor',
+    img: 'https://placehold.co/186x124.png?text=Olivia+Taylor',
   },
   {
     _id: '9',
@@ -75,7 +77,7 @@ const topBarbers: IParlor[] = [
     rating: 4.6,
     address: '606 Redwood Ave, Seattle, USA',
     category: 'Beard Styling', // Added category
-    img: 'https://placehold.co/400x400.png?text=William+Clark',
+    img: 'https://placehold.co/186x124.png?text=William+Clark',
   },
   {
     _id: '10',
@@ -83,18 +85,19 @@ const topBarbers: IParlor[] = [
     rating: 4.7,
     address: '707 Pinecrest Rd, Denver, USA',
     category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Sophia+Martinez',
+    img: 'https://placehold.co/186x124.png?text=Sophia+Martinez',
   },
 ];
 const Parlors = () => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
   return (
-    <View style={{ paddingHorizontal: 5 }}>
+    <View style={{ paddingHorizontal: 5, backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
-        Parlors
+        Vendors
       </Text>
       <FlatList
+        ListFooterComponent={<View style={{ height: 50 }} />}
         onEndReached={e => {
           console.log(e);
         }}
@@ -113,9 +116,10 @@ const Parlors = () => {
             key={item?._id}
             item={item}
             width={width / 2 - 30}
-            height={100}
+            height={Ratio3_2(width / 2 - 30)}
           />
         )}
+
       />
     </View>
   );

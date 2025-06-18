@@ -1,61 +1,75 @@
-import React, { useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-// Generate some dummy messages for the component
-const generateDummyMessages = (count: number) => {
-  const messages = [];
-  for (let i = 1; i <= count; i++) {
-    messages.push({
-      id: i.toString(),
-      message: `This is message number ${i}`,
-      sender: i % 2 === 0 ? 'me' : 'other',
-    });
-  }
-  return messages;
+// Dummy message generator wrapped in useMemo
+const useDummyMessages = (count: number) => {
+  return useMemo(() => {
+    const messages = [];
+    for (let i = 1; i <= count; i++) {
+      messages.push({
+        id: i.toString(),
+        message: `This is message number ${i}`,
+        sender: i % 2 === 0 ? 'me' : 'other',
+      });
+    }
+    return messages;
+  }, [count]);
 };
 
-// MapMessages component for rendering message list
 const MapMessages = ({ id }: { id: string }) => {
-  const [messages, setMessages] = useState(generateDummyMessages(500));
+  const dummyMessages = useDummyMessages(500);
 
-  // Render each individual message
-  const renderItem = ({ item }: any) => (
+  // reverse memoized
+  const reversedMessages = useMemo(() => [...dummyMessages].reverse(), [dummyMessages]);
+
+  const renderItem = useCallback(({ item }: any) => (
     <View
       style={[
         styles.messageContainer,
         item.sender === 'me' ? styles.sentMessage : styles.receivedMessage,
       ]}
     >
-      <Text style={[styles.messageText]}>{item.message}</Text>
+      <Text style={styles.messageText}>{item.message}</Text>
     </View>
-  );
+  ), []);
+
+  const keyExtractor = useCallback((item: any) => item.id, []);
 
   return (
     <FlatList
-      data={messages.reverse()}
+      data={reversedMessages}
       renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      inverted={true}
-      style={{ flex: 1 }} // Important to make the FlatList take up available space
+      keyExtractor={keyExtractor}
+      inverted
+      style={{ flex: 1 }}
+      initialNumToRender={20}
+      maxToRenderPerBatch={20}
+      windowSize={10}
+      removeClippedSubviews
     />
   );
 };
 
-const Messages = (params: any) => {
-  const { id } = params.route.params;
+const Messages = ({ route }: any) => {
+  const { id } = route.params;
   const [newMessage, setNewMessage] = useState('');
 
-  // Function to handle sending the message
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     if (newMessage.trim()) {
-      // In a real app, you would update the messages state here
       console.log('Sending:', newMessage);
       setNewMessage('');
     }
-  };
+  }, [newMessage]);
 
-  // Render the header
-  const renderHeader = () => (
+  const renderHeader = useCallback(() => (
     <View style={styles.headerContainer}>
       <Image
         source={{ uri: 'https://randomuser.me/api/portraits/women/1.jpg' }}
@@ -66,16 +80,12 @@ const Messages = (params: any) => {
         <Text style={styles.lastMessageTime}>30 minutes ago</Text>
       </View>
     </View>
-  );
+  ), []);
 
   return (
     <View style={styles.container}>
-      {/* Render header with profile info */}
       {renderHeader()}
-
-      {/* Messages FlatList */}
       <MapMessages id={id} />
-
       <View style={styles.footerContainer}>
         <TextInput
           style={styles.textInput}
@@ -91,6 +101,7 @@ const Messages = (params: any) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

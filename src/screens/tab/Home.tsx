@@ -7,12 +7,13 @@ import TopBerber from '../../components/Home/TopBerber';
 import FilterOptions from '../../components/Shared/FilterOptions';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 const Home = () => {
   const { width, height } = Dimensions.get('window');
   const { themeColors, modalOpen, setModalOpen } = useGlobalContext();
   const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];
   return (
-    <SafeAreaView style={{ backgroundColor: themeColors.white as string }}>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       <FlatList
         data={data}
         renderItem={({ item }) => item}
@@ -20,7 +21,7 @@ const Home = () => {
         stickyHeaderIndices={[0]}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20, gap: 10 }}
+        contentContainerStyle={{ paddingBottom: 20, gap: 10, paddingHorizontal: 5 }}
       />
       <Modal
         visible={modalOpen}
@@ -31,7 +32,7 @@ const Home = () => {
           style={{
             width,
             height, //: height - 200,
-            backgroundColor: themeColors.background,
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
             // bottom: 0,
             // position: 'absolute',
             zIndex: 50000000,

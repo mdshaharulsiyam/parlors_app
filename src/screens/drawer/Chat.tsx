@@ -2,6 +2,8 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useGlobalContext } from '../../Provider/GlobalContextProvider'
+import { hexToRGBA } from '../../utils/hexToRGBA'
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType'
 import { IConversation } from '../../utils/types/Types'
 
@@ -100,16 +102,20 @@ const conversations: IConversation[] = [
 
 const Chat = () => {
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>()
+  const { themeColors } = useGlobalContext()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const filteredConversations = conversations.filter(conversation =>
     conversation.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     conversation.message.toLowerCase().includes(searchQuery.toLowerCase())
   )
-
+  const black = themeColors.black as string
+  const white = themeColors.white as string
   const renderItem = ({ item }: { item: IConversation }) => (
     <TouchableOpacity
       // onPressIn={ } 
-      style={styles.chatItem} onPress={() =>
+      style={[styles.chatItem, {
+        backgroundColor: hexToRGBA(black, 0.1),
+      }]} onPress={() =>
         navigate.navigate('Tabs', {
           screen: 'Stacks',
           params: {
@@ -120,24 +126,35 @@ const Chat = () => {
       }>
       <Image source={{ uri: item.img }} style={styles.avatar} />
       <View style={styles.chatDetails}>
-        <Text style={styles.name}>{item.name}</Text>
-        <Text style={styles.message}>{item.message}</Text>
+        <Text style={[styles.name, {
+          color: hexToRGBA(black, 0.9),
+        }]}>{item.name}</Text>
+        <Text style={[styles.message, {
+          color: hexToRGBA(black, 0.7),
+        }]}>{item.message}</Text>
       </View>
     </TouchableOpacity >
   )
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {
+      backgroundColor: hexToRGBA(white, 0.95),
+    }]}>
       <TextInput
-        style={styles.searchBar}
+        style={[styles.searchBar, {
+          color: black,
+          backgroundColor: hexToRGBA(black, 0.1),
+          borderColor: hexToRGBA(themeColors.primary as string, 0.1),
+        }]}
         placeholder="Search..."
-        placeholderTextColor="black"
+        placeholderTextColor={hexToRGBA(black, 0.6)}
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
 
       {/* Chat List */}
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={filteredConversations}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
@@ -160,22 +177,18 @@ const styles = StyleSheet.create({
   searchBar: {
     height: 50,
     margin: 10,
-    borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 8,
     paddingLeft: 15,
     fontSize: 16,
-    backgroundColor: '#fff',
   },
   chatItem: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#fff',
     borderRadius: 10,
     marginBottom: 10,
-    elevation: 3, // for Android shadow
-    shadowColor: '#000', // for iOS shadow
+    elevation: 3,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -192,11 +205,9 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
   },
   message: {
     fontSize: 14,
-    color: '#777',
     marginTop: 5,
   },
 })

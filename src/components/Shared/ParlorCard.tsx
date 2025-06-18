@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 import { IParlor } from '../../utils/types/Types';
 
@@ -15,6 +16,7 @@ const ParlorCard = ({
   width?: any;
   height?: any;
 }) => {
+  console.log(width, height);
   const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
   return (
@@ -30,14 +32,14 @@ const ParlorCard = ({
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        backgroundColor: themeColors.background,
-        padding: 10,
+        backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
+        padding: 5,
         borderRadius: 5,
         boxSizing: 'border-box',
       }}>
       <Image
         source={{ uri: item?.img }}
-        resizeMode="contain"
+        resizeMode="cover"
         style={[
           {
             width: width,
@@ -46,10 +48,10 @@ const ParlorCard = ({
           },
         ]}
       />
-      <View style={{ marginLeft: 10 }}>
-        <Text style={{ fontWeight: 'bold' }}>{item?.name}</Text>
-        <Text>{item?.address}</Text>
-        <Text>{item?.category}</Text>
+      <View style={{ marginLeft: 10, padding: 6 }}>
+        <Text style={{ fontWeight: 'bold', color: themeColors.black as string }}>{item?.name}</Text>
+        <Text style={{ color: themeColors.black as string, marginVertical: 2 }}>{item?.address}</Text>
+        <Text style={{ color: themeColors.black as string }}>{item?.category}</Text>
       </View>
     </TouchableOpacity>
   );
