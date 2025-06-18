@@ -61,7 +61,7 @@ const TabBarContent = ({
   const { buildHref } = useLinkBuilder();
 
   return (
-    <View style={{ flexDirection: 'row', height: 'auto', width: '100%' }}>
+    <View style={{ flexDirection: 'row', height: 'auto', width: '100%', backgroundColor: themeColors.white as string }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -104,7 +104,7 @@ const TabBarContent = ({
                     height: 20,
                     width: 20,
                     marginBottom: 2,
-                    tintColor: isFocused ? colors.primary : colors.text,
+                    tintColor: isFocused ? themeColors.primary as string : themeColors.black as string,
                   }}
                 />
                 <Text
@@ -128,7 +128,7 @@ const TabBarContent = ({
             onPress={onPress}
             onLongPress={onLongPress}
             style={{ flex: 1, padding: 5, height: 45 }}>
-            <View style={[commonStyles.flex1_center]}>
+            <View style={[commonStyles.flex1_center,]}>
               <Image
                 source={
                   tabIcons[
@@ -139,13 +139,13 @@ const TabBarContent = ({
                   height: 20,
                   width: 20,
                   marginBottom: 2,
-                  tintColor: isFocused ? themeColors.green as string : themeColors.black as string,
+                  tintColor: isFocused ? themeColors.primary as string : themeColors.black as string,
                 }}
               />
               <Text
                 style={{
                   fontWeight: isFocused ? '700' : '400',
-                  color: isFocused ? themeColors.green as string : themeColors.black as string,
+                  color: isFocused ? themeColors.primary as string : themeColors.black as string,
                 }}>
                 {typeof label === 'string'
                   ? label
