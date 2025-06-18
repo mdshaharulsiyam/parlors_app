@@ -5,6 +5,8 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React from 'react';
+import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../utils/hexToRGBA';
 import TabLayout from './TabLayout'; // Contains tab navigation
 
 const Drawer = createDrawerNavigator();
@@ -70,55 +72,76 @@ const DrawerLayout = () => {
 
 // Custom Drawer Content Component
 function DrawerContent(props: DrawerContentComponentProps) {
+  const { themeColors } = useGlobalContext();
   return (
-    <DrawerContentScrollView {...props}>
+    <DrawerContentScrollView {...props} style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       {/* <DrawerItemList {...props} /> */}
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         key={'about'}
         label="About"
         onPress={() => props.navigation.navigate('About')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         key={'Chat'}
         label="Chat"
         onPress={() => props.navigation.navigate('Chat')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         key={'Booking'}
         label="Booking"
         onPress={() => props.navigation.navigate('Booking')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         key={'cart'}
         label="Cart"
         onPress={() => props.navigation.navigate('Cart')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         label="Profile"
         key={'profile'}
         onPress={() => props.navigation.navigate('Profile')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         label="Manage Shop"
         key={'ShopManage'}
         onPress={() => props.navigation.navigate('ShopManage')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         label="Sign in"
         key={'SignIn'}
         onPress={() => props.navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'SignIn' } })}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         label="Sign up"
         key={'SignUp'}
         onPress={() => props.navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'SignUp' } })}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         key={'TextComponent'}
         label="Text Component"
         onPress={() => props.navigation.navigate('TextComponent')}
       />
       <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
         key={'Close Drawer'}
         label="Close Drawer"
         onPress={() => props.navigation.closeDrawer()}
