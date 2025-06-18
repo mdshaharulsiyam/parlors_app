@@ -1,17 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 //
 import {
-  StyleSheet,
-  Text,
-  View,
+  Button,
+  FlatList,
   Image,
   ScrollView,
-  FlatList,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Button,
+  View,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 const Details = () => {
+  const { themeColors } = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   // Static data
@@ -30,13 +33,13 @@ const Details = () => {
     ],
     totalBooking: 50,
     openDetails: [
-      {day: 'Monday', hours: '9AM-5PM'},
-      {day: 'Tuesday', hours: '9AM-5PM'},
-      {day: 'Wednesday', hours: '9AM-5PM'},
-      {day: 'Thursday', hours: '9AM-5PM'},
-      {day: 'Friday', hours: '9AM-5PM'},
-      {day: 'Saturday', hours: '10AM-4PM'},
-      {day: 'Sunday', hours: 'Closed'},
+      { day: 'Monday', hours: '9AM-5PM' },
+      { day: 'Tuesday', hours: '9AM-5PM' },
+      { day: 'Wednesday', hours: '9AM-5PM' },
+      { day: 'Thursday', hours: '9AM-5PM' },
+      { day: 'Friday', hours: '9AM-5PM' },
+      { day: 'Saturday', hours: '10AM-4PM' },
+      { day: 'Sunday', hours: 'Closed' },
     ],
     completedBooking: 20,
     ongoingBooking: 15,
@@ -72,18 +75,28 @@ const Details = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.shopName}>{shopDetails.shopName}</Text>
-      <Image source={{uri: shopDetails.shopImage}} style={styles.shopImage} />
+    <ScrollView style={[styles.container, {
+      backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+    }]}>
+      <Text style={[styles.shopName, {
+        color: themeColors.black as string,
+      }]}>{shopDetails.shopName}</Text>
+      <Image source={{ uri: shopDetails.shopImage }} style={styles.shopImage} />
 
-      <View style={styles.ownerInfo}>
+      <View style={[styles.ownerInfo, {
+        backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
+      }]}>
         <Image
-          source={{uri: shopDetails.ownerImage}}
+          source={{ uri: shopDetails.ownerImage }}
           style={styles.ownerImage}
         />
         <View style={styles.ownerDetails}>
-          <Text style={styles.ownerName}>{shopDetails.ownerName}</Text>
-          <Text style={styles.ownerEmail}>{shopDetails.ownerEmail}</Text>
+          <Text style={[styles.ownerName, {
+            color: themeColors.black as string,
+          }]}>{shopDetails.ownerName}</Text>
+          <Text style={[styles.ownerEmail, {
+            color: themeColors.black as string,
+          }]}>{shopDetails.ownerEmail}</Text>
         </View>
       </View>
 
@@ -96,8 +109,8 @@ const Details = () => {
       <FlatList
         data={shopDetails.workerImages}
         horizontal
-        renderItem={({item}) => (
-          <Image source={{uri: item}} style={styles.workerImage} />
+        renderItem={({ item }) => (
+          <Image source={{ uri: item }} style={styles.workerImage} />
         )}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -130,9 +143,9 @@ const Details = () => {
         <FlatList
           data={shopDetails.reviews}
           horizontal
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View style={styles.reviewCard}>
-              <Image source={{uri: item.userImage}} style={styles.userImage} />
+              <Image source={{ uri: item.userImage }} style={styles.userImage} />
               <View style={styles.reviewContent}>
                 <Text style={styles.userName}>{item.userName}</Text>
                 <Text numberOfLines={2} style={styles.reviewText}>
@@ -173,7 +186,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
-    backgroundColor: '#fff',
   },
   shopName: {
     fontSize: 24,
@@ -190,6 +202,8 @@ const styles = StyleSheet.create({
   ownerInfo: {
     flexDirection: 'row',
     marginBottom: 20,
+    padding: 10,
+    borderRadius: 5
   },
   ownerImage: {
     width: 50,
