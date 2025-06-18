@@ -2,6 +2,8 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import React, { useState } from 'react'
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { useGlobalContext } from '../../Provider/GlobalContextProvider'
+import { hexToRGBA } from '../../utils/hexToRGBA'
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType'
 import { IConversation } from '../../utils/types/Types'
 
@@ -100,12 +102,14 @@ const conversations: IConversation[] = [
 
 const Chat = () => {
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>()
+  const { themeColors } = useGlobalContext()
   const [searchQuery, setSearchQuery] = useState<string>('')
   const filteredConversations = conversations.filter(conversation =>
     conversation.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     conversation.message.toLowerCase().includes(searchQuery.toLowerCase())
   )
-
+  const black = themeColors.black as string
+  const white = themeColors.white as string
   const renderItem = ({ item }: { item: IConversation }) => (
     <TouchableOpacity
       // onPressIn={ } 
@@ -127,7 +131,9 @@ const Chat = () => {
   )
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {
+      backgroundColor: hexToRGBA(white, 0.95),
+    }]}>
       <TextInput
         style={styles.searchBar}
         placeholder="Search..."
