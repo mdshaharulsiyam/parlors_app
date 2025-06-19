@@ -1,200 +1,132 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
+import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { IJila, IPostOffice, IUnion, IUpazila } from '../../utils/types/Types';
-import Select from '../Shared/Select';
+import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
+import { IAddressInput, IAddressInputError, IAddressInputLabel, SelectTypes } from '../../utils/types/Types';
+import GradientButton from '../Shared/GradientButton';
 
-const jila: IJila[] = [
-  {
-    _id: 1,
-    name: 'Dhaka',
-    upazila: [
-      { _id: 1, name: 'Dhaka City' },
-      { _id: 2, name: 'Narayanganj' },
-      { _id: 3, name: 'Keraniganj' },
-      { _id: 4, name: 'Dhamrai' },
-      { _id: 5, name: 'Savar' },
-      { _id: 6, name: 'Madhupur' },
-      { _id: 7, name: 'Tongi' },
-    ],
-  },
-  {
-    _id: 2,
-    name: 'Faridpur',
-    upazila: [
-      { _id: 1, name: 'Faridpur Sadar' },
-      { _id: 2, name: 'Boalmari' },
-      { _id: 3, name: 'Alfadanga' },
-      { _id: 4, name: 'Nagarkanda' },
-      { _id: 5, name: 'Charbhadrasan' },
-      { _id: 6, name: 'Sadar Upazila' },
-    ],
-  },
-  {
-    _id: 3,
-    name: 'Chattogram',
-    upazila: [
-      { _id: 1, name: 'Chattogram City' },
-      { _id: 2, name: 'Anwara' },
-      { _id: 3, name: 'Banshkhali' },
-      { _id: 4, name: 'Boalkhali' },
-      { _id: 5, name: 'Fatikchhari' },
-      { _id: 6, name: 'Sandwip' },
-    ],
-  },
-  {
-    _id: 4,
-    name: 'Rajshahi',
-    upazila: [
-      { _id: 1, name: 'Rajshahi Sadar' },
-      { _id: 2, name: 'Bagha' },
-      { _id: 3, name: 'Puthia' },
-      { _id: 4, name: 'Durgapur' },
-      { _id: 5, name: 'Tanore' },
-      { _id: 6, name: 'Godagari' },
-    ],
-  },
-  {
-    _id: 5,
-    name: 'Khulna',
-    upazila: [
-      { _id: 1, name: 'Khulna City' },
-      { _id: 2, name: 'Dighalia' },
-      { _id: 3, name: 'Koyra' },
-      { _id: 4, name: 'Paikgachha' },
-      { _id: 5, name: 'Batiaghata' },
-      { _id: 6, name: 'Rupsha' },
-    ],
-  },
+const district: SelectTypes[] = [
+  { label: 'Paid', value: 'paid' },
+  { label: 'Unpaid', value: 'unpaid' },
 ];
-
-const union: IUnion[] = [
-  { _id: 1, name: 'Dhandi Union' },
-  { _id: 2, name: 'Khatra Union' },
-  { _id: 3, name: 'Madhpur Union' },
-  { _id: 4, name: 'Nandigram Union' },
-  { _id: 5, name: 'Bholahat Union' },
-  { _id: 6, name: 'Banshbari Union' },
-  { _id: 7, name: 'Manikdi Union' },
-  { _id: 8, name: 'Mathurapur Union' },
+const sub_district: SelectTypes[] = [
+  { label: 'Paid', value: 'paid' },
+  { label: 'Unpaid', value: 'unpaid' },
 ];
-const postOffice: IPostOffice[] = [
-  { _id: 1, name: 'Dhandi Dakghor' },
-  { _id: 2, name: 'Khatra Dakghor' },
-  { _id: 3, name: 'Madhpur Dakghor' },
-  { _id: 4, name: 'Bholahat Dakghor' },
-  { _id: 5, name: 'Manikdi Dakghor' },
+const union: SelectTypes[] = [
+  { label: 'Paid', value: 'paid' },
+  { label: 'Unpaid', value: 'unpaid' },
+];
+const post: SelectTypes[] = [
+  { label: 'Paid', value: 'paid' },
+  { label: 'Unpaid', value: 'unpaid' },
 ];
 const Address = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const { themeColors } = useGlobalContext()
+  const [inputValue, setInputValue] = useState<IAddressInput>({
+    district: '',
+    sub_district: '',
+    union: '',
+    post: '',
+    street_address: '',
+  });
+  const [error, setError] = useState<IAddressInputError>({
+    district: false,
+    sub_district: false,
+    union: false,
+    post: false,
+    street_address: false,
+  })
+  const [inputLabel, setInputLabel] = useState<IAddressInputLabel>({
+    district: 'Zila',
+    sub_district: 'Upzila',
+    union: 'Union',
+    post: 'Post office',
+    street_address: 'Street Address',
+  })
+  const submitHandler = () => {
+    let isInvalid = false;
+    Object.keys(inputValue).forEach(key => {
+      if (inputValue[key as keyof IAddressInput] === '') {
+        setError(prev => ({ ...prev, [key]: true }));
+        isInvalid = true;
+      } else {
+        setError(prev => ({ ...prev, [key]: false }));
+      }
+    });
+    if (isInvalid) {
+      Toast.show({
+        type: 'error',
+        text1: 'failed to login',
+        text2: 'Please fill all fields',
+      });
+    }
+  }
   return (
     <View>
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>District</Text>
-        <Select
-          isMultiSelect={false}
-          data={jila?.map((item: IJila) => ({
-            label: item?.name,
-            value: item?._id?.toString(),
-          }))}
-          // selectedValue={selectedValue}
-          // setSelectedValue={setSelectedValue}
-          placeholder="Select a District"
-          searchPlaceholder="search district"
-          height={50}
-          width="100%"
-          borderColor={themeColors.green as string}
-          borderWidth={2}
-          validate={true}
-          errorMessage="This field is required"
-        />
-      </View>
-      {/* sub - district */}
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>Sub District</Text>
-        <Select
-          isMultiSelect={false}
-          data={jila[0]?.upazila?.map((item: IUpazila) => ({
-            label: item?.name,
-            value: item?._id?.toString(),
-          }))}
-          // selectedValue={selectedValue}
-          // setSelectedValue={setSelectedValue}
-          placeholder="Select a sub district"
-          searchPlaceholder="search sub district"
-          height={50}
-          width="100%"
-          borderColor={themeColors.green as string}
-          borderWidth={2}
-          validate={true}
-          errorMessage="This field is required"
-        />
-      </View>
-      {/* union */}
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>Union</Text>
-        <Select
-          isMultiSelect={false}
-          data={union?.map((item: IUpazila) => ({
-            label: item?.name,
-            value: item?._id?.toString(),
-          }))}
-          // selectedValue={selectedValue}
-          // setSelectedValue={setSelectedValue}
-          placeholder="Select a union"
-          searchPlaceholder="search union"
-          height={50}
-          width="100%"
-          borderColor={themeColors.green as string}
-          borderWidth={2}
-          validate={true}
-          errorMessage="This field is required"
-        />
-      </View>
-      {/* post office */}
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>Post office</Text>
-        <Select
-          isMultiSelect={false}
-          data={postOffice?.map((item: IUpazila) => ({
-            label: item?.name,
-            value: item?._id?.toString(),
-          }))}
-          // selectedValue={selectedValue}
-          // setSelectedValue={setSelectedValue}
-          placeholder="Select a post office"
-          searchPlaceholder="search post office"
-          height={50}
-          width="100%"
-          borderColor={themeColors.green as string}
-          borderWidth={2}
-          validate={true}
-          errorMessage="This field is required"
-        />
-      </View>
-      <TouchableOpacity
-        //   onPress={handleProfileUpdate}
-        style={[
-          styles.button,
-          {
-            backgroundColor: themeColors.green as string,
-          },
-        ]}>
+      {Object.keys(inputValue).map((key, index, arr) => {
+        if (key !== 'street_address') {
+          return (
+            <View key={key}>
+              <Text style={globalStyles.inputLabel}>{inputLabel[key as keyof IAddressInputLabel]}</Text>
+              <SingleSelectDropDown
+                name={key}
+                data={key === 'district' ? district : key === 'sub_district' ? sub_district : key === 'union' ? union : post}
+                value={inputValue[key as keyof IAddressInput]}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+                setError={setError}
+                error={error}
+              />
+            </View>
+          );
+        }
+        return (
+          <View key={key} style={{}}>
+            <Text style={globalStyles.inputLabel}>
+              {key.charAt(0).toUpperCase() + key.slice(1)}
+            </Text>
+            <View style={{ position: 'relative' }}>
+              <TextInput
+                value={inputValue[key as keyof IAddressInput]}
+                onChangeText={text => {
+                  setInputValue({ ...inputValue, [key]: text });
+                  setError({ ...error, [key]: false });
+                }}
+                placeholder={`Enter your ${inputLabel[key as keyof IAddressInputLabel]}`}
+                placeholderTextColor={globalStyles.inputPlaceholder.color}
+                style={[
+                  globalStyles.input,
+                  error[key as keyof IAddressInput]
+                    ? globalStyles.inputError
+                    : {},
+                ]}
+              />
+            </View>
+          </View>
+        );
+      })}
+      <GradientButton handler={submitHandler}>
         {isUpdating ? (
           <ActivityIndicator size="small" color={themeColors.white as string} />
         ) : (
           <Text
             style={[
-              styles.buttonText,
               {
                 color: themeColors.white as string,
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: '600',
               },
             ]}>
             Update Profile
           </Text>
         )}
-      </TouchableOpacity>
+      </GradientButton>
     </View>
   )
 }

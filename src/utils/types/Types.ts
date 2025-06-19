@@ -28,10 +28,8 @@ export interface IUpazila {
   name: string;
 };
 
-export interface IJila {
-  _id: number;
-  name: string;
-  upazila: IUpazila[];
+export interface SelectTypes {
+  label: string, value: string
 };
 
 export interface IBooking {
