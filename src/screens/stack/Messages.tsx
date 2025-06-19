@@ -29,7 +29,9 @@ const useDummyMessages = (count: number) => {
 
 const MapMessages = ({ id }: { id: string }) => {
   const dummyMessages = useDummyMessages(500);
-
+  const { themeColors } = useGlobalContext();
+  const black = themeColors.black as string
+  const primary = themeColors.primary as string
   // reverse memoized
   const reversedMessages = useMemo(() => [...dummyMessages].reverse(), [dummyMessages]);
 
@@ -37,10 +39,14 @@ const MapMessages = ({ id }: { id: string }) => {
     <View
       style={[
         styles.messageContainer,
-        item.sender === 'me' ? styles.sentMessage : styles.receivedMessage,
+        item.sender === 'me'
+          ? { ...styles.sentMessage, backgroundColor: hexToRGBA(primary, 0.9) }
+          : { ...styles.receivedMessage, backgroundColor: hexToRGBA(black, 0.2) },
       ]}
     >
-      <Text style={styles.messageText}>{item.message}</Text>
+      <Text style={[styles.messageText, {
+        color: black
+      }]}>{item.message}</Text>
     </View>
   ), []);
 
@@ -159,7 +165,6 @@ const styles = StyleSheet.create({
     marginRight: '10%',
   },
   sentMessage: {
-    backgroundColor: '#0078fe',
     alignSelf: 'flex-end',
     marginLeft: '20%',
   },
@@ -169,7 +174,6 @@ const styles = StyleSheet.create({
     marginRight: '20%',
   },
   messageText: {
-    color: 'white',
     fontSize: 16,
   },
   footerContainer: {
