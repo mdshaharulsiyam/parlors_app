@@ -17,10 +17,6 @@ import { commonStyles } from '../../utils/styles/Styles';
 const tabs = ['profile', 'address', 'workers', 'available time']
 const ShopManage = () => {
   const [currentTab, setCurrentTab] = useState(tabs[0])
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [isUpdating, setIsUpdating] = useState(false);
   const { themeColors } = useGlobalContext();
   const components = {
     "profile": <Profile />,
