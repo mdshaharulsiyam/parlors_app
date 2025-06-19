@@ -286,7 +286,7 @@ const Profile = () => {
                   fontWeight: '700',
                   fontSize: 18,
                 }}>
-                Sign Up
+                Update
               </Text>
             }
 
