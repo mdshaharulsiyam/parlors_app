@@ -7,7 +7,7 @@ import { hexToRGBA } from '../../utils/hexToRGBA'
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType'
 import { IConversation } from '../../utils/types/Types'
 
-const conversations: IConversation[] = [
+export const conversations: IConversation[] = [
   {
     "_id": "1",
     "name": "Alice Johnson",

@@ -123,7 +123,7 @@ const Address = () => {
                 fontWeight: '600',
               },
             ]}>
-            Update Profile
+            Update
           </Text>
         )}
       </GradientButton>
