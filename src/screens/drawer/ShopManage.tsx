@@ -17,7 +17,7 @@ import { commonStyles } from '../../utils/styles/Styles';
 const tabs = ['profile', 'address', 'workers', 'available time']
 const ShopManage = () => {
   const [currentTab, setCurrentTab] = useState(tabs[0])
-  const { themeColors } = useGlobalContext();
+  const { themeColors, height } = useGlobalContext();
   const components = {
     "profile": <Profile />,
     "address": <Address />,
@@ -28,6 +28,7 @@ const ShopManage = () => {
     <SafeAreaView
       style={{
         backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+        height
       }}
     >
       <FlatList

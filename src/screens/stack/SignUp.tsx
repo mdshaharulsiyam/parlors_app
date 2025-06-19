@@ -123,11 +123,13 @@ const SignUp = () => {
                 <Dropdown
                   style={[
                     globalStyles.input,
-                    error[key as keyof ILogin] ? globalStyles.inputError : {},
                     {
-                      borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
-                      ,
-                    },
+                      borderColor: error[key as keyof ILogin]
+                        ? themeColors.red as string
+                        : hexToRGBA(themeColors.black as string, 0.4),
+                      borderWidth: error[key as keyof ILogin] ? 1 : 0,
+                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                    }
                   ]}
                   data={genderData}
                   labelField="label"
@@ -209,11 +211,15 @@ const SignUp = () => {
                       {
                         paddingHorizontal: 12,
                         borderBottomRightRadius: 8,
-                        borderWidth: 1,
                         width: width - 150,
                         marginBottom: 0,
+
+                        borderColor: error[key as keyof ILogin]
+                          ? themeColors.red as string
+                          : hexToRGBA(themeColors.black as string, 0.4),
+                        borderWidth: error[key as keyof ILogin] ? 1 : 0,
+                        backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
                         color: themeColors.black as string,
-                        borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
                       },
                       // error.contact ? globalStyles.inputError : {},
                     ]}
@@ -248,8 +254,12 @@ const SignUp = () => {
                   style={[
                     globalStyles.input,
                     {
+                      borderColor: error[key as keyof ILogin]
+                        ? themeColors.red as string
+                        : hexToRGBA(themeColors.black as string, 0.4),
+                      borderWidth: error[key as keyof ILogin] ? 1 : 0,
+                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
                       color: themeColors.black as string,
-                      borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
                     }
                   ]}
                 />
