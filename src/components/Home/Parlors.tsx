@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { Ratio3_2 } from '../../utils/calculateHeight';
 import { hexToRGBA } from '../../utils/hexToRGBA';
@@ -92,7 +93,7 @@ const Parlors = () => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
   return (
-    <View style={{ paddingHorizontal: 5, backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
+    <SafeAreaView style={{ paddingHorizontal: 5, backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
         Vendors
       </Text>
@@ -121,7 +122,7 @@ const Parlors = () => {
         )}
 
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
