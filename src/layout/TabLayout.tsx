@@ -33,7 +33,7 @@ const TabLayout = () => {
       <Tab.Screen
         name="Parlors"
         component={Parlors}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, tabBarLabel: 'Vendors' }}
       />
       <Tab.Screen
         name="Stacks"

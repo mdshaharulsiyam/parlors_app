@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Dummy message generator wrapped in useMemo
 const useDummyMessages = (count: number) => {
@@ -83,7 +84,7 @@ const Messages = ({ route }: any) => {
   ), []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {renderHeader()}
       <MapMessages id={id} />
       <View style={styles.footerContainer}>
@@ -98,7 +99,7 @@ const Messages = ({ route }: any) => {
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
