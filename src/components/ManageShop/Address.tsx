@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IAddressInput, IAddressInputError, IAddressInputLabel, SelectTypes } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 
@@ -72,7 +73,9 @@ const Address = () => {
         if (key !== 'street_address') {
           return (
             <View key={key}>
-              <Text style={globalStyles.inputLabel}>{inputLabel[key as keyof IAddressInputLabel]}</Text>
+              <Text style={[globalStyles.inputLabel, {
+                color: hexToRGBA(themeColors.black as string, 0.8),
+              }]}>{inputLabel[key as keyof IAddressInputLabel]}</Text>
               <SingleSelectDropDown
                 name={key}
                 data={key === 'district' ? district : key === 'sub_district' ? sub_district : key === 'union' ? union : post}
@@ -87,8 +90,10 @@ const Address = () => {
         }
         return (
           <View key={key} style={{}}>
-            <Text style={globalStyles.inputLabel}>
-              {key.charAt(0).toUpperCase() + key.slice(1)}
+            <Text style={[globalStyles.inputLabel, {
+              color: hexToRGBA(themeColors.black as string, 0.8),
+            }]}>
+              {inputLabel[key as keyof IAddressInputLabel]}
             </Text>
             <View style={{ position: 'relative' }}>
               <TextInput
@@ -98,12 +103,17 @@ const Address = () => {
                   setError({ ...error, [key]: false });
                 }}
                 placeholder={`Enter your ${inputLabel[key as keyof IAddressInputLabel]}`}
-                placeholderTextColor={globalStyles.inputPlaceholder.color}
+                placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
                 style={[
                   globalStyles.input,
-                  error[key as keyof IAddressInput]
-                    ? globalStyles.inputError
-                    : {},
+                  {
+                    borderColor: error[key as keyof IAddressInputError]
+                      ? themeColors.red as string
+                      : hexToRGBA(themeColors.black as string, 0.4),
+                    borderWidth: error[key as keyof IAddressInputError] ? 1 : 0,
+                    backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                    color: themeColors.black as string,
+                  }
                 ]}
               />
             </View>
