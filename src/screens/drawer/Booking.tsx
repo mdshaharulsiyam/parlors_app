@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import { IBooking } from '../../utils/types/Types';
 
@@ -222,83 +223,103 @@ const Booking = () => {
   const white = themeColors.white as string;
   const primary = themeColors.primary as string;
   const yellow = themeColors.yellow as string;
+  const red = themeColors.red as string;
+  const green = themeColors.green as string;
   return (
-    <FlatList
-      ListHeaderComponent={() => (
-        <View>
-          <Text
-            style={{
-              color: themeColors.black as string,
-              fontWeight: '600',
-              fontSize: 20,
-              textTransform: 'capitalize',
-              marginTop: 5,
-              marginBottom: 10,
-            }}>
-            {status} Bookings
-          </Text>
-          <FlatList
-            data={allStatus}
-            horizontal
-            contentContainerStyle={{
-              gap: 5,
-              marginVertical: 8,
-            }}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => setStatus(item)}
-                activeOpacity={0.7}
-                style={[
-                  commonStyles.Button,
-                  {
-                    backgroundColor:
-                      item == status
-                        ? themeColors.green as string
-                        : themeColors.yellow as string,
-                    borderRadius: 3,
-                    borderColor: themeColors.black as string,
-                    borderWidth: 0.5,
-                  }]}
-                key={item}>
-                <Text
-                  style={{
-                    textTransform: 'uppercase',
-                    fontWeight: '600',
-                    color: item == status ? themeColors.white as string as string : themeColors.black as string,
-                  }}>
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      )}
-      contentContainerStyle={{
-        padding: 5,
-      }}
-      data={data?.filter(item => item?.status == status)}
-      keyExtractor={item => item?._id}
-      renderItem={({ item }) => (
-        <View style={styles.card}>
-          {/* Parlor Image */}
-          <Image source={{ uri: item.parlorImage }} style={styles.image} />
-
-          {/* Booking Details */}
-          <View style={styles.detailsContainer}>
-            <Text style={styles.parlor}>{item.parlor}</Text>
-            <Text style={styles.worker}>Worker: {item.worker}</Text>
-            <Text style={styles.date}>Date: {item.date}</Text>
-            <Text style={styles.time}>Time: {item.time}</Text>
-            <Text style={[styles.status, styles[item.status]]}>
-              Status: {item.status}
+    <View style={{
+      backgroundColor: hexToRGBA(white, 0.95),
+      paddingHorizontal: 10
+    }}>
+      <FlatList
+        ListHeaderComponent={() => (
+          <View>
+            <Text
+              style={{
+                color: black,
+                fontWeight: '600',
+                fontSize: 20,
+                textTransform: 'capitalize',
+                marginTop: 5,
+                marginBottom: 10,
+              }}>
+              {status} Bookings
             </Text>
-            <Text style={styles.service}>Service: {item.service}</Text>
+            <FlatList
+              data={allStatus}
+              horizontal
+              contentContainerStyle={{
+                gap: 5,
+                marginVertical: 8,
+              }}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={item => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => setStatus(item)}
+                  activeOpacity={0.7}
+                  style={[
+                    commonStyles.Button,
+                    {
+                      backgroundColor:
+                        item == status
+                          ? primary
+                          : yellow,
+                      borderRadius: 3,
+                    }]}
+                  key={item}>
+                  <Text
+                    style={{
+                      textTransform: 'uppercase',
+                      fontWeight: '600',
+                      color: black,
+                    }}>
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
           </View>
-        </View>
-      )}
-    />
+        )
+        }
+        contentContainerStyle={{
+          padding: 5,
+        }}
+        data={data?.filter(item => item?.status == status)}
+        keyExtractor={item => item?._id}
+        renderItem={({ item }) => (
+          <View style={[styles.card, {
+            backgroundColor: hexToRGBA(black, 0.1),
+          }]}>
+            {/* Parlor Image */}
+            <Image source={{ uri: item.parlorImage }} style={styles.image} />
+
+            {/* Booking Details */}
+            <View style={[styles.detailsContainer]}>
+              <Text style={[styles.parlor, {
+                color: hexToRGBA(black, 0.9),
+              }]}>{item.parlor}</Text>
+              <Text style={[styles.worker, {
+                color: hexToRGBA(black, 0.7),
+              }]}>Worker: {item.worker}</Text>
+              <Text style={[styles.date, {
+                color: hexToRGBA(black, 0.7),
+              }]}>Date: {item.date}</Text>
+              <Text style={[styles.time, {
+                color: hexToRGBA(black, 0.7),
+              }]}>Time: {item.time}</Text>
+              <Text style={[styles.status, {
+                color: item.status == 'canceled' ? red : item.status == 'pending' ? yellow : item.status == 'accepted' ? primary : green,
+              }]}>
+                Status: {item.status}
+              </Text>
+              <Text style={[styles.service, {
+                color: hexToRGBA(black, 0.7),
+              }]}>Service: {item.service}</Text>
+            </View>
+          </View>
+        )}
+      />
+    </View >
   );
 };
 
@@ -306,16 +327,10 @@ export default Booking;
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 15,
     marginBottom: 15,
     flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
   },
   image: {
     width: 130,

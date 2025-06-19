@@ -28,10 +28,8 @@ export interface IUpazila {
   name: string;
 };
 
-export interface IJila {
-  _id: number;
-  name: string;
-  upazila: IUpazila[];
+export interface SelectTypes {
+  label: string, value: string
 };
 
 export interface IBooking {
@@ -50,4 +48,47 @@ export interface IConversation {
   name: string;
   message: string;
   img: string;
+}
+export interface IImage {
+  uri: string,
+  name: string,
+  type: string,
+  mimeType: string,
+}
+
+export interface IShopInput {
+  name: string,
+  email: string,
+  contact: string,
+}
+export interface IShopInputLabel {
+  name: string,
+  email: string,
+  contact: string,
+}
+export interface IShopInputError {
+  name: boolean,
+  email: boolean,
+  contact: boolean,
+}
+export interface IAddressInput {
+  district: string,
+  sub_district: string,
+  union: string,
+  post: string,
+  street_address: string,
+}
+export interface IAddressInputLabel {
+  district: string,
+  sub_district: string,
+  union: string,
+  post: string,
+  street_address: string,
+}
+export interface IAddressInputError {
+  district: boolean,
+  sub_district: boolean,
+  union: boolean,
+  post: boolean,
+  street_address: boolean,
 }

@@ -130,8 +130,8 @@ const AvailableTime: React.FC = () => {
             <View style={styles.timeButtonsContainer}>
               <TouchableOpacity
                 style={[commonStyles.Button, {
-                  backgroundColor: themeColors.green as string2,
-                  borderColor: themeColors.green as string2
+                  backgroundColor: themeColors.green as string,
+                  borderColor: themeColors.green as string
                 }]}
                 onPress={() => openFromTimePicker(day as keyof SelectedTime)}
               >

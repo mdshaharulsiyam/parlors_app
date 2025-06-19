@@ -1,116 +1,140 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
+import Toast from 'react-native-toast-message';
+import { OtherIcons } from '../../constant/images';
+import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
+import GradientButton from '../Shared/GradientButton';
+import ImageUpload from '../Shared/ImageUpload';
 
 const Profile = () => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [inputValue, setInputValue] = useState<IShopInput>({
+    name: '',
+    email: '',
+    contact: '',
+  });
+  const [error, setError] = useState<IShopInputError>({
+    name: false,
+    email: false,
+    contact: false,
+  })
+  const [inputLabel, setInputLabel] = useState<IShopInputLabel>({
+    name: 'Shop name',
+    email: 'Shop Email (optional)',
+    contact: 'Shop Phone (optional)',
+  })
   const { themeColors } = useGlobalContext()
+  const [images, setImages] = React.useState<IImage[]>([]);
+  const submitHandler = () => {
+    let isInvalid = false;
+    Object.keys(inputValue).forEach(key => {
+      if (inputValue[key as keyof IShopInput] === '') {
+        setError(prev => ({ ...prev, [key]: true }));
+        isInvalid = true;
+      } else {
+        setError(prev => ({ ...prev, [key]: false }));
+      }
+    });
+    if (isInvalid) {
+      Toast.show({
+        type: 'error',
+        text1: 'failed to login',
+        text2: 'Please fill all fields',
+      });
+    }
+  }
   return (
     <>
       <View
         style={{
           flex: 1,
           justifyContent: 'center',
-          alignItems: "center"
+          alignItems: "center",
         }}
       >
-        <TouchableOpacity style={styles.profileImageContainer}>
+        <ImageUpload images={images} setImages={setImages}>
           <View
-            style={{
-              backgroundColor: hexToRGBA(themeColors.primary as string, .5),
-              borderRadius: 100,
-            }}>
+            style={[
+              styles.profileImageContainer, {
+                backgroundColor: themeColors.white as string,
+                borderWidth: 1,
+                borderColor: hexToRGBA(themeColors.black as string, 0.2),
+                borderRadius: 50,
+                position: 'relative',
+              }]}>
             <Image
-              source={{
-                uri: 'https://via.placeholder.com/100',
+              source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
               }}
-              style={styles.profileImage}
+            />
+            <Image
+              source={OtherIcons.Camera as ImageSourcePropType}
+              style={{
+                position: 'absolute',
+                bottom: 10,
+                right: 5,
+                width: 20,
+                height: 20,
+                tintColor: themeColors.primary as string,
+              }}
             />
           </View>
-        </TouchableOpacity>
+        </ImageUpload>
       </View>
+      {Object.keys(inputValue).map((key, index) => (
+        <View key={index}>
+          <Text style={[globalStyles.inputLabel, {
+            color: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
+          }]}>
+            {inputLabel[key as keyof IShopInputLabel]}
+          </Text>
+          <View >
+            <TextInput
+              value={inputValue[key as keyof IShopInput]}
+              onChangeText={text => {
+                setInputValue({ ...inputValue, [key]: text });
+                setError({ ...error, [key]: false });
+              }}
+              placeholder={`Enter ${key}`}
+              placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
+              style={[
+                globalStyles.input,
+                {
+                  backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+                  color: themeColors.black as string,
+                },
+                {
+                  borderColor: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
+                }
+              ]}
+            />
 
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>Shop Name</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {
-              borderColor: themeColors.green as string,
-              color: themeColors.black as string,
-              borderWidth: 2,
-            },
-          ]}
-          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-          placeholder="Shop Name"
-          value={name}
-          onChangeText={setName}
-        />
-      </View>
-
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>Shop Email (optional)</Text>
-        <TextInput
-          editable={true}
-          style={[
-            styles.input,
-            {
-              borderColor: themeColors.green as string,
-              color: themeColors.black as string,
-              borderWidth: 2,
-            },
-          ]}
-          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-          placeholder="Shop Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-      </View>
-      <View style={styles.selectContainer}>
-        <Text style={styles.selectHeading}>Shop Phone Number (optional)</Text>
-        <TextInput
-          style={[
-            styles.input,
-            {
-              borderColor: themeColors.green as string,
-              color: themeColors.black as string,
-              borderWidth: 2,
-            },
-          ]}
-          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-          placeholder="Shop Phone Number"
-          value={phone}
-          onChangeText={setPhone}
-          keyboardType="phone-pad"
-        />
-      </View>
-      <TouchableOpacity
-        //   onPress={handleProfileUpdate}
-        style={[
-          styles.button,
-          {
-            backgroundColor: themeColors.green as string,
-          },
-        ]}>
+          </View>
+        </View>
+      ))}
+      <GradientButton handler={submitHandler}>
         {isUpdating ? (
           <ActivityIndicator size="small" color={themeColors.white as string} />
         ) : (
           <Text
             style={[
-              styles.buttonText,
               {
-                color: themeColors.white as string,
+                color: themeColors.black as string,
+                fontSize: 16,
+                fontWeight: 'bold',
+                textAlign: 'center',
               },
             ]}>
             Update Profile
           </Text>
         )}
-      </TouchableOpacity>
+      </GradientButton>
     </>
   )
 }

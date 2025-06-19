@@ -22,7 +22,7 @@ export const globalStyles = StyleSheet.create({
   input: {
     height: 56,
     width: '100%',
-    borderWidth: 1,
+    borderWidth: .5,
     borderRadius: 8,
     paddingHorizontal: 14,
     marginBottom: 15,
