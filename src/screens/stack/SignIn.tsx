@@ -151,10 +151,13 @@ const SignIn = () => {
                 style={[
                   globalStyles.input,
                   {
-                    borderColor: hexToRGBA(themeColors.black as string, 0.3),
+                    borderColor: error[key as keyof ILogin]
+                      ? themeColors.red as string
+                      : hexToRGBA(themeColors.black as string, 0.4),
+                    borderWidth: error[key as keyof ILogin] ? 1 : 0,
+                    backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
                     color: themeColors.black as string,
-                  },
-                  error[key as keyof ILogin] ? globalStyles.inputError : {},
+                  }
                 ]}
               />
               {key === 'password' && (

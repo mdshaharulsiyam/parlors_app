@@ -76,9 +76,13 @@ const Reset = () => {
                 placeholderTextColor={hexToRGBA(themeColors.black as string, .4)}
                 style={[
                   globalStyles.input,
-
                   {
-                    borderColor: error[key as keyof INewPassword] ? themeColors.red as string : themeColors.black as string
+                    borderColor: error[key as keyof INewPassword]
+                      ? themeColors.red as string
+                      : hexToRGBA(themeColors.black as string, 0.4),
+                    borderWidth: error[key as keyof INewPassword] ? 1 : 0,
+                    backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                    color: themeColors.black as string,
                   }
                 ]}
               />

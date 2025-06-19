@@ -99,8 +99,10 @@ const ChangePassword = () => {
                     {
                       borderColor: error[key as keyof IChangePassword]
                         ? themeColors.red as string
-                        : hexToRGBA(themeColors.black as string, 0.5),
-                      color: themeColors.black as string
+                        : hexToRGBA(themeColors.black as string, 0.4),
+                      borderWidth: error[key as keyof IChangePassword] ? 1 : 0,
+                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                      color: themeColors.black as string,
                     }
                   ]}
                 />
