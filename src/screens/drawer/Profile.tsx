@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import {
@@ -17,6 +18,16 @@ import {
   useUpdateMutation,
 } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+const tabs = [
+  {
+    name: 'profile',
+    label: 'Profile',
+  },
+  {
+    name: 'password',
+    label: 'Password',
+  },
+]
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [name, setName] = useState('');
@@ -33,7 +44,9 @@ const Profile = () => {
   const [update, { isLoading: is_updating }] = useUpdateMutation();
   const [change, { isLoading: is_changing }] = useChange_passwordMutation();
   // console.log(data);
-
+  const black = themeColors.black as string
+  const primary = themeColors.primary as string
+  const white = themeColors.white as string
   useEffect(() => {
     setName(data?.data?.name);
     setEmail(data?.data?.email);
@@ -129,56 +142,41 @@ const Profile = () => {
   if (isLoading) {
     return (
       <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color={themeColors.green as string} />
+        <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={[styles.container, {
+      backgroundColor: hexToRGBA(white, 0.95),
+    }]}>
       {/* Tab Buttons */}
       <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[
-            styles.tab,
-            activeTab === 'profile' && {
-              borderColor: themeColors.green as string,
-            },
-          ]}
-          onPress={() => setActiveTab('profile')}>
-          <Text
-            style={[
-              styles.tabText,
-              {
-                color: themeColors.black as string,
-              },
-              activeTab === 'profile' && {
-                color: themeColors.green as string,
-              },
-            ]}>
-            Profile
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.tab,
-            activeTab === 'password' && {
-              borderColor: themeColors.green as string,
-            },
-          ]}
-          onPress={() => setActiveTab('password')}>
-          <Text
-            style={[
-              styles.tabText,
-              {
-                color: themeColors.black as string,
-              },
-              activeTab === 'password' && {
-                color: themeColors.green as string,
-              },
-            ]}>
-            Change Password
-          </Text>
-        </TouchableOpacity>
+        {
+          tabs.map((tab, index) => (
+            <TouchableOpacity key={index}
+              style={[
+                styles.tab,
+                activeTab === tab.name && {
+                  borderColor: primary,
+                },
+              ]}
+              onPress={() => setActiveTab(tab.name)}>
+              <Text
+                style={[
+                  styles.tabText,
+                  {
+                    color: black,
+                  },
+                  activeTab === tab.name && {
+                    color: primary,
+                  },
+                ]}>
+                {tab.label}
+              </Text>
+            </TouchableOpacity>
+          ))
+        }
       </View>
 
       {/* Profile Tab */}
@@ -348,7 +346,7 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
