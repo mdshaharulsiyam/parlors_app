@@ -76,8 +76,14 @@ const DrawerLayout = () => {
         name="Booking"
         component={Booking}
         options={{
-          headerShown: true,
-          headerTitle: 'My Bookings',
+          headerTitle: "My Bookings",
+          headerShown: true, headerStyle: {
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 60,
+            borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
+            borderWidth: .5,
+          },
+          headerTintColor: themeColors.black as string,
         }}
       />
       <Drawer.Screen
