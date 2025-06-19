@@ -16,6 +16,7 @@ import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 
 const ChangePassword = () => {
   const { themeColors, height } = useGlobalContext();
@@ -55,6 +56,7 @@ const ChangePassword = () => {
       style={{
         position: 'relative',
         height: height,
+        backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
       }}>
       <ScrollView
         style={{
@@ -65,7 +67,11 @@ const ChangePassword = () => {
         {Object.keys(inputValue).map((key, index, arr) => {
           return (
             <View key={key} style={{}}>
-              <Text style={globalStyles.inputLabel}>
+              <Text style={[globalStyles.inputLabel, {
+                color: error[key as keyof IChangePassword]
+                  ? themeColors.red as string
+                  : themeColors.black as string
+              }]}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </Text>
               <View style={{ position: 'relative' }}>
@@ -83,12 +89,19 @@ const ChangePassword = () => {
                         ? cPassShow
                         : opassShow
                   }
-                  placeholderTextColor={globalStyles.inputPlaceholder.color}
+                  placeholderTextColor={
+                    error[key as keyof IChangePassword]
+                      ? themeColors.red as string
+                      : hexToRGBA(themeColors.black as string, 0.5)
+                  }
                   style={[
                     globalStyles.input,
-                    error[key as keyof IChangePassword]
-                      ? globalStyles.inputError
-                      : {},
+                    {
+                      borderColor: error[key as keyof IChangePassword]
+                        ? themeColors.red as string
+                        : hexToRGBA(themeColors.black as string, 0.5),
+                      color: themeColors.black as string
+                    }
                   ]}
                 />
                 {(key === 'new password' ||
