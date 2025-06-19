@@ -51,3 +51,9 @@ export interface IConversation {
   message: string;
   img: string;
 }
+export interface IImage {
+  uri: string,
+  name: string,
+  type: string,
+  mimeType: string,
+}

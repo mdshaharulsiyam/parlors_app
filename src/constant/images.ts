@@ -1,9 +1,11 @@
+import Camera from "../assets/Camera.png";
 import Eye from "../assets/eye.png";
 import EyeX from "../assets/eyeX.png";
 import Filter from "../assets/filter.png";
 import Home from "../assets/home.png";
 import logo from '../assets/logo.png';
 import Menu from "../assets/menu.png";
+import Profile from "../assets/Profile.png";
 import Search from "../assets/search.png";
 import Shops from "../assets/shop.png";
 export const tabIcons = {
@@ -17,4 +19,6 @@ export const OtherIcons = {
   Search: Search,
   Filter: Filter,
   Logo: logo,
+  Camera: Camera,
+  Profile: Profile
 };
