@@ -8,8 +8,8 @@ import React from 'react';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
 import About from '../screens/drawer/About';
 import Booking from '../screens/drawer/Booking';
-import Cart from '../screens/drawer/Cart';
 import Chat from '../screens/drawer/Chat';
+import Privacy from '../screens/drawer/Privacy';
 import Profile from '../screens/drawer/Profile';
 import ShopManage from '../screens/drawer/ShopManage';
 import TextComponent from '../screens/drawer/TextComponent';
@@ -62,8 +62,8 @@ const DrawerLayout = () => {
         options={{ headerShown: false }}
       />
       <Drawer.Screen
-        name="Cart"
-        component={Cart}
+        name="Privacy"
+        component={Privacy}
         options={{ headerShown: false }}
       />
       <Drawer.Screen
@@ -81,7 +81,7 @@ const DrawerLayout = () => {
         }}
       />
       <Drawer.Screen
-        name="TextComponent"
+        name="changePassword"
         component={TextComponent}
         options={{
           headerShown: true,
@@ -98,13 +98,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
   return (
     <DrawerContentScrollView {...props} style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       {/* <DrawerItemList {...props} /> */}
-      <DrawerItem
-        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
-        labelStyle={{ color: themeColors.black as string }}
-        key={'about'}
-        label="About"
-        onPress={() => props.navigation.navigate('About')}
-      />
+
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
         labelStyle={{ color: themeColors.black as string }}
@@ -119,13 +113,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
         label="Booking"
         onPress={() => props.navigation.navigate('Booking')}
       />
-      <DrawerItem
-        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
-        labelStyle={{ color: themeColors.black as string }}
-        key={'cart'}
-        label="Cart"
-        onPress={() => props.navigation.navigate('Cart')}
-      />
+
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
         labelStyle={{ color: themeColors.black as string }}
@@ -160,6 +148,20 @@ function DrawerContent(props: DrawerContentComponentProps) {
         key={'TextComponent'}
         label="Text Component"
         onPress={() => props.navigation.navigate('TextComponent')}
+      />
+      <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
+        key={'Privacy'}
+        label="Privacy"
+        onPress={() => props.navigation.navigate('Privacy')}
+      />
+      <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
+        key={'about'}
+        label="About"
+        onPress={() => props.navigation.navigate('About')}
       />
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}

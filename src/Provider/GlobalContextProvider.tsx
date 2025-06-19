@@ -12,6 +12,7 @@ interface GlobalContextType {
   setModalOpen: (arg1: boolean) => void;
   modalOpen: boolean;
   width: number;
+  height: number
 }
 
 interface GlobalProviderProps {
@@ -25,7 +26,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     forceCodeForRefreshToken: false,
   });
-  const { width } = Dimensions.get('window');
+  const { width, height } = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
@@ -35,7 +36,8 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     search,
     setModalOpen,
     modalOpen,
-    width
+    width,
+    height
   };
   return (
     <GlobalContext.Provider value={values}>

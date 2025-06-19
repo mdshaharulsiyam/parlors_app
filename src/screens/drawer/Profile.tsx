@@ -289,7 +289,6 @@ const Profile = () => {
                 Update
               </Text>
             }
-
           </GradientButton>
         </View>
       </ScrollView>
