@@ -73,3 +73,24 @@ export interface IShopInputError {
   email: boolean,
   contact: boolean,
 }
+export interface IAddressInput {
+  district: string,
+  sub_district: string,
+  union: string,
+  post: string,
+  street_address: string,
+}
+export interface IAddressInputLabel {
+  district: string,
+  sub_district: string,
+  union: string,
+  post: string,
+  street_address: string,
+}
+export interface IAddressInputError {
+  district: boolean,
+  sub_district: boolean,
+  union: boolean,
+  post: boolean,
+  street_address: boolean,
+}
