@@ -8,11 +8,11 @@ import React from 'react';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
 import About from '../screens/drawer/About';
 import Booking from '../screens/drawer/Booking';
-import Cart from '../screens/drawer/Cart';
+import ChangePassword from '../screens/drawer/ChangePassword';
 import Chat from '../screens/drawer/Chat';
+import Privacy from '../screens/drawer/Privacy';
 import Profile from '../screens/drawer/Profile';
 import ShopManage from '../screens/drawer/ShopManage';
-import TextComponent from '../screens/drawer/TextComponent';
 import { hexToRGBA } from '../utils/hexToRGBA';
 import TabLayout from './TabLayout'; // Contains tab navigation
 
@@ -35,7 +35,15 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 50,
+            borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
+            borderWidth: .5,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
       <Drawer.Screen
         name="Chat"
@@ -43,6 +51,7 @@ const DrawerLayout = () => {
         options={{
           headerShown: true, headerStyle: {
             backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 50
           },
           headerTintColor: themeColors.black as string,
         }}
@@ -53,8 +62,8 @@ const DrawerLayout = () => {
         options={{ headerShown: false }}
       />
       <Drawer.Screen
-        name="Cart"
-        component={Cart}
+        name="Privacy"
+        component={Privacy}
         options={{ headerShown: false }}
       />
       <Drawer.Screen
@@ -67,16 +76,27 @@ const DrawerLayout = () => {
         name="Booking"
         component={Booking}
         options={{
-          headerShown: true,
-          headerTitle: 'My Bookings',
+          headerTitle: "My Bookings",
+          headerShown: true, headerStyle: {
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 60,
+            borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
+            borderWidth: .5,
+          },
+          headerTintColor: themeColors.black as string,
         }}
       />
       <Drawer.Screen
-        name="TextComponent"
-        component={TextComponent}
+        name="changePassword"
+        component={ChangePassword}
         options={{
-          headerShown: true,
-          headerTitle: 'My Bookings',
+          headerShown: true, headerStyle: {
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 50,
+            borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
+            borderWidth: .5,
+          },
+          headerTintColor: themeColors.black as string,
         }}
       />
     </Drawer.Navigator>
@@ -89,13 +109,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
   return (
     <DrawerContentScrollView {...props} style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       {/* <DrawerItemList {...props} /> */}
-      <DrawerItem
-        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
-        labelStyle={{ color: themeColors.black as string }}
-        key={'about'}
-        label="About"
-        onPress={() => props.navigation.navigate('About')}
-      />
+
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
         labelStyle={{ color: themeColors.black as string }}
@@ -110,13 +124,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
         label="Booking"
         onPress={() => props.navigation.navigate('Booking')}
       />
-      <DrawerItem
-        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
-        labelStyle={{ color: themeColors.black as string }}
-        key={'cart'}
-        label="Cart"
-        onPress={() => props.navigation.navigate('Cart')}
-      />
+
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
         labelStyle={{ color: themeColors.black as string }}
@@ -148,9 +156,23 @@ function DrawerContent(props: DrawerContentComponentProps) {
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
         labelStyle={{ color: themeColors.black as string }}
-        key={'TextComponent'}
-        label="Text Component"
-        onPress={() => props.navigation.navigate('TextComponent')}
+        key={'changePassword'}
+        label="Change Password"
+        onPress={() => props.navigation.navigate('changePassword')}
+      />
+      <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
+        key={'Privacy'}
+        label="Privacy"
+        onPress={() => props.navigation.navigate('Privacy')}
+      />
+      <DrawerItem
+        style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
+        labelStyle={{ color: themeColors.black as string }}
+        key={'about'}
+        label="About"
+        onPress={() => props.navigation.navigate('About')}
       />
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}

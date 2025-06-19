@@ -218,6 +218,10 @@ const allStatus = ['pending', 'complete', 'accepted', 'canceled'];
 const Booking = () => {
   const [status, setStatus] = useState<string>(allStatus[0]);
   const { themeColors } = useGlobalContext();
+  const black = themeColors.black as string;
+  const white = themeColors.white as string;
+  const primary = themeColors.primary as string;
+  const yellow = themeColors.yellow as string;
   return (
     <FlatList
       ListHeaderComponent={() => (

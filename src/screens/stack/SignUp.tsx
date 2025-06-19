@@ -7,7 +7,6 @@ import {
   Image,
   ImageSourcePropType,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -328,77 +327,6 @@ const SignUp = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  info: {
-    fontSize: 16,
-    marginVertical: 5,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    fontSize: 16,
-    borderWidth: 1,
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  signupContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  signupText: {
-    fontWeight: 'bold',
-  },
-  errorText: {
-    fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  passwordContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  toggleVisibility: {
-    position: 'absolute',
-    right: 15,
-    padding: 5,
-    top: 7,
-  },
-});
+
 
 export default SignUp;

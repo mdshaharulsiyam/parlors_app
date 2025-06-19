@@ -7,9 +7,13 @@ import { hexToRGBA } from '../../utils/hexToRGBA';
 const GradientButton = ({
   children,
   handler,
+  padding = 15,
+  borderWidth = .5,
 }: {
   children: React.ReactNode;
   handler?: () => void;
+  padding?: number;
+  borderWidth?: number;
 }) => {
   const { themeColors } = useGlobalContext();
   return (
@@ -20,8 +24,8 @@ const GradientButton = ({
       }}
       style={{
         borderColor: themeColors.primary as string,
-        borderWidth: .5,
         borderRadius: 15,
+        borderWidth: borderWidth,
       }}>
       <LinearGradient
         colors={[
@@ -30,7 +34,7 @@ const GradientButton = ({
         ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
-        style={{ padding: 15, borderRadius: 10 }}>
+        style={{ padding: padding, borderRadius: 10 }}>
         {children}
       </LinearGradient>
     </TouchableOpacity>
