@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import { IImage } from '../../utils/types/Types';
+import ImageUpload from '../Shared/ImageUpload';
 
 const Profile = () => {
   const [isUpdating, setIsUpdating] = useState(false);
@@ -9,6 +12,8 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const { themeColors } = useGlobalContext()
+  const [images, setImages] = React.useState<IImage[]>([]);
+  console.log(images);
   return (
     <>
       <View
@@ -18,7 +23,7 @@ const Profile = () => {
           alignItems: "center"
         }}
       >
-        <TouchableOpacity style={styles.profileImageContainer}>
+        {/* <TouchableOpacity style={styles.profileImageContainer}>
           <View
             style={{
               backgroundColor: hexToRGBA(themeColors.primary as string, .5),
@@ -31,7 +36,39 @@ const Profile = () => {
               style={styles.profileImage}
             />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        <ImageUpload images={images} setImages={setImages}>
+          <View
+            style={[
+              styles.profileImageContainer, {
+                backgroundColor: themeColors.white as string,
+                borderWidth: 1,
+                borderColor: hexToRGBA(themeColors.black as string, 0.2),
+                borderRadius: 50,
+                position: 'relative',
+              }]}>
+            <Image
+              source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: 50,
+              }}
+            />
+            <Image
+              source={OtherIcons.Camera as ImageSourcePropType}
+              style={{
+                position: 'absolute',
+                bottom: 10,
+                right: 5,
+                width: 20,
+                height: 20,
+                tintColor: themeColors.primary as string,
+              }}
+            />
+          </View>
+        </ImageUpload>
       </View>
 
       <View style={styles.selectContainer}>

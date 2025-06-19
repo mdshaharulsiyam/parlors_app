@@ -5,4 +5,5 @@ export interface IImageUploadProps {
   setImages: React.Dispatch<React.SetStateAction<IImage[]>>;
   maxNumber?: number;
   children: React.ReactNode;
+  multiple?: boolean;
 }
