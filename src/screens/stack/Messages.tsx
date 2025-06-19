@@ -5,10 +5,10 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 
@@ -77,6 +77,7 @@ const Messages = ({ route }: any) => {
   const renderHeader = useCallback(() => (
     <View style={[styles.headerContainer, {
       backgroundColor: hexToRGBA(black, 0.1),
+      borderBlockColor: hexToRGBA(black, 0.2),
     }]}>
       <Image
         source={{ uri: 'https://randomuser.me/api/portraits/women/1.jpg' }}
@@ -99,17 +100,24 @@ const Messages = ({ route }: any) => {
     }]}>
       {renderHeader()}
       <MapMessages id={id} />
-      <View style={styles.footerContainer}>
+      <View style={[styles.footerContainer, {
+        borderTopColor: hexToRGBA(black, 0.2),
+      }]}>
         <TextInput
-          style={styles.textInput}
+          style={[styles.textInput, {
+            backgroundColor: hexToRGBA(black, 0.1),
+            color: hexToRGBA(black, 0.9),
+          }]}
           value={newMessage}
           onChangeText={setNewMessage}
           placeholder="Type a message..."
-          placeholderTextColor="#888"
+          placeholderTextColor={hexToRGBA(black, 0.5)}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
+        <GradientButton handler={handleSendMessage} padding={8} borderWidth={0}>
+          <Text style={{
+            color: hexToRGBA(black, 0.9),
+          }}>Send</Text>
+        </GradientButton>
       </View>
     </SafeAreaView>
   );
@@ -169,14 +177,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
   },
   textInput: {
     flex: 1,
     height: 40,
     borderRadius: 20,
     paddingLeft: 10,
-    backgroundColor: '#f0f0f0',
     marginRight: 10,
   },
   sendButton: {
