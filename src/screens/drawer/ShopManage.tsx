@@ -33,7 +33,7 @@ const ShopManage = () => {
       <FlatList
         ListHeaderComponent={() => (
           <View style={{
-            marginBottom: 15
+            marginBottom: 15,
           }}>
             <Text
               style={{
@@ -53,6 +53,7 @@ const ShopManage = () => {
                 gap: 5,
                 marginVertical: 8,
               }}
+              showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               keyExtractor={item => item}
               renderItem={({ item }) => (
@@ -80,17 +81,18 @@ const ShopManage = () => {
                 </TouchableOpacity>
               )}
             />
-
           </View>
         )}
         contentContainerStyle={{
-          padding: 5,
+          paddingHorizontal: 10
         }}
         data={[components[currentTab as keyof typeof components]]}
         keyExtractor={(item, i) => i.toString()}
         renderItem={({ item }) => (
           item
         )}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       />
     </SafeAreaView>
 
