@@ -35,7 +35,15 @@ const DrawerLayout = () => {
       <Drawer.Screen
         name="Profile"
         component={Profile}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true, headerStyle: {
+            backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 50,
+            borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
+            borderWidth: .5,
+          },
+          headerTintColor: themeColors.black as string,
+        }}
       />
       <Drawer.Screen
         name="Chat"
@@ -43,6 +51,7 @@ const DrawerLayout = () => {
         options={{
           headerShown: true, headerStyle: {
             backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+            height: 50
           },
           headerTintColor: themeColors.black as string,
         }}

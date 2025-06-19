@@ -1,408 +1,301 @@
-import React, { useEffect, useState } from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import CountryPicker from 'react-native-country-picker-modal';
+
 import {
   ActivityIndicator,
   Image,
-  StyleSheet,
+  ImageSourcePropType,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-
+import { Dropdown } from 'react-native-element-dropdown';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { ILogin, IUpdateProfile } from '../../../types/loginType';
+import GradientButton from '../../components/Shared/GradientButton';
+import { genderData } from '../../constant/data';
+import { OtherIcons } from '../../constant/images';
+import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import {
-  useChange_passwordMutation,
-  useGet_profileQuery,
-  useUpdateMutation,
-} from '../../Redux/Apis/authApis';
+import { useRegisterMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-const tabs = [
-  {
-    name: 'profile',
-    label: 'Profile',
-  },
-  {
-    name: 'password',
-    label: 'Password',
-  },
-]
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+
 const Profile = () => {
-  const [activeTab, setActiveTab] = useState('profile');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [oldPassword, setOldPassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const { themeColors } = useGlobalContext();
-  const [image, setImage] = useState<string | null>(null);
-  const [newImage, setNewImage] = useState<any>(null);
-  const { data, isLoading } = useGet_profileQuery(undefined);
-  const [update, { isLoading: is_updating }] = useUpdateMutation();
-  const [change, { isLoading: is_changing }] = useChange_passwordMutation();
-  // console.log(data);
-  const black = themeColors.black as string
-  const primary = themeColors.primary as string
-  const white = themeColors.white as string
-  useEffect(() => {
-    setName(data?.data?.name);
-    setEmail(data?.data?.email);
-    setPhone(data?.data?.phone?.toString());
-    setImage(data?.data?.profile_image);
-  }, [data?.data]);
+  const navigation = useNavigation<NavigationProp<ScreenParamsType>>()
+  const [passShow, setPassShow] = React.useState(true);
+  const [cPassShow, setCPassShow] = React.useState(true);
+  const [countryCode, setCountryCode] = React.useState('BD');
+  const [callingCode, setCallingCode] = React.useState('880');
+  const { themeColors, width } = useGlobalContext();
+  const [error, setError] = React.useState({
+    'name': false,
+    email: false,
+    contact: false,
+    gender: false,
+    password: false,
+    confirmPassword: false,
+  });
 
-  const handleProfileUpdate = () => {
-    const data = {
-      phone,
-      email: email,
-      name,
-    } as any;
+  const [inputValue, setInputValue] = React.useState<IUpdateProfile>({
+    'name': 'shaharul',
+    contact: '01700000000',
+    email: 'siyamoffice0273@gmail.com',
+    gender: 'male',
+  });
+  //rtk
+  const [register, { isLoading }] = useRegisterMutation()
 
-    if (newImage) {
-      const imageFile = {
-        uri: newImage.uri,
-        name: newImage?.fileName ?? 'profile.jpg',
-        type: newImage?.mimeType ?? 'image/jpeg',
-        mimeType: newImage?.mimeType ?? 'image/jpeg',
-      };
-      data.img = imageFile;
-    }
-    const formData = new FormData();
-    Object.keys(data)?.map(key => {
-      const value = data[key as keyof typeof data];
-      if (value && (typeof value == 'string' || typeof value == 'object')) {
-        formData.append(key, value);
+  const submitHandler = useCallback(() => {
+    let isInvalid = false;
+    Object.keys(inputValue).forEach(key => {
+      if (inputValue[key as keyof IUpdateProfile] === '') {
+        isInvalid = true;
+        setError(prev => ({ ...prev, [key]: true }));
+      } else {
+        setError(prev => ({ ...prev, [key]: false }));
       }
     });
-
-    update(formData)
-      .unwrap()
-      .then(res => {
-        if (res?.success) {
-          setImage(res?.data?.img);
-          setNewImage(null);
-          Toast.show({
-            type: 'success',
-            text1: 'Profile Updated',
-            text2: res?.message ?? 'Profile updated successfully',
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Update Failed',
-            text2: res?.message ?? 'Something went wrong',
-          });
-        }
-      })
-      .catch(err => {
-        Toast.show({
-          type: 'error',
-          text1: 'Update Failed',
-          text2: err?.data?.message ?? 'Something went wrong',
-        });
+    if (isInvalid) {
+      Toast.show({
+        type: 'error',
+        text1: "Please fill all fields",
+        text2: "All fields are required",
       });
-  };
-  const changePassword = () => {
+      return;
+    }
     const data = {
-      old_Password: oldPassword,
-      password: password,
-      confirm_password: confirmPassword,
-    };
-
-    change(data)
+      "name": inputValue['name'],
+      "contact": inputValue['contact'],
+      "email": inputValue['email'],
+      "gender": inputValue['gender'],
+    }
+    register(data)
       .unwrap()
-      .then(res => {
-        if (res?.success) {
-          Toast.show({
-            type: 'success',
-            text1: 'Password Changed',
-            text2: res?.message ?? 'Password changed successfully',
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Update Failed',
-            text2: res?.message ?? 'Something went wrong',
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err);
+      .then((res) => {
+        // navigation.navigate('Otp', { params: { from: "signup", email: inputValue['email'] } });
+        Toast.show({
+          type: 'success',
+          text1: "registered successfully",
+          text2: res.message,
+        });
+      }
+      )
+      .catch((err) => {
         Toast.show({
           type: 'error',
-          text1: 'Update Failed',
-          text2: err?.data?.message ?? 'Something went wrong',
+          text1: "registration failed",
+          text2: err.data?.message || "Something went wrong",
         });
-      });
-  };
+      }
+      );
+  }, [register, inputValue,]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color={primary} />
-      </View>
-    );
-  }
   return (
-    <SafeAreaView style={[styles.container, {
-      backgroundColor: hexToRGBA(white, 0.95),
-    }]}>
-      {/* Tab Buttons */}
-      <View style={styles.tabContainer}>
-        {
-          tabs.map((tab, index) => (
-            <TouchableOpacity key={index}
-              style={[
-                styles.tab,
-                activeTab === tab.name && {
-                  borderColor: primary,
-                },
-              ]}
-              onPress={() => setActiveTab(tab.name)}>
-              <Text
-                style={[
-                  styles.tabText,
-                  {
-                    color: black,
-                  },
-                  activeTab === tab.name && {
-                    color: primary,
-                  },
-                ]}>
-                {tab.label}
-              </Text>
-            </TouchableOpacity>
-          ))
-        }
-      </View>
+    <SafeAreaView
+      style={{ backgroundColor: hexToRGBA(themeColors.white as string, .95) }}
+    >
+      <ScrollView
+        style={{
+          width: '100%',
+          height: '100%',
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+          zIndex: 1
+        }}>
+        {Object.keys(inputValue).map((key, index, arr) => {
 
-      {/* Profile Tab */}
-      {activeTab === 'profile' && (
-        <View style={styles.content}>
-          <TouchableOpacity style={styles.profileImageContainer}>
-            <View
-              style={{
-                backgroundColor: themeColors.white as string,
-                borderRadius: 6,
-              }}>
-              <Image
-                source={{
-                  uri: image ? image : 'https://via.placeholder.com/100',
-                }}
-                style={styles.profileImage}
-              />
+          if (key === 'gender') {
+            return (
+              <View key={key} style={{ zIndex: 100000000 }}>
+                <Text style={[globalStyles.inputLabel, { color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string }]}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </Text>
+                <Dropdown
+                  style={[
+                    globalStyles.input,
+                    error[key as keyof ILogin] ? globalStyles.inputError : {},
+                    {
+                      borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
+                      ,
+                    },
+                  ]}
+                  data={genderData}
+                  labelField="label"
+                  valueField="value"
+                  placeholder={`Select ${key}`}
+                  value={inputValue.gender}
+                  onChange={item => {
+                    setInputValue({ ...inputValue, gender: item.value });
+                    setError({ ...error, gender: false });
+                  }}
+                  placeholderStyle={{
+                    color: themeColors.black as string,
+                  }}
+                  itemTextStyle={{ color: themeColors.black as string, }}
+                  selectedTextStyle={{ color: themeColors.black as string, }}
+                  containerStyle={{ borderRadius: 5, backgroundColor: hexToRGBA(themeColors.white as string, 1), marginTop: 40 }}
+                  renderItem={(item, selected) => (
+                    <View
+                      style={{
+                        padding: 10,
+                        backgroundColor: selected
+                          ? themeColors.secondary as string
+                          : "transparent",
+                        borderBottomWidth: 1,
+                        borderBottomColor: hexToRGBA(themeColors.white as string, 0.1),
+                      }}
+                    >
+                      <Text style={{ color: selected ? themeColors.white as string : themeColors.black as string }}>
+                        {item.label}
+                      </Text>
+                    </View>
+                  )}
+                  dropdownPosition="auto"
+                />
+              </View>
+            );
+          }
+          if (key === 'contact') {
+            return (
+              <View key={key}>
+                <Text style={[globalStyles.inputLabel, {
+                  color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string
+                }]}>{key.charAt(0).toUpperCase() + key.slice(1)}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <CountryPicker
+                    countryCode={countryCode as any}
+                    withFlag
+                    withCallingCode
+                    withFilter
+                    withCallingCodeButton
+                    onSelect={country => {
+                      setCountryCode(country.cca2);
+                      setCallingCode(country.callingCode[0]);
+                    }}
+                    containerButtonStyle={{
+                      width: 110,
+                      height: 50,
+                      paddingHorizontal: 10,
+                      justifyContent: 'center',
+                    }}
+                    theme={{
+                      onBackgroundTextColor: themeColors.black as string,
+                      backgroundColor: hexToRGBA(themeColors.white as string, 0.5),
+                    }}
+                  />
+
+                  <TextInput
+                    value={inputValue.contact}
+                    onChangeText={text => {
+                      setInputValue({ ...inputValue, contact: text });
+                      setError({ ...error, contact: false });
+                    }}
+                    placeholder={`Enter your ${key}`}
+                    // keyboardType="phone-pad"
+                    keyboardType="decimal-pad"
+                    placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
+                    style={[
+                      globalStyles.input,
+                      {
+                        paddingHorizontal: 12,
+                        borderBottomRightRadius: 8,
+                        borderWidth: 1,
+                        width: width - 150,
+                        marginBottom: 0,
+                        color: themeColors.black as string,
+                        borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
+                      },
+                    ]}
+                  />
+                </View>
+              </View>
+            );
+          }
+          return (
+            <View key={key} style={{}}>
+              <Text style={[globalStyles.inputLabel, {
+                color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string
+              }]}>
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </Text>
+              <View style={{ position: 'relative' }}>
+                <TextInput
+                  value={inputValue[key as keyof IUpdateProfile]}
+                  onChangeText={text => {
+                    setInputValue({ ...inputValue, [key]: text });
+                    setError({ ...error, [key]: false });
+                  }}
+                  placeholder={`Enter your ${key}`}
+                  placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
+                  secureTextEntry={
+                    key === 'password'
+                      ? passShow
+                      : key === 'confirmPassword'
+                        ? cPassShow
+                        : false
+                  }
+                  style={[
+                    globalStyles.input,
+                    {
+                      color: themeColors.black as string,
+                      borderColor: error[key as keyof ILogin] ? themeColors.red as string : hexToRGBA(themeColors.black as string, 0.2)
+                    }
+                  ]}
+                />
+                {(key === 'password' || key === 'confirmPassword') && (
+                  <TouchableOpacity
+                    style={{ position: 'absolute', right: 10, top: 15 }}
+                    onPress={() => {
+                      if (key === 'password') {
+                        setPassShow(!passShow);
+                      } else {
+                        setCPassShow(!cPassShow);
+                      }
+                    }}>
+                    <Image
+                      source={
+                        key === 'password'
+                          ? passShow
+                            ? (OtherIcons.Eye as ImageSourcePropType)
+                            : (OtherIcons.EyeX as ImageSourcePropType)
+                          : cPassShow
+                            ? (OtherIcons.Eye as ImageSourcePropType)
+                            : (OtherIcons.EyeX as ImageSourcePropType)
+                      }
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </TouchableOpacity>
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor: themeColors.black as string,
-                color: themeColors.black as string,
-              },
-            ]}
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-            placeholder="Full Name"
-            value={name}
-            onChangeText={setName}
-          />
-          <TextInput
-            editable={false}
-            style={[
-              styles.input,
-              {
-                borderColor: hexToRGBA(themeColors.black as string, 0.6),
-                color: hexToRGBA(themeColors.black as string, 0.6),
-              },
-            ]}
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor: themeColors.black as string,
-                color: themeColors.black as string,
-              },
-            ]}
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-            placeholder="Phone Number"
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-          <TouchableOpacity
-            onPress={handleProfileUpdate}
-            style={[
-              styles.button,
-              {
-                backgroundColor: themeColors.green as string,
-              },
-            ]}>
-            {is_updating ? (
-              <ActivityIndicator size="small" color={themeColors.white as string} />
-            ) : (
-              <Text
-                style={[
-                  styles.buttonText,
-                  {
-                    color: themeColors.white as string,
-                  },
-                ]}>
-                Update Profile
-              </Text>
-            )}
-          </TouchableOpacity>
-        </View>
-      )}
-      {/* Shop Tab */}
+          );
+        })}
 
-      {/* Change Password Tab */}
-      {activeTab === 'password' && (
-        <View style={styles.content}>
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor: themeColors.black as string,
-                color: themeColors.black as string,
-              },
-            ]}
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-            placeholder="Old Password"
-            value={oldPassword}
-            onChangeText={setOldPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor: themeColors.black as string,
-                color: themeColors.black as string,
-              },
-            ]}
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-            placeholder="New Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TextInput
-            style={[
-              styles.input,
-              {
-                borderColor: themeColors.black as string,
-                color: themeColors.black as string,
-              },
-            ]}
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry={!showPassword}
-          />
-          <TouchableOpacity
-            style={styles.toggleButton}
-            onPress={() => setShowPassword(!showPassword)}>
-            <Text
-              style={[
-                styles.toggleText,
-                {
-                  color: themeColors.black as string,
-                },
-              ]}>
-              {showPassword ? 'Hide All Passwords' : 'Show All Passwords'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={changePassword}
-            style={[
-              styles.button,
-              {
-                backgroundColor: themeColors.green as string,
-              },
-            ]}>
-            <Text
-              style={[
-                styles.buttonText,
-                {
-                  color: themeColors.white as string,
-                },
-              ]}>
-              {is_changing ? (
-                <ActivityIndicator size="small" color={themeColors.white as string} />
-              ) : (
-                'Change Password'
-              )}
-            </Text>
-          </TouchableOpacity>
+        <View style={{ paddingHorizontal: 25, marginBottom: 120, }}>
+          <GradientButton handler={() => submitHandler()}>
+            {
+              isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: '700',
+                  fontSize: 18,
+                }}>
+                Sign Up
+              </Text>
+            }
+
+          </GradientButton>
         </View>
-      )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  tab: { padding: 10, borderBottomWidth: 2, borderColor: 'transparent' },
-  tabText: { fontSize: 16 },
-  content: { alignItems: 'center', width: '100%' },
-  profileImageContainer: { position: 'relative', marginBottom: 20 },
-  profileImage: { width: 100, height: 100, borderRadius: 50 },
-  uploadIcon: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    padding: 5,
-    borderRadius: 15,
-  },
-  uploadText: { fontSize: 18 },
-  input: {
-    width: '90%',
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 10,
-    width: '90%',
-    alignItems: 'center',
-  },
-  loaderContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 200,
-  },
-  buttonText: { fontSize: 16, fontWeight: 'bold' },
-  toggleButton: {
-    marginTop: 10,
-    padding: 5,
-  },
-  toggleText: {
-    fontSize: 14,
-  },
-});
 
 export default Profile;

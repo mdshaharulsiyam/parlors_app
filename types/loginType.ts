@@ -43,13 +43,10 @@ export interface IInvoiceForm {
   status: string;
 }
 export interface IUpdateProfile {
-  'first name': string;
-  'last name': string;
+  'name': string;
   email: string;
   contact: string;
   gender: string;
-  'N°SIREN': string;
-  address: string;
 }
 
 export interface IChangePassword {
