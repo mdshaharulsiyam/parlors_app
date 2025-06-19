@@ -57,3 +57,19 @@ export interface IImage {
   type: string,
   mimeType: string,
 }
+
+export interface IShopInput {
+  name: string,
+  email: string,
+  contact: string,
+}
+export interface IShopInputLabel {
+  name: string,
+  email: string,
+  contact: string,
+}
+export interface IShopInputError {
+  name: boolean,
+  email: boolean,
+  contact: boolean,
+}
