@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 
 // Dummy message generator wrapped in useMemo
 const useDummyMessages = (count: number) => {
@@ -62,7 +64,9 @@ const MapMessages = ({ id }: { id: string }) => {
 const Messages = ({ route }: any) => {
   const { id } = route.params;
   const [newMessage, setNewMessage] = useState('');
-
+  const { themeColors } = useGlobalContext();
+  const black = themeColors.black as string
+  const white = themeColors.white as string
   const handleSendMessage = useCallback(() => {
     if (newMessage.trim()) {
       console.log('Sending:', newMessage);
@@ -71,20 +75,28 @@ const Messages = ({ route }: any) => {
   }, [newMessage]);
 
   const renderHeader = useCallback(() => (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer, {
+      backgroundColor: hexToRGBA(black, 0.1),
+    }]}>
       <Image
         source={{ uri: 'https://randomuser.me/api/portraits/women/1.jpg' }}
         style={styles.profileImage}
       />
       <View style={styles.headerTextContainer}>
-        <Text style={styles.name}>Alice Smith</Text>
-        <Text style={styles.lastMessageTime}>30 minutes ago</Text>
+        <Text style={[styles.name, {
+          color: hexToRGBA(black, 0.9),
+        }]}>Alice Smith</Text>
+        <Text style={[styles.lastMessageTime, {
+          color: hexToRGBA(black, 0.7),
+        }]}>30 minutes ago</Text>
       </View>
     </View>
   ), []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, {
+      backgroundColor: hexToRGBA(white, 0.95),
+    }]}>
       {renderHeader()}
       <MapMessages id={id} />
       <View style={styles.footerContainer}>
@@ -107,13 +119,11 @@ const Messages = ({ route }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
   },
   headerContainer: {
     flexDirection: 'row',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
   profileImage: {
     width: 50,
