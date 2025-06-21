@@ -52,13 +52,11 @@ const FilterOptions = () => {
           Filter by
         </Text>
         <TouchableOpacity onPress={() => setModalOpen(false)}>
-          <Text>Close</Text>
+          <Text style={{ color: themeColors.black as string }}>Close</Text>
         </TouchableOpacity>
       </View>
 
-      <View>
-        <SearchInput inputWidth="100%" />
-      </View>
+      <SearchInput inputWidth="100%" />
       {/* district */}
       {
         Object.entries(inputValue).map(([key, value]) => (
