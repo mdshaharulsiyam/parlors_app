@@ -4,6 +4,7 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DatePicker from 'react-native-date-picker';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { commonStyles } from '../../utils/styles/Styles';
+import GradientButton from '../Shared/GradientButton';
 
 interface Time {
   checked: boolean;
@@ -67,7 +68,7 @@ const AvailableTime: React.FC = () => {
       }));
     }
     setOpenFromPicker(false);
-    setTimeout(() => setOpenToPicker(true), 300); // Optional: Automatically open "to" picker next
+    setTimeout(() => setOpenToPicker(true), 300);
   };
 
   const handleToTimeChange = (date: Date): void => {
@@ -92,17 +93,17 @@ const AvailableTime: React.FC = () => {
 
   return (
     <View style={[styles.container, {
-      backgroundColor: themeColors.background
+      backgroundColor: themeColors.white as string
     }]}>
-      <TouchableOpacity style={[commonStyles.Button, {
-        backgroundColor: themeColors.green as string2,
-        borderColor: themeColors.green as string2,
-        marginBottom: 20
-      }]} onPress={handleSelectSameTimeForAll}>
+      <GradientButton handler={() => { }}>
         <Text style={[commonStyles.ButtonText, {
-          color: themeColors.green as string
-        }]}>Set Same Time for All Days</Text>
-      </TouchableOpacity>
+          color: themeColors.black as string,
+          textAlign: 'center',
+          textTransform: 'capitalize',
+        }]}>
+          Set Same Time for All Days
+        </Text>
+      </GradientButton>
 
       <Text style={styles.header}>Availability</Text>
 
