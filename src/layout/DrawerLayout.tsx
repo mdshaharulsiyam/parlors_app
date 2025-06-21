@@ -5,6 +5,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React from 'react';
+import NameImage from '../components/Shared/NameImage';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
 import About from '../screens/drawer/About';
 import Booking from '../screens/drawer/Booking';
@@ -109,7 +110,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
   return (
     <DrawerContentScrollView {...props} style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       {/* <DrawerItemList {...props} /> */}
-
+      <NameImage />
       <DrawerItem
         style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), marginBottom: 10 }}
         labelStyle={{ color: themeColors.black as string }}
