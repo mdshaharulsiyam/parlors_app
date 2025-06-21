@@ -24,7 +24,7 @@ const SearchInput = () => {
         {
           paddingHorizontal: 3,
           position: 'relative',
-          width: width - 70,
+          width: "100%",
         },
       ]}>
       <Input
