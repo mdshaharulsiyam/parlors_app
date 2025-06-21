@@ -1,19 +1,17 @@
 import React from 'react';
 import {
-  Dimensions,
   Image,
   ImageSourcePropType,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import Input from './Input';
-const SearchInput = () => {
-  const { width } = Dimensions.get('window');
-  const { themeColors, search, setSearch } = useGlobalContext();
+const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
+  const { themeColors, search, setSearch, width } = useGlobalContext();
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
@@ -24,7 +22,7 @@ const SearchInput = () => {
         {
           paddingHorizontal: 3,
           position: 'relative',
-          width: "100%",
+          width: inputWidth || width - 70,
         },
       ]}>
       <Input

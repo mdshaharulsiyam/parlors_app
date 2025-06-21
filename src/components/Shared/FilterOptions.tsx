@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
@@ -15,8 +15,7 @@ import SearchInput from './SearchInput';
 
 
 const FilterOptions = () => {
-  const { width } = Dimensions.get('window');
-  const { themeColors, search, setSearch } = useGlobalContext();
+  const { themeColors, search, setSearch, setModalOpen } = useGlobalContext();
   const [inputValue, setInputValue] = useState<IAddressInput>({
     district: '',
     sub_district: '',
@@ -34,6 +33,7 @@ const FilterOptions = () => {
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
+    setModalOpen(false);
   };
   return (
     <ScrollView
@@ -41,18 +41,23 @@ const FilterOptions = () => {
         padding: 8,
         backgroundColor: themeColors.white as string,
       }}>
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: '700',
-          marginBottom: 10,
-          color: themeColors.black as string,
-        }}>
-        Filter by
-      </Text>
+      <View style={{ paddingVertical: 10, flexDirection: "row", justifyContent: "space-between" }}>
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '700',
+            marginBottom: 10,
+            color: themeColors.black as string,
+          }}>
+          Filter by
+        </Text>
+        <TouchableOpacity onPress={() => setModalOpen(false)}>
+          <Text>Close</Text>
+        </TouchableOpacity>
+      </View>
 
       <View>
-        <SearchInput />
+        <SearchInput inputWidth="100%" />
       </View>
       {/* district */}
       {
