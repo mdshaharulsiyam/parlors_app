@@ -3,6 +3,7 @@ import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DatePicker from 'react-native-date-picker';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import GradientButton from '../Shared/GradientButton';
 
@@ -105,24 +106,24 @@ const AvailableTime: React.FC = () => {
         </Text>
       </GradientButton>
 
-      <Text style={styles.header}>Availability</Text>
+      <Text style={[styles.header, {
+        color: themeColors.black as string,
+      }]}>Availability</Text>
 
       {Object.entries(selectedTime).map(([day, time]) => (
         <View key={day} style={[styles.dayCard, {
-          backgroundColor: themeColors.background,
-          shadowColor: themeColors.black as string,
-          borderColor: themeColors.white as string
+          backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
         }]}>
           <View style={styles.dayHeader}>
             <BouncyCheckbox
               size={26}
-              fillColor={themeColors.green as string}
+              fillColor={themeColors.primary as string}
               text={day.charAt(0).toUpperCase() + day.slice(1)}
               textStyle={[styles.dayText, { textDecorationLine: 'none', color: themeColors.black as string }]}
               isChecked={time.checked}
               onPress={() => handleCheckboxChange(day as keyof SelectedTime)}
               bounceEffect={1.3}
-              iconStyle={{ borderColor: themeColors.green as string, borderRadius: 4 }}
+              iconStyle={{ borderColor: themeColors.primary as string, borderRadius: 4 }}
               innerIconStyle={{ borderWidth: 2, borderRadius: 4 }}
             />
           </View>
@@ -131,15 +132,15 @@ const AvailableTime: React.FC = () => {
             <View style={styles.timeButtonsContainer}>
               <TouchableOpacity
                 style={[commonStyles.Button, {
-                  backgroundColor: themeColors.green as string,
-                  borderColor: themeColors.green as string
+                  backgroundColor: themeColors.white as string,
+                  borderColor: themeColors.white as string
                 }]}
                 onPress={() => openFromTimePicker(day as keyof SelectedTime)}
               >
                 <Text style={[
                   commonStyles.ButtonText,
                   {
-                    color: themeColors.green as string
+                    color: themeColors.black as string
                   }
                 ]}>
                   From: {time.from ? time.from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Select'}
@@ -147,15 +148,15 @@ const AvailableTime: React.FC = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={[commonStyles.Button, {
-                  backgroundColor: themeColors.green as string2,
-                  borderColor: themeColors.green as string2
+                  backgroundColor: themeColors.white as string,
+                  borderColor: themeColors.white as string
                 }]}
                 onPress={() => openToTimePicker(day as keyof SelectedTime)}
               >
                 <Text style={[
                   commonStyles.ButtonText,
                   {
-                    color: themeColors.green as string
+                    color: themeColors.black as string
                   }
                 ]}>
                   To: {time.to ? time.to.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Select'}
@@ -201,8 +202,8 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
+    marginBottom: 10,
+    marginTop: 20,
   },
   dayCard: {
     borderRadius: 12,
