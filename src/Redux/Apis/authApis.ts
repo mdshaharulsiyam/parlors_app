@@ -28,7 +28,7 @@ const auth_apis = parlorsApi.injectEndpoints({
     }),
     verify_otp: builder.mutation({
       query: (data) => ({
-        url: `/auth/verify-code`,
+        url: `/verification/verify`,
         method: "POST",
         body: data
       }),
