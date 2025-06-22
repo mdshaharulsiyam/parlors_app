@@ -108,7 +108,6 @@ const DrawerLayout = () => {
 };
 
 
-// Custom Drawer Content Component
 function DrawerContent(props: DrawerContentComponentProps) {
   const { themeColors, role } = useGlobalContext();
 
