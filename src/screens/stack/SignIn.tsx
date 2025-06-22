@@ -126,9 +126,6 @@ const SignIn = () => {
   return (
     <SafeAreaView
       style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: hexToRGBA(themeColors.white as string, .95) }}>
-      <View style={{ marginTop: -60 }}>
-        <Image source={OtherIcons.Logo as ImageSourcePropType} height={100} width={100} />
-      </View>
       {/* form */}
       <View style={{ width: '100%', paddingHorizontal: 20 }}>
         {Object.keys(inputValue).map((key, index) => (

@@ -57,7 +57,6 @@ const FilterOptions = () => {
       </View>
 
       <SearchInput inputWidth="100%" />
-      {/* district */}
       {
         Object.entries(inputValue).map(([key, value]) => (
           <View key={key} style={styles.selectContainer}>
