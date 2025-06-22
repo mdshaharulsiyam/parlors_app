@@ -5,7 +5,7 @@ import { Dimensions, useColorScheme } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Colors, ITheme } from '../constant/colors';
 import { useGet_profileQuery } from '../Redux/Apis/authApis';
-import { setToken } from '../Redux/States/userSlice';
+import { setRole, setToken, setUser } from '../Redux/States/userSlice';
 import { IUserProfile } from '../utils/types/Types';
 
 interface GlobalContextType {
@@ -16,8 +16,6 @@ interface GlobalContextType {
   modalOpen: boolean;
   width: number;
   height: number;
-  role: string;
-  setRole: (arg1: string) => void;
   profile: IUserProfile | null;
 }
 
@@ -38,9 +36,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
-  const [role, setRole] = useState<string>('');
-  const { data, isLoading, error } = useGet_profileQuery(undefined)
-  console.log(data)
+  const { data } = useGet_profileQuery(undefined)
   const values = {
     themeColors,
     setSearch,
@@ -49,18 +45,21 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     modalOpen,
     width,
     height,
-    role,
-    setRole,
     profile: data?.data,
   };
   useEffect(() => {
     const getData = async () => {
       try {
-        const role = await AsyncStorage.getItem('role');
-        const token = await AsyncStorage.getItem('token');
+        const [role, token] = await Promise.all([
+          AsyncStorage.getItem('role'),
+          AsyncStorage.getItem('token'),
+        ]);
         if (role && token) {
-          setRole(role)
-          dispatch(setToken(token))
+          await Promise.all([
+            dispatch(setRole(role)),
+            dispatch(setToken(token)),
+            dispatch(setUser(data?.data)),
+          ])
         }
       } catch (error) {
         console.log(error);
