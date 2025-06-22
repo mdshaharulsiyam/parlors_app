@@ -61,7 +61,7 @@ export interface GoogleSignInResponse {
   type: 'success' | 'error';
 }
 const SignIn = () => {
-  const { themeColors } = useGlobalContext();
+  const { themeColors, setToken, setRole } = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
   const { signIn: signInHandler, isLoading } = useLogin()
@@ -93,11 +93,12 @@ const SignIn = () => {
       });
     }
     const storeData = async (res: any) => {
-
       await Promise.all([
         AsyncStorage.setItem('token', res?.token),
         AsyncStorage.setItem('role', JSON.stringify(res?.role)),
       ])
+      setToken(res?.token)
+      setRole(res?.role)
       navigate.navigate('Tabs', { screen: 'Home' })
     }
     signInHandler(inputValue, storeData)

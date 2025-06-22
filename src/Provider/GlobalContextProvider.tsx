@@ -16,6 +16,8 @@ interface GlobalContextType {
   height: number;
   role: string;
   setRole: (arg1: string) => void;
+  token: string;
+  setToken: (arg1: string) => void;
 }
 
 interface GlobalProviderProps {
@@ -34,6 +36,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
   const [role, setRole] = useState<string>('');
+  const [token, setToken] = useState<string>('');
   const values = {
     themeColors,
     setSearch,
@@ -43,14 +46,18 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     width,
     height,
     role,
-    setRole
+    setRole,
+    token,
+    setToken
   };
   useEffect(() => {
     const getData = async () => {
       try {
         const role = await AsyncStorage.getItem('role');
-        if (role) {
+        const token = await AsyncStorage.getItem('token');
+        if (role && token) {
           setRole(role)
+          setToken(token)
         }
       } catch (error) {
         console.log(error);
