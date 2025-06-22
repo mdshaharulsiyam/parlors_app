@@ -16,7 +16,6 @@ const ParlorCard = ({
   width?: any;
   height?: any;
 }) => {
-  console.log(width, height);
   const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
   return (

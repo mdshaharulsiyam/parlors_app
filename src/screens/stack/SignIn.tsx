@@ -14,12 +14,14 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
 import { ILogin } from '../../../types/loginType';
 import { useLogin } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setToken } from '../../Redux/States/userSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 export const signIn = async () => {
@@ -61,7 +63,9 @@ export interface GoogleSignInResponse {
   type: 'success' | 'error';
 }
 const SignIn = () => {
-  const { themeColors, setToken, setRole } = useGlobalContext();
+  const dispatch = useDispatch()
+
+  const { themeColors, setRole } = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
   const { signIn: signInHandler, isLoading } = useLogin()
@@ -97,7 +101,7 @@ const SignIn = () => {
         AsyncStorage.setItem('token', res?.token),
         AsyncStorage.setItem('role', JSON.stringify(res?.role)),
       ])
-      setToken(res?.token)
+      dispatch(setToken(res?.token))
       setRole(res?.role)
       navigate.navigate('Tabs', { screen: 'Home' })
     }

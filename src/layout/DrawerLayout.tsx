@@ -6,8 +6,10 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import NameImage from '../components/Shared/NameImage';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import { setToken } from '../Redux/States/userSlice';
 import About from '../screens/drawer/About';
 import Booking from '../screens/drawer/Booking';
 import ChangePassword from '../screens/drawer/ChangePassword';
@@ -110,13 +112,14 @@ const DrawerLayout = () => {
 
 
 function DrawerContent(props: DrawerContentComponentProps) {
-  const { themeColors, role, setToken, setRole } = useGlobalContext();
+  const dispatch = useDispatch()
+  const { themeColors, role, setRole } = useGlobalContext();
   const logout = async () => {
     await Promise.all([
       AsyncStorage.removeItem('token'),
       AsyncStorage.removeItem('role'),
     ])
-    setToken('')
+    dispatch(setToken(''))
     setRole('')
     props.navigation.reset({
       index: 0,

@@ -92,3 +92,23 @@ export interface IAddressInputError {
   post: boolean,
   street_address: boolean,
 }
+export interface IUserProfile {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  img: string | null;
+  gender: string;
+  role: string;
+  block: boolean;
+  is_verified: boolean;
+  provider: string;
+  accessToken: string;
+  use_type: string;
+  is_identity_verified: boolean;
+  documents: any[];
+  stripe: any;
+  point: number;
+  createdAt: string;
+  updatedAt: string;
+}
