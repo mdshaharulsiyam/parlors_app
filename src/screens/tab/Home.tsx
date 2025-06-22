@@ -31,16 +31,14 @@ const Home = () => {
         <View
           style={{
             width,
-            height, //: height - 200,
+            height: height - 100,
             backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
-            // bottom: 0,
-            // position: 'absolute',
             zIndex: 50000000,
           }}>
           <FilterOptions />
         </View>
       </Modal>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 };
 
