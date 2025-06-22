@@ -28,14 +28,14 @@ const Verify = () => {
         text2: "Please enter a valid 6-digit OTP.",
       });
     };
-    verifyOtp({ code, email }, () => from == "signup" ? navigate.navigate('Reset') : navigate.navigate('Login'))
+    verifyOtp({ code, email }, () => from == "signup" ? navigate.navigate('Login') : navigate.navigate('Reset'))
 
   }, [code, from, email])
 
 
   return (
     <SafeAreaView
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: hexToRGBA(themeColors.white as string, .95) }}>
       <View>
         <Image source={OtherIcons.Logo as ImageSourcePropType} style={{
           height: 100,
