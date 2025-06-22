@@ -1,6 +1,6 @@
 
 export const genderData = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Others', value: 'others' },
+  { label: 'Male', value: 'MALE' },
+  { label: 'Female', value: 'FEMALE' },
+  { label: 'Others', value: 'OTHERS' },
 ];

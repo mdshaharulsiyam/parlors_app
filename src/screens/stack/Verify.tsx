@@ -36,8 +36,11 @@ const Verify = () => {
   return (
     <SafeAreaView
       style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <View style={{ marginTop: -60 }}>
-        <Image source={OtherIcons.Logo as ImageSourcePropType} height={100} width={100} />
+      <View>
+        <Image source={OtherIcons.Logo as ImageSourcePropType} style={{
+          height: 100,
+          width: 100,
+        }} />
       </View>
       {/* form */}
       <View style={{ width: '90%', paddingHorizontal: 20 }}>

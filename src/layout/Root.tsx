@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { StatusBar, useColorScheme } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import GlobalContextProvider from '../Provider/GlobalContextProvider';
 import DrawerLayout from './DrawerLayout';
@@ -18,7 +19,7 @@ const Root = () => {
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <GlobalContextProvider>
-        <DrawerLayout />
+        <DrawerLayout /> <Toast />
       </GlobalContextProvider>
     </NavigationContainer>
   );

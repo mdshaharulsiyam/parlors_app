@@ -16,12 +16,12 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { ILogin, ISignUp } from '../../../types/loginType';
+import useSignup from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { genderData } from '../../constant/data';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useRegisterMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 import { signIn } from './SignIn';
@@ -41,17 +41,16 @@ const SignUp = () => {
     password: false,
     confirmPassword: false,
   });
-
   const [inputValue, setInputValue] = React.useState<ISignUp>({
     'name': 'shaharul',
     contact: '01700000000',
     email: 'siyamoffice0273@gmail.com',
-    gender: 'male',
+    gender: 'MALE',
     password: '123456',
     confirmPassword: '123456',
   });
-  //rtk
-  const [register, { isLoading }] = useRegisterMutation()
+  //api calls
+  const { register, isLoading: isLoadingSignup } = useSignup()
 
   const submitHandler = useCallback(() => {
     let isInvalid = false;
@@ -73,31 +72,18 @@ const SignUp = () => {
     }
     const data = {
       "name": inputValue['name'],
-      "contact": inputValue['contact'],
+      "phone": inputValue['contact'],
       "email": inputValue['email'],
       "gender": inputValue['gender'],
-      "password": inputValue['password']
+      "password": inputValue['password'],
+      "confirm_password": inputValue['confirmPassword']
     }
-    register(data)
-      .unwrap()
-      .then((res) => {
-        // navigation.navigate('Otp', { params: { from: "signup", email: inputValue['email'] } });
-        Toast.show({
-          type: 'success',
-          text1: "registered successfully",
-          text2: res.message,
-        });
-      }
-      )
-      .catch((err) => {
-        Toast.show({
-          type: 'error',
-          text1: "registration failed",
-          text2: err.data?.message || "Something went wrong",
-        });
-      }
-      );
-  }, [register, inputValue,]);
+    // navigation.navigate('Otp', { params: { from: "signup", email: inputValue['email'] } });
+
+    register(data, () => {
+      navigation.navigate('Verify', { from: "signup", email: inputValue['email'] });
+    })
+  }, [inputValue, register]);
 
   return (
     <SafeAreaView
@@ -295,7 +281,7 @@ const SignUp = () => {
         <View style={{ paddingHorizontal: 25 }}>
           <GradientButton handler={() => submitHandler()}>
             {
-              isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <Text
+              isLoadingSignup ? <ActivityIndicator size="large" color="#FFFFFF" /> : <Text
                 style={{
                   color: 'white',
                   textAlign: 'center',
@@ -320,7 +306,7 @@ const SignUp = () => {
         <View style={{ marginBottom: 120, marginTop: 20 }}>
           <GradientButton handler={() => signIn()}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+              isLoadingSignup ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
                 style={{
                   color: 'white',
                   textAlign: 'center',
