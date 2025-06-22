@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
@@ -111,7 +112,13 @@ const DrawerLayout = () => {
 // Custom Drawer Content Component
 function DrawerContent(props: DrawerContentComponentProps) {
   const { themeColors, role } = useGlobalContext();
-
+  const logout = async () => {
+    await Promise.all([
+      AsyncStorage.removeItem('token'),
+      AsyncStorage.removeItem('role'),
+    ])
+    props.navigation.navigate('SignIn');
+  }
   const baseStyle = {
     backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
     marginBottom: 10,
@@ -129,6 +136,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
       role ? { label: 'Change Password', screen: 'changePassword' } : null,
       { label: 'Privacy', screen: 'Privacy' },
       { label: 'About', screen: 'About' },
+      { label: 'Logout', action: () => logout() },
       { label: 'Close Drawer', action: () => props.navigation.closeDrawer() },
     ].filter(Boolean);
   }, [role, props.navigation]);
