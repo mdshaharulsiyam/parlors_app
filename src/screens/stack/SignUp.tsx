@@ -269,7 +269,7 @@ const SignUp = () => {
                             ? (OtherIcons.Eye as ImageSourcePropType)
                             : (OtherIcons.EyeX as ImageSourcePropType)
                       }
-                      style={{ width: 20, height: 20 }}
+                      style={{ width: 20, height: 20, tintColor: themeColors.black as string }}
                     />
                   </TouchableOpacity>
                 )}

@@ -4,6 +4,7 @@ import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View }
 import { OtpInput } from 'react-native-otp-entry';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useVerifyOtp } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
@@ -12,25 +13,24 @@ import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const Verify = () => {
   const route = useRoute();
-  const params = route?.params as { params: { from: string; email: string } };
-  const from = params?.params?.from;
+  const params = route?.params as { from: string; email: string };
+  const from = params?.from;
+  const email = params?.email;
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const { themeColors } = useGlobalContext();
   const [code, setCode] = useState('')
-
-
-
-
+  const { verifyOtp, isLoading } = useVerifyOtp()
   const handleOtpChange = useCallback(() => {
     if (code?.length != 6) {
-      Toast.show({
+      return Toast.show({
         type: 'error',
         text1: "Invalid OTP",
         text2: "Please enter a valid 6-digit OTP.",
       });
     };
-    navigate.navigate('Reset')
-  }, [code, from])
+    verifyOtp({ code, email }, () => from == "signup" ? navigate.navigate('Reset') : navigate.navigate('Login'))
+
+  }, [code, from, email])
 
 
   return (
@@ -97,7 +97,7 @@ const Verify = () => {
           <GradientButton
             handler={handleOtpChange}>
             {
-              false ? <ActivityIndicator size="small" color="#0000ff" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color="#0000ff" /> : <Text
                 style={{
                   color: 'white',
                   textAlign: 'center',
