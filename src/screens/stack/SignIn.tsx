@@ -14,14 +14,14 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ILogin } from '../../../types/loginType';
 import { useLogin } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { setToken } from '../../Redux/States/userSlice';
+import { setRole, setToken } from '../../Redux/States/userSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 export const signIn = async () => {
@@ -65,7 +65,7 @@ export interface GoogleSignInResponse {
 const SignIn = () => {
   const dispatch = useDispatch()
 
-  const { themeColors, setRole } = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
   const { signIn: signInHandler, isLoading } = useLogin()
@@ -102,7 +102,7 @@ const SignIn = () => {
         AsyncStorage.setItem('role', JSON.stringify(res?.role)),
       ])
       dispatch(setToken(res?.token))
-      setRole(res?.role)
+      dispatch(setRole(res?.role))
       navigate.navigate('Tabs', { screen: 'Home' })
     }
     signInHandler(inputValue, storeData)
