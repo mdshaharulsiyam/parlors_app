@@ -78,7 +78,6 @@ const SignUp = () => {
       "password": inputValue['password'],
       "confirm_password": inputValue['confirmPassword']
     }
-    // navigation.navigate('Otp', { params: { from: "signup", email: inputValue['email'] } });
 
     register(data, () => {
       navigation.navigate('Verify', { from: "signup", email: inputValue['email'] });

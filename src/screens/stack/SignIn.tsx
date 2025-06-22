@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { Link, NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -15,11 +15,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { ILogin } from '../../../types/loginType';
+import { useLogin } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useLoginMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 export const signIn = async () => {
@@ -61,12 +61,10 @@ export interface GoogleSignInResponse {
   type: 'success' | 'error';
 }
 const SignIn = () => {
-  const [isSigninInProgress, setIsSigninInProgress] = useState(false);
   const { themeColors } = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
-  const [login, { isLoading }] = useLoginMutation();
   const [passShow, setPassShow] = React.useState(true);
-
+  const { signIn: signInHandler, isLoading } = useLogin()
   const [error, setError] = React.useState({
     email: false,
     password: false,
@@ -77,7 +75,7 @@ const SignIn = () => {
     password: '123456',
   });
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     let isInvalid = false;
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof ILogin] === '') {
@@ -94,34 +92,16 @@ const SignIn = () => {
         text2: 'Please fill all fields',
       });
     }
-    login(inputValue)
-      .unwrap()
-      .then(async (res) => {
-        console.log(res)
-        Toast.show({
-          type: 'success',
-          text1: 'Login successfully',
-          text2: res.data?.message || 'Welcome back!',
-        });
-        await Promise.all([
-          AsyncStorage.setItem('token', res.token),
-          AsyncStorage.setItem('user', JSON.stringify(res.user)),
-        ])
-        // navigate.navigate('Tabs');
-      }
-      )
-      .catch(err => {
-        console.log(err)
-        Toast.show({
-          type: 'error',
-          text1: 'Login failed',
-          text2: err.data?.message || 'An error occurred',
-        });
-      }
-      );
-    // if (inputValue.email !== '' && inputValue.password !== '') {
-    //   navigate.navigate('Tabs');
-    // }
+    const storeData = async (res: any) => {
+
+      await Promise.all([
+        AsyncStorage.setItem('token', res?.token),
+        AsyncStorage.setItem('role', JSON.stringify(res?.role)),
+      ])
+      navigate.navigate('Tabs', { screen: 'Home' })
+    }
+
+    signInHandler(inputValue, storeData)
   };
   return (
     <SafeAreaView

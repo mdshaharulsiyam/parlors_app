@@ -7,7 +7,7 @@ const useSignup = () => {
     signup(data)
       .unwrap()
       .then((res) => {
-        console.log(res, 'res')
+
         Toast.show({
           type: 'success',
           text1: 'Sign up successfully',
@@ -16,7 +16,6 @@ const useSignup = () => {
         handler?.()
       })
       .catch((err) => {
-        console.log(err, 'err')
         Toast.show({
           type: 'error',
           text1: 'Sign up failed',
@@ -28,17 +27,22 @@ const useSignup = () => {
 }
 export const useLogin = () => {
   const [login, { isLoading }] = useLoginMutation()
-  const submitHandler = (data: any, handler?: () => void) => {
+  const signIn = (data: any, handler?: (res: any) => void) => {
     login(data)
       .unwrap()
       .then((res) => {
-        console.log(res, 'res')
+        const data = {
+          token: res?.token,
+          role: res?.role,
+        }
+        handler?.(data)
         Toast.show({
           type: 'success',
           text1: 'Login successfully',
           text2: res?.message || 'Welcome back!',
         })
-        handler?.()
+
+
       })
       .catch((err) => {
         console.log(err, 'err')
@@ -49,7 +53,7 @@ export const useLogin = () => {
         })
       })
   }
-  return { login, isLoading }
+  return { signIn, isLoading }
 }
 export const useVerifyOtp = () => {
   const [verify, { isLoading }] = useVerify_otpMutation()
@@ -57,7 +61,6 @@ export const useVerifyOtp = () => {
     verify(data)
       .unwrap()
       .then((res) => {
-        console.log(res, 'res')
         Toast.show({
           type: 'success',
           text1: 'Otp verified successfully',
@@ -82,7 +85,6 @@ export const useForgetPassword = () => {
     forgetPassword(data)
       .unwrap()
       .then((res) => {
-        console.log(res, 'res')
         Toast.show({
           type: 'success',
           text1: 'Forget password successfully',
@@ -107,7 +109,6 @@ export const useResetPassword = () => {
     resetPassword(data)
       .unwrap()
       .then((res) => {
-        console.log(res, 'res')
         Toast.show({
           type: 'success',
           text1: 'Reset password successfully',
@@ -132,7 +133,6 @@ export const useChangePassword = () => {
     changePassword(data)
       .unwrap()
       .then((res) => {
-        console.log(res, 'res')
         Toast.show({
           type: 'success',
           text1: 'Change password successfully',
@@ -141,7 +141,6 @@ export const useChangePassword = () => {
         handler?.()
       })
       .catch((err) => {
-        console.log(err, 'err')
         Toast.show({
           type: 'error',
           text1: 'Change password failed',
