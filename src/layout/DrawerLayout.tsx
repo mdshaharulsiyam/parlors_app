@@ -6,8 +6,10 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import NameImage from '../components/Shared/NameImage';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import { setToken } from '../Redux/States/userSlice';
 import About from '../screens/drawer/About';
 import Booking from '../screens/drawer/Booking';
 import ChangePassword from '../screens/drawer/ChangePassword';
@@ -16,7 +18,7 @@ import Privacy from '../screens/drawer/Privacy';
 import Profile from '../screens/drawer/Profile';
 import ShopManage from '../screens/drawer/ShopManage';
 import { hexToRGBA } from '../utils/hexToRGBA';
-import TabLayout from './TabLayout'; // Contains tab navigation
+import TabLayout from './TabLayout';
 
 const Drawer = createDrawerNavigator();
 
@@ -110,13 +112,19 @@ const DrawerLayout = () => {
 
 
 function DrawerContent(props: DrawerContentComponentProps) {
-  const { themeColors, role } = useGlobalContext();
+  const dispatch = useDispatch()
+  const { themeColors, role, setRole } = useGlobalContext();
   const logout = async () => {
     await Promise.all([
       AsyncStorage.removeItem('token'),
       AsyncStorage.removeItem('role'),
     ])
-    props.navigation.navigate('SignIn');
+    dispatch(setToken(''))
+    setRole('')
+    props.navigation.reset({
+      index: 0,
+      routes: [{ name: 'Tabs', params: { screen: 'Stacks', params: { screen: 'SignIn' } } }],
+    });
   }
   const baseStyle = {
     backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
@@ -126,8 +134,8 @@ function DrawerContent(props: DrawerContentComponentProps) {
 
   const menuItems = useMemo(() => {
     return [
-      { label: 'Chat', screen: 'Chat' },
-      { label: 'Booking', screen: 'Booking' },
+      role ? { label: 'Chat', screen: 'Chat' } : null,
+      role ? { label: 'Booking', screen: 'Booking' } : null,
       role ? { label: 'Profile', screen: 'Profile' } : null,
       role === 'VENDOR' ? { label: 'Manage Shop', screen: 'ShopManage' } : null,
       !role ? { label: 'Sign in', screen: 'SignIn', isStack: true } : null,
@@ -135,7 +143,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
       role ? { label: 'Change Password', screen: 'changePassword' } : null,
       { label: 'Privacy', screen: 'Privacy' },
       { label: 'About', screen: 'About' },
-      { label: 'Logout', action: () => logout() },
+      role ? { label: 'Logout', action: () => logout() } : null,
       { label: 'Close Drawer', action: () => props.navigation.closeDrawer() },
     ].filter(Boolean);
   }, [role, props.navigation]);

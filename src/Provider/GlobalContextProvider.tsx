@@ -2,9 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
-import { Provider } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Colors, ITheme } from '../constant/colors';
-import { store } from '../Redux/store';
+import { useGet_profileQuery } from '../Redux/Apis/authApis';
+import { setToken } from '../Redux/States/userSlice';
+import { IUserProfile } from '../utils/types/Types';
 
 interface GlobalContextType {
   themeColors: ITheme;
@@ -16,12 +18,14 @@ interface GlobalContextType {
   height: number;
   role: string;
   setRole: (arg1: string) => void;
+  profile: IUserProfile | null;
 }
 
 interface GlobalProviderProps {
   children: ReactNode;
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
+
 const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   GoogleSignin.configure({
     webClientId:
@@ -29,11 +33,14 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     forceCodeForRefreshToken: false,
   });
+  const dispatch = useDispatch()
   const { width, height } = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
   const [role, setRole] = useState<string>('');
+  const { data, isLoading, error } = useGet_profileQuery(undefined)
+  console.log(data)
   const values = {
     themeColors,
     setSearch,
@@ -43,14 +50,17 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     width,
     height,
     role,
-    setRole
+    setRole,
+    profile: data?.data,
   };
   useEffect(() => {
     const getData = async () => {
       try {
         const role = await AsyncStorage.getItem('role');
-        if (role) {
+        const token = await AsyncStorage.getItem('token');
+        if (role && token) {
           setRole(role)
+          dispatch(setToken(token))
         }
       } catch (error) {
         console.log(error);
@@ -60,7 +70,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   }, [])
   return (
     <GlobalContext.Provider value={values}>
-      <Provider store={store}>{children}</Provider>
+      {children}
     </GlobalContext.Provider>
   );
 };
