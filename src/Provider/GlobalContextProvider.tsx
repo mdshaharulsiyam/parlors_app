@@ -39,8 +39,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
   const [role, setRole] = useState<string>('');
-  const { data, isLoading, error } = useGet_profileQuery(undefined)
-  console.log(data)
+  const { data } = useGet_profileQuery(undefined)
   const values = {
     themeColors,
     setSearch,
