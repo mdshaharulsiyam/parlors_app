@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 import { Provider } from 'react-redux';
 import { Colors, ITheme } from '../constant/colors';
@@ -12,7 +13,9 @@ interface GlobalContextType {
   setModalOpen: (arg1: boolean) => void;
   modalOpen: boolean;
   width: number;
-  height: number
+  height: number;
+  role: string;
+  setRole: (arg1: string) => void;
 }
 
 interface GlobalProviderProps {
@@ -30,6 +33,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
+  const [role, setRole] = useState<string>('');
   const values = {
     themeColors,
     setSearch,
@@ -37,8 +41,23 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     setModalOpen,
     modalOpen,
     width,
-    height
+    height,
+    role,
+    setRole
   };
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const role = await AsyncStorage.getItem('role');
+        if (role) {
+          setRole(role)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData()
+  }, [])
   return (
     <GlobalContext.Provider value={values}>
       <Provider store={store}>{children}</Provider>

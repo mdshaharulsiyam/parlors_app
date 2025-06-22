@@ -100,7 +100,6 @@ const SignIn = () => {
       ])
       navigate.navigate('Tabs', { screen: 'Home' })
     }
-
     signInHandler(inputValue, storeData)
   };
   return (
