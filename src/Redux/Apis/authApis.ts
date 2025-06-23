@@ -63,7 +63,7 @@ const auth_apis = parlorsApi.injectEndpoints({
     }),
     forget: builder.mutation({
       query: (data) => ({
-        url: `auth/send-verify-email`,
+        url: `verification/create`,
         method: "POST",
         body: data
       }),

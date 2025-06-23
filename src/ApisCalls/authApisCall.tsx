@@ -81,27 +81,26 @@ export const useVerifyOtp = () => {
 }
 export const useForgetPassword = () => {
   const [forgetPassword, { isLoading }] = useForgetMutation()
-  const submitHandler = (data: any, handler?: () => void) => {
+  const ForgetSubmitHandler = async (data: any, handler?: () => void) => {
     forgetPassword(data)
       .unwrap()
-      .then((res) => {
+      .then(async (res) => {
         Toast.show({
           type: 'success',
-          text1: 'Forget password successfully',
-          text2: res?.message || 'Forget password successfully!',
+          text1: 'Check your email',
+          text2: res?.message || 'verification mail sent to your mail',
         })
-        handler?.()
       })
       .catch((err) => {
         console.log(err, 'err')
         Toast.show({
           type: 'error',
-          text1: 'Forget password failed',
-          text2: err?.data?.message || 'An error occurred',
+          text1: 'Failed so sent mail',
+          text2: err?.data?.message || 'something went wrong',
         })
       })
   }
-  return { forgetPassword, isLoading }
+  return { ForgetSubmitHandler, isLoading }
 }
 export const useResetPassword = () => {
   const [resetPassword, { isLoading }] = useResetMutation()

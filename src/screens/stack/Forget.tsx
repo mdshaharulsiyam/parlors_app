@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
@@ -12,9 +11,9 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useForgetPassword } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useForgetMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
@@ -22,44 +21,19 @@ const Forget = () => {
   const navigation = useNavigation<StackNavigationProp<ScreenParamsType>>();
   const { themeColors } = useGlobalContext();
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [forget, { isLoading }] = useForgetMutation();
+  const { ForgetSubmitHandler, isLoading } = useForgetPassword()
   const handleSendVerificationEmail = () => {
     if (!email) {
-      setError('Please enter your email');
-      setSuccessMessage('');
-      return;
-    }
-    setError('');
-    navigation.navigate('Verify');
-    return
-    forget({ email })
-      .unwrap()
-      .then(async res => {
-        if (res?.success) {
-          await AsyncStorage.removeItem('token');
-          await AsyncStorage.setItem('email', email);
-          Toast.show({
-            type: 'success',
-            text1: 'Check your email',
-            text2: res?.message ?? 'verification mail sent to your mail',
-          });
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Failed so sent mail',
-            text2: res?.message ?? 'something went wrong',
-          });
-        }
-      })
-      .catch(err => {
-        Toast.show({
-          type: 'error',
-          text1: 'Failed so sent mail',
-          text2: err?.data?.message ?? 'something went wrong',
-        });
+      return Toast.show({
+        type: 'error',
+        text1: 'Please enter your email',
       });
+    }
+
+    ForgetSubmitHandler({ email }, () => {
+      navigation.navigate('Verify', { from: 'forget', email })
+    })
+    // navigation.navigate('Verify');
   };
 
   return (
@@ -88,19 +62,6 @@ const Forget = () => {
           onChangeText={setEmail}
         />
 
-        {/* Error Message */}
-        {error ? (
-          <Text style={[styles.errorText, { color: themeColors.red as string }]}>
-            {error}
-          </Text>
-        ) : null}
-
-        {/* Success Message */}
-        {successMessage ? (
-          <Text style={[styles.successText, { color: themeColors.green as string }]}>
-            {successMessage}
-          </Text>
-        ) : null}
         <View style={{
           width: "100%"
         }}>
