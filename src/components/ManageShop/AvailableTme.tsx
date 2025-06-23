@@ -13,7 +13,7 @@ interface Time {
   to: Date | null;
 }
 
-interface SelectedTime {
+export interface SelectedTime {
   friday: Time;
   saturday: Time;
   sunday: Time;
