@@ -55,8 +55,8 @@ const auth_apis = parlorsApi.injectEndpoints({
     }),
     change_password: builder.mutation({
       query: (data) => ({
-        url: `/auth/change-password`,
-        method: "PATCh",
+        url: `auth/change-password`,
+        method: "PATCH",
         body: data
       }),
       invalidatesTags: ['auth']

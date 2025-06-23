@@ -7,7 +7,6 @@ export const parlorsApi = createApi({
     baseUrl: baseUrl,
     prepareHeaders: async (headers, { getState }) => {
       const token = (getState() as any)?.user?.token;
-      console.log("token", token)
       if (!headers.has('Authorization')) {
         if (token) {
           headers.set('Authorization', `Bearer ${token}`)

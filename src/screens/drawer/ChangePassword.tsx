@@ -1,6 +1,8 @@
 import React from 'react';
 
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   ImageSourcePropType,
@@ -11,23 +13,24 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { IChangePassword } from '../../../types/loginType';
+import { useChangePassword } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const ChangePassword = () => {
   const { themeColors, height } = useGlobalContext();
   const [passShow, setPassShow] = React.useState(true);
   const [opassShow, setOPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
-  const [countryCode, setCountryCode] = React.useState('BD');
-  const [callingCode, setCallingCode] = React.useState('880');
   const { width } = Dimensions.get('window');
-
-
+  const navigate = useNavigation<NavigationProp<ScreenParamsType>>()
+  const { submitHandler: changePassword, isLoading } = useChangePassword()
 
   const [error, setError] = React.useState({
     'current password': false,
@@ -42,13 +45,31 @@ const ChangePassword = () => {
   });
 
   const submitHandler = () => {
+    let invalid = false
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof IChangePassword] === '') {
         setError(prev => ({ ...prev, [key]: true }));
+        invalid = true
       } else {
         setError(prev => ({ ...prev, [key]: false }));
       }
     });
+    if (invalid) {
+      Toast.show({
+        type: 'error',
+        text1: 'failed to change password',
+        text2: 'Please fill all fields',
+      });
+    }
+    const data = {
+      password: inputValue['new password'],
+      confirm_password: inputValue['confirm password'],
+      old_password: inputValue['current password']
+    }
+    console.log(data, 'data')
+    changePassword(data, () => {
+      navigate.goBack()
+    })
   };
 
   return (
@@ -130,7 +151,7 @@ const ChangePassword = () => {
                               ? (OtherIcons.Eye as ImageSourcePropType)
                               : (OtherIcons.EyeX as ImageSourcePropType)
                         }
-                        style={{ width: 20, height: 20 }}
+                        style={{ width: 20, height: 20, tintColor: themeColors.black as string }}
                       />
                     </TouchableOpacity>
                   )}
@@ -149,15 +170,21 @@ const ChangePassword = () => {
           paddingVertical: 16,
         }}>
         <GradientButton handler={submitHandler}>
-          <Text
-            style={{
-              color: 'white',
-              textAlign: 'center',
-              fontWeight: 700,
-              fontSize: 18,
-            }}>
-            Save Changes
-          </Text>
+          {
+            isLoading ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'center',
+                  fontWeight: 700,
+                  fontSize: 18,
+                }}>
+                Save Changes
+              </Text>
+            )
+          }
         </GradientButton>
       </View>
     </SafeAreaView>

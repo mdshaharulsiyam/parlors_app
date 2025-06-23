@@ -149,7 +149,7 @@ export const useChangePassword = () => {
         })
       })
   }
-  return { changePassword, isLoading }
+  return { submitHandler, isLoading }
 }
 export const useUpdateUserProfile = () => {
   const [updateProfile, { isLoading }] = useUpdateMutation()
