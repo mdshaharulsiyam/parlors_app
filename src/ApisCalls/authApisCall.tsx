@@ -1,4 +1,5 @@
 import Toast from 'react-native-toast-message'
+import { useSelector } from 'react-redux'
 import { useChange_passwordMutation, useForgetMutation, useLoginMutation, useRegisterMutation, useResetMutation, useUpdateMutation, useVerify_otpMutation } from '../Redux/Apis/authApis'
 
 const useSignup = () => {
@@ -104,8 +105,9 @@ export const useForgetPassword = () => {
 }
 export const useResetPassword = () => {
   const [resetPassword, { isLoading }] = useResetMutation()
+  const resetToken = useSelector((state: any) => state?.user?.resetToken)
   const submitHandler = (data: any, handler?: () => void) => {
-    resetPassword(data)
+    resetPassword({ data, token: resetToken })
       .unwrap()
       .then((res) => {
         Toast.show({
@@ -124,7 +126,7 @@ export const useResetPassword = () => {
         })
       })
   }
-  return { resetPassword, isLoading }
+  return { submitHandler, isLoading }
 }
 export const useChangePassword = () => {
   const [changePassword, { isLoading }] = useChange_passwordMutation()
