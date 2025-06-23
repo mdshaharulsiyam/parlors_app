@@ -15,6 +15,7 @@ import {
 import { Dropdown } from 'react-native-element-dropdown';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useSelector } from 'react-redux';
 import { ILogin, IUpdateProfile } from '../../../types/loginType';
 import GradientButton from '../../components/Shared/GradientButton';
 import { genderData } from '../../constant/data';
@@ -24,8 +25,10 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useRegisterMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import { IUserProfile } from '../../utils/types/Types';
 
 const Profile = () => {
+  const user: IUserProfile = useSelector((state: any) => state?.user?.user)
   const navigation = useNavigation<NavigationProp<ScreenParamsType>>()
   const [passShow, setPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
@@ -42,10 +45,10 @@ const Profile = () => {
   });
 
   const [inputValue, setInputValue] = React.useState<IUpdateProfile>({
-    'name': 'shaharul',
-    contact: '01700000000',
-    email: 'siyamoffice0273@gmail.com',
-    gender: 'male',
+    'name': user?.name,
+    contact: user?.phone,
+    email: user?.email,
+    gender: user?.gender,
   });
   //rtk
   const [register, { isLoading }] = useRegisterMutation()
