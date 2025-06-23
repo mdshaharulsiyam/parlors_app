@@ -1,14 +1,15 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 import { useVerifyOtp } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setResetToken } from '../../Redux/States/userSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
@@ -21,7 +22,7 @@ const Verify = () => {
   const { themeColors } = useGlobalContext();
   const [code, setCode] = useState('')
   const { verifyOtp, isLoading } = useVerifyOtp()
-
+  const dispatch = useDispatch()
   const handleOtpChange = useCallback(() => {
     if (code?.length != 6) {
       return Toast.show({
@@ -34,8 +35,8 @@ const Verify = () => {
       if (from == "signup") {
         navigate.navigate('Login')
       } else {
-        token && await AsyncStorage.setItem('resetToken', token)
-        navigate.navigate('Verify', { from: 'forget', email })
+        token && dispatch(setResetToken(token))
+        navigate.navigate('Reset')
       }
     }
     verifyOtp({ code, email }, storeData)

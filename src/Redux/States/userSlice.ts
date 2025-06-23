@@ -5,12 +5,14 @@ interface UserState {
   user: IUserProfile | null;
   token: string | null;
   role: string | null;
+  resetToken: string | null;
 }
 
 const initialState: UserState = {
   user: null,
   token: null,
   role: null,
+  resetToken: null,
 };
 
 export const userSlice = createSlice({
@@ -26,9 +28,12 @@ export const userSlice = createSlice({
     setRole: (state, action: PayloadAction<string>) => {
       state.role = action.payload;
     },
+    setResetToken: (state, action: PayloadAction<string>) => {
+      state.resetToken = action.payload;
+    },
   },
 });
 
-export const { setToken, setUser, setRole } = userSlice.actions;
+export const { setToken, setUser, setRole, setResetToken } = userSlice.actions;
 
 export default userSlice.reducer;
