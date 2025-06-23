@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setIndex, setProfile } from '../../Redux/States/vendorSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 import ImageUpload from '../Shared/ImageUpload';
 
-const Profile = () => {
+const Profile = ({ creating }: { creating: boolean }) => {
+  const dispatch = useDispatch()
   const [isUpdating, setIsUpdating] = useState(false);
   const [inputValue, setInputValue] = useState<IShopInput>({
     name: '',
@@ -30,21 +33,20 @@ const Profile = () => {
   const { themeColors } = useGlobalContext()
   const [images, setImages] = React.useState<IImage[]>([]);
   const submitHandler = () => {
-    let isInvalid = false;
-    Object.keys(inputValue).forEach(key => {
-      if (inputValue[key as keyof IShopInput] === '') {
-        setError(prev => ({ ...prev, [key]: true }));
-        isInvalid = true;
-      } else {
-        setError(prev => ({ ...prev, [key]: false }));
-      }
-    });
-    if (isInvalid) {
+    if (inputValue.name === '') {
+      setError(prev => ({ ...prev, name: true }));
       Toast.show({
         type: 'error',
-        text1: 'failed to login',
-        text2: 'Please fill all fields',
+        text1: 'name is required',
+        text2: 'Please fill name',
       });
+      return
+    }
+    if (creating) {
+      dispatch(setIndex(1))
+      dispatch(setProfile(inputValue))
+    } else {
+
     }
   }
   return (

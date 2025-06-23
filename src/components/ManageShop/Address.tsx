@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setAddress, setIndex } from '../../Redux/States/vendorSlice';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IAddressInput, IAddressInputError, IAddressInputLabel, SelectTypes } from '../../utils/types/Types';
@@ -25,9 +27,10 @@ const post: SelectTypes[] = [
   { label: 'Paid', value: 'paid' },
   { label: 'Unpaid', value: 'unpaid' },
 ];
-const Address = () => {
+const Address = ({ creating }: { creating: boolean }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const { themeColors } = useGlobalContext()
+  const dispatch = useDispatch()
   const [inputValue, setInputValue] = useState<IAddressInput>({
     district: '',
     sub_district: '',
@@ -51,6 +54,7 @@ const Address = () => {
   })
   const submitHandler = () => {
     let isInvalid = false;
+
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof IAddressInput] === '') {
         setError(prev => ({ ...prev, [key]: true }));
@@ -59,12 +63,20 @@ const Address = () => {
         setError(prev => ({ ...prev, [key]: false }));
       }
     });
+
     if (isInvalid) {
       Toast.show({
         type: 'error',
-        text1: 'failed to login',
+        text1: 'Address is required',
         text2: 'Please fill all fields',
       });
+      return
+    }
+    if (creating) {
+      dispatch(setAddress(inputValue))
+      dispatch(setIndex(2))
+    } else {
+
     }
   }
   return (
@@ -133,7 +145,7 @@ const Address = () => {
                 fontWeight: '600',
               },
             ]}>
-            Update
+            {creating ? 'Create' : 'Update'} Profile
           </Text>
         )}
       </GradientButton>

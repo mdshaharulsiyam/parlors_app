@@ -58,8 +58,8 @@ export interface IImage {
 
 export interface IShopInput {
   name: string,
-  email: string,
-  contact: string,
+  email?: string,
+  contact?: string,
 }
 export interface IShopInputLabel {
   name: string,
