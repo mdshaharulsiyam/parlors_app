@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View } from 'react-native';
@@ -20,6 +21,7 @@ const Verify = () => {
   const { themeColors } = useGlobalContext();
   const [code, setCode] = useState('')
   const { verifyOtp, isLoading } = useVerifyOtp()
+
   const handleOtpChange = useCallback(() => {
     if (code?.length != 6) {
       return Toast.show({
@@ -28,7 +30,15 @@ const Verify = () => {
         text2: "Please enter a valid 6-digit OTP.",
       });
     };
-    verifyOtp({ code, email }, () => from == "signup" ? navigate.navigate('Login') : navigate.navigate('Reset'))
+    const storeData = async (token: any) => {
+      if (from == "signup") {
+        navigate.navigate('Login')
+      } else {
+        token && await AsyncStorage.setItem('resetToken', token)
+        navigate.navigate('Verify', { from: 'forget', email })
+      }
+    }
+    verifyOtp({ code, email }, storeData)
 
   }, [code, from, email])
 

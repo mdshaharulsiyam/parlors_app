@@ -57,7 +57,7 @@ export const useLogin = () => {
 }
 export const useVerifyOtp = () => {
   const [verify, { isLoading }] = useVerify_otpMutation()
-  const verifyOtp = (data: any, handler?: () => void) => {
+  const verifyOtp = (data: any, handler?: (token: any) => void) => {
     verify(data)
       .unwrap()
       .then((res) => {
@@ -66,7 +66,7 @@ export const useVerifyOtp = () => {
           text1: 'Otp verified successfully',
           text2: res?.message || 'Otp verified successfully!',
         })
-        handler?.()
+        handler?.(res?.data?.resetToken)
       })
       .catch((err) => {
         console.log(err, 'err')
@@ -90,9 +90,9 @@ export const useForgetPassword = () => {
           text1: 'Check your email',
           text2: res?.message || 'verification mail sent to your mail',
         })
+        handler?.()
       })
       .catch((err) => {
-        console.log(err, 'err')
         Toast.show({
           type: 'error',
           text1: 'Failed so sent mail',
