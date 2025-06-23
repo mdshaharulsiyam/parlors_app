@@ -17,6 +17,7 @@ import Chat from '../screens/drawer/Chat';
 import Privacy from '../screens/drawer/Privacy';
 import Profile from '../screens/drawer/Profile';
 import ShopManage from '../screens/drawer/ShopManage';
+import VendorSignUp from '../screens/stack/VendorSignUp';
 import { hexToRGBA } from '../utils/hexToRGBA';
 import TabLayout from './TabLayout';
 
@@ -90,6 +91,16 @@ const DrawerLayout = () => {
         headerTintColor: themeColors.black as string,
       },
     },
+    {
+      name: 'VendorSignUp',
+      component: VendorSignUp,
+      options: {
+        headerTitle: 'Vendor Sign Up',
+        headerShown: true,
+        headerStyle: headerBaseStyle(50),
+        headerTintColor: themeColors.black as string,
+      },
+    },
   ], [themeColors]);
 
   return (
@@ -138,10 +149,11 @@ function DrawerContent(props: DrawerContentComponentProps) {
       role ? { label: 'Chat', screen: 'Chat' } : null,
       role ? { label: 'Booking', screen: 'Booking' } : null,
       role ? { label: 'Profile', screen: 'Profile' } : null,
-      role === 'VENDOR' ? { label: 'Manage Shop', screen: 'ShopManage' } : null,
+      role !== 'VENDOR' ? { label: 'Manage Shop', screen: 'ShopManage' } : null,
       !role ? { label: 'Sign in', screen: 'SignIn', isStack: true } : null,
       !role ? { label: 'Sign up', screen: 'SignUp', isStack: true } : null,
       role ? { label: 'Change Password', screen: 'changePassword' } : null,
+      role !== 'VENDOR' ? { label: 'I am vendor', screen: 'VendorSignUp' } : null,
       { label: 'Privacy', screen: 'Privacy' },
       { label: 'About', screen: 'About' },
       role ? { label: 'Logout', action: () => logout() } : null,

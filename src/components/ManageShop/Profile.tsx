@@ -26,6 +26,7 @@ const Profile = () => {
     email: 'Shop Email (optional)',
     contact: 'Shop Phone (optional)',
   })
+
   const { themeColors } = useGlobalContext()
   const [images, setImages] = React.useState<IImage[]>([]);
   const submitHandler = () => {
@@ -133,7 +134,7 @@ const Profile = () => {
                 textAlign: 'center',
               },
             ]}>
-            Update Profile
+            Save
           </Text>
         )}
       </GradientButton>

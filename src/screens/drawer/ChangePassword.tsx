@@ -66,7 +66,6 @@ const ChangePassword = () => {
       confirm_password: inputValue['confirm password'],
       old_password: inputValue['current password']
     }
-    console.log(data, 'data')
     changePassword(data, () => {
       navigate.goBack()
     })
