@@ -11,7 +11,7 @@ import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../util
 import GradientButton from '../Shared/GradientButton';
 import ImageUpload from '../Shared/ImageUpload';
 
-const Profile = ({ creating }: { creating: boolean }) => {
+const Profile = ({ creating = false }: { creating?: boolean }) => {
   const dispatch = useDispatch()
   const [isUpdating, setIsUpdating] = useState(false);
   const [inputValue, setInputValue] = useState<IShopInput>({

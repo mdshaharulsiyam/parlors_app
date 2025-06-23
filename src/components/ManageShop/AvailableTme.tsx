@@ -23,7 +23,7 @@ export interface SelectedTime {
   thursday: Time;
 }
 
-const AvailableTime: React.FC = () => {
+const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) => {
   const { themeColors } = useGlobalContext()
   const [selectedTime, setSelectedTime] = useState<SelectedTime>({
     friday: { checked: false, from: null, to: null },

@@ -27,7 +27,7 @@ const post: SelectTypes[] = [
   { label: 'Paid', value: 'paid' },
   { label: 'Unpaid', value: 'unpaid' },
 ];
-const Address = ({ creating }: { creating: boolean }) => {
+const Address = ({ creating = false }: { creating?: boolean }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const { themeColors } = useGlobalContext()
   const dispatch = useDispatch()
