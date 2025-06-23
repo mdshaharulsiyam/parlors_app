@@ -47,7 +47,7 @@ const auth_apis = parlorsApi.injectEndpoints({
     }),
     update: builder.mutation({
       query: (data) => ({
-        url: `/auth/update-user`,
+        url: `/auth/update-profile`,
         method: "PATCH",
         body: data
       }),

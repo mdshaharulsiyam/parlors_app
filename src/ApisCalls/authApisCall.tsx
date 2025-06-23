@@ -1,5 +1,5 @@
 import Toast from 'react-native-toast-message'
-import { useChange_passwordMutation, useForgetMutation, useLoginMutation, useRegisterMutation, useResetMutation, useVerify_otpMutation } from '../Redux/Apis/authApis'
+import { useChange_passwordMutation, useForgetMutation, useLoginMutation, useRegisterMutation, useResetMutation, useUpdateMutation, useVerify_otpMutation } from '../Redux/Apis/authApis'
 
 const useSignup = () => {
   const [signup, { isLoading }] = useRegisterMutation()
@@ -149,5 +149,28 @@ export const useChangePassword = () => {
       })
   }
   return { changePassword, isLoading }
+}
+export const useUpdateUserProfile = () => {
+  const [updateProfile, { isLoading }] = useUpdateMutation()
+  const update = (data: any, handler?: () => void) => {
+    updateProfile(data)
+      .unwrap()
+      .then((res) => {
+        Toast.show({
+          type: 'success',
+          text1: 'Update profile successfully',
+          text2: res?.message || 'Update profile successfully!',
+        })
+        handler?.()
+      })
+      .catch((err) => {
+        Toast.show({
+          type: 'error',
+          text1: 'Update profile failed',
+          text2: err?.data?.message || 'An error occurred',
+        })
+      })
+  }
+  return { update, isLoading }
 }
 export default useSignup

@@ -17,12 +17,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { ILogin, IUpdateProfile } from '../../../types/loginType';
+import { useUpdateUserProfile } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { genderData } from '../../constant/data';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useRegisterMutation } from '../../Redux/Apis/authApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 import { IUserProfile } from '../../utils/types/Types';
@@ -51,7 +51,7 @@ const Profile = () => {
     gender: user?.gender,
   });
   //rtk
-  const [register, { isLoading }] = useRegisterMutation()
+  const { update, isLoading } = useUpdateUserProfile()
 
   const submitHandler = useCallback(() => {
     let isInvalid = false;
@@ -71,32 +71,17 @@ const Profile = () => {
       });
       return;
     }
+
     const data = {
       "name": inputValue['name'],
       "contact": inputValue['contact'],
       "email": inputValue['email'],
       "gender": inputValue['gender'],
     }
-    register(data)
-      .unwrap()
-      .then((res) => {
-        // navigation.navigate('Otp', { params: { from: "signup", email: inputValue['email'] } });
-        Toast.show({
-          type: 'success',
-          text1: "registered successfully",
-          text2: res.message,
-        });
-      }
-      )
-      .catch((err) => {
-        Toast.show({
-          type: 'error',
-          text1: "registration failed",
-          text2: err.data?.message || "Something went wrong",
-        });
-      }
-      );
-  }, [register, inputValue,]);
+
+    update(data)
+
+  }, [update, inputValue,]);
 
   return (
     <SafeAreaView
