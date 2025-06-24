@@ -51,45 +51,47 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
   }
   return (
     <>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: "center",
-        }}
-      >
-        <ImageUpload images={images} setImages={setImages}>
-          <View
-            style={[
-              styles.profileImageContainer, {
-                backgroundColor: themeColors.white as string,
-                borderWidth: 1,
-                borderColor: hexToRGBA(themeColors.black as string, 0.2),
-                borderRadius: 50,
-                position: 'relative',
-              }]}>
-            <Image
-              source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-              }}
-            />
-            <Image
-              source={OtherIcons.Camera as ImageSourcePropType}
-              style={{
-                position: 'absolute',
-                bottom: 10,
-                right: 5,
-                width: 20,
-                height: 20,
-                tintColor: themeColors.primary as string,
-              }}
-            />
-          </View>
-        </ImageUpload>
-      </View>
+      {
+        !creating && <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: "center",
+          }}
+        >
+          <ImageUpload images={images} setImages={setImages}>
+            <View
+              style={[
+                styles.profileImageContainer, {
+                  backgroundColor: themeColors.white as string,
+                  borderWidth: 1,
+                  borderColor: hexToRGBA(themeColors.black as string, 0.2),
+                  borderRadius: 50,
+                  position: 'relative',
+                }]}>
+              <Image
+                source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 50,
+                }}
+              />
+              <Image
+                source={OtherIcons.Camera as ImageSourcePropType}
+                style={{
+                  position: 'absolute',
+                  bottom: 10,
+                  right: 5,
+                  width: 20,
+                  height: 20,
+                  tintColor: themeColors.primary as string,
+                }}
+              />
+            </View>
+          </ImageUpload>
+        </View>
+      }
       {Object.keys(inputValue).map((key, index) => (
         <View key={index}>
           <Text style={[globalStyles.inputLabel, {

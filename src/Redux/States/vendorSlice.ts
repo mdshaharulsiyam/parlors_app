@@ -26,6 +26,9 @@ export const vendorSlice = createSlice({
     setProfile: (state, action: PayloadAction<IShopInput>) => {
       state.profile = action.payload;
     },
+    updateProfile: (state, action: PayloadAction<IShopInput>) => {
+      state.profile = { ...state.profile, ...action.payload };
+    },
     setAvailableTime: (state, action: PayloadAction<SelectedTime>) => {
       state.availableTime = action.payload;
     },
@@ -35,6 +38,6 @@ export const vendorSlice = createSlice({
   },
 });
 
-export const { setAddress, setProfile, setAvailableTime, setIndex } = vendorSlice.actions;
+export const { setAddress, setProfile, updateProfile, setAvailableTime, setIndex } = vendorSlice.actions;
 
 export default vendorSlice.reducer;

@@ -145,7 +145,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
                 fontWeight: '600',
               },
             ]}>
-            {creating ? 'Create' : 'Update'} Profile
+            Save
           </Text>
         )}
       </GradientButton>
