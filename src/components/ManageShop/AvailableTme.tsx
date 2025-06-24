@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DatePicker from 'react-native-date-picker';
 import { useDispatch } from 'react-redux';
+import { useCreateVendor } from '../../ApisCalls/vendorApisCall';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { setAvailableTime } from '../../Redux/States/vendorSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
@@ -27,6 +28,7 @@ export interface SelectedTime {
 
 const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) => {
   const dispatch = useDispatch()
+  const { createVendorHandler, isLoading } = useCreateVendor()
   const { themeColors } = useGlobalContext()
   const [selectedTime, setSelectedTime] = useState<SelectedTime>({
     friday: { checked: false, from: null, to: null },
@@ -97,6 +99,7 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
   const submitHandler = () => {
     if (creating) {
       dispatch(setAvailableTime(selectedTime))
+      createVendorHandler()
     }
   }
   return (
@@ -173,14 +176,12 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
           )}
         </View>
       ))}
-      <GradientButton handler={() => { }}>
-        <Text style={[commonStyles.ButtonText, {
+      <GradientButton handler={submitHandler}>
+        {isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={[commonStyles.ButtonText, {
           color: themeColors.black as string,
           textAlign: 'center',
           textTransform: 'capitalize',
-        }]}>
-          Save
-        </Text>
+        }]}>Save</Text>}
       </GradientButton>
       {/* Render single DatePickers outside of the loop */}
       {Platform.OS !== 'web' && currentDayForPicker && (

@@ -16,6 +16,6 @@ export const parlorsApi = createApi({
     },
   }),
   endpoints: (build) => ({}),
-  tagTypes: ['auth']
+  tagTypes: ['auth', 'vendor']
 })
 
