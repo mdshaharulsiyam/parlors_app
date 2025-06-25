@@ -99,7 +99,7 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
   const submitHandler = () => {
     if (creating) {
       dispatch(setAvailableTime(selectedTime))
-      createVendorHandler()
+      createVendorHandler(selectedTime)
     }
   }
   return (
