@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setIndex, setProfile } from '../../Redux/States/vendorSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 import ImageUpload from '../Shared/ImageUpload';
 
-const Profile = () => {
+const Profile = ({ creating = false }: { creating?: boolean }) => {
+  const dispatch = useDispatch()
   const [isUpdating, setIsUpdating] = useState(false);
   const [inputValue, setInputValue] = useState<IShopInput>({
     name: '',
@@ -26,67 +29,69 @@ const Profile = () => {
     email: 'Shop Email (optional)',
     contact: 'Shop Phone (optional)',
   })
+
   const { themeColors } = useGlobalContext()
   const [images, setImages] = React.useState<IImage[]>([]);
   const submitHandler = () => {
-    let isInvalid = false;
-    Object.keys(inputValue).forEach(key => {
-      if (inputValue[key as keyof IShopInput] === '') {
-        setError(prev => ({ ...prev, [key]: true }));
-        isInvalid = true;
-      } else {
-        setError(prev => ({ ...prev, [key]: false }));
-      }
-    });
-    if (isInvalid) {
+    if (inputValue.name === '') {
+      setError(prev => ({ ...prev, name: true }));
       Toast.show({
         type: 'error',
-        text1: 'failed to login',
-        text2: 'Please fill all fields',
+        text1: 'name is required',
+        text2: 'Please fill name',
       });
+      return
+    }
+    if (creating) {
+      dispatch(setIndex(1))
+      dispatch(setProfile(inputValue))
+    } else {
+
     }
   }
   return (
     <>
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: "center",
-        }}
-      >
-        <ImageUpload images={images} setImages={setImages}>
-          <View
-            style={[
-              styles.profileImageContainer, {
-                backgroundColor: themeColors.white as string,
-                borderWidth: 1,
-                borderColor: hexToRGBA(themeColors.black as string, 0.2),
-                borderRadius: 50,
-                position: 'relative',
-              }]}>
-            <Image
-              source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 50,
-              }}
-            />
-            <Image
-              source={OtherIcons.Camera as ImageSourcePropType}
-              style={{
-                position: 'absolute',
-                bottom: 10,
-                right: 5,
-                width: 20,
-                height: 20,
-                tintColor: themeColors.primary as string,
-              }}
-            />
-          </View>
-        </ImageUpload>
-      </View>
+      {
+        !creating && <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: "center",
+          }}
+        >
+          <ImageUpload images={images} setImages={setImages}>
+            <View
+              style={[
+                styles.profileImageContainer, {
+                  backgroundColor: themeColors.white as string,
+                  borderWidth: 1,
+                  borderColor: hexToRGBA(themeColors.black as string, 0.2),
+                  borderRadius: 50,
+                  position: 'relative',
+                }]}>
+              <Image
+                source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 50,
+                }}
+              />
+              <Image
+                source={OtherIcons.Camera as ImageSourcePropType}
+                style={{
+                  position: 'absolute',
+                  bottom: 10,
+                  right: 5,
+                  width: 20,
+                  height: 20,
+                  tintColor: themeColors.primary as string,
+                }}
+              />
+            </View>
+          </ImageUpload>
+        </View>
+      }
       {Object.keys(inputValue).map((key, index) => (
         <View key={index}>
           <Text style={[globalStyles.inputLabel, {
@@ -133,7 +138,7 @@ const Profile = () => {
                 textAlign: 'center',
               },
             ]}>
-            Update Profile
+            Save
           </Text>
         )}
       </GradientButton>

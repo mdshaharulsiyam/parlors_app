@@ -1,5 +1,6 @@
 import Toast from 'react-native-toast-message'
-import { useChange_passwordMutation, useForgetMutation, useLoginMutation, useRegisterMutation, useResetMutation, useVerify_otpMutation } from '../Redux/Apis/authApis'
+import { useSelector } from 'react-redux'
+import { useChange_passwordMutation, useForgetMutation, useLoginMutation, useRegisterMutation, useResetMutation, useUpdateMutation, useVerify_otpMutation } from '../Redux/Apis/authApis'
 
 const useSignup = () => {
   const [signup, { isLoading }] = useRegisterMutation()
@@ -57,7 +58,7 @@ export const useLogin = () => {
 }
 export const useVerifyOtp = () => {
   const [verify, { isLoading }] = useVerify_otpMutation()
-  const verifyOtp = (data: any, handler?: () => void) => {
+  const verifyOtp = (data: any, handler?: (token: any) => void) => {
     verify(data)
       .unwrap()
       .then((res) => {
@@ -66,7 +67,7 @@ export const useVerifyOtp = () => {
           text1: 'Otp verified successfully',
           text2: res?.message || 'Otp verified successfully!',
         })
-        handler?.()
+        handler?.(res?.data?.resetToken)
       })
       .catch((err) => {
         console.log(err, 'err')
@@ -81,32 +82,32 @@ export const useVerifyOtp = () => {
 }
 export const useForgetPassword = () => {
   const [forgetPassword, { isLoading }] = useForgetMutation()
-  const submitHandler = (data: any, handler?: () => void) => {
+  const ForgetSubmitHandler = async (data: any, handler?: () => void) => {
     forgetPassword(data)
       .unwrap()
-      .then((res) => {
+      .then(async (res) => {
         Toast.show({
           type: 'success',
-          text1: 'Forget password successfully',
-          text2: res?.message || 'Forget password successfully!',
+          text1: 'Check your email',
+          text2: res?.message || 'verification mail sent to your mail',
         })
         handler?.()
       })
       .catch((err) => {
-        console.log(err, 'err')
         Toast.show({
           type: 'error',
-          text1: 'Forget password failed',
-          text2: err?.data?.message || 'An error occurred',
+          text1: 'Failed so sent mail',
+          text2: err?.data?.message || 'something went wrong',
         })
       })
   }
-  return { forgetPassword, isLoading }
+  return { ForgetSubmitHandler, isLoading }
 }
 export const useResetPassword = () => {
   const [resetPassword, { isLoading }] = useResetMutation()
+  const resetToken = useSelector((state: any) => state?.user?.resetToken)
   const submitHandler = (data: any, handler?: () => void) => {
-    resetPassword(data)
+    resetPassword({ data, token: resetToken })
       .unwrap()
       .then((res) => {
         Toast.show({
@@ -125,7 +126,7 @@ export const useResetPassword = () => {
         })
       })
   }
-  return { resetPassword, isLoading }
+  return { submitHandler, isLoading }
 }
 export const useChangePassword = () => {
   const [changePassword, { isLoading }] = useChange_passwordMutation()
@@ -148,6 +149,29 @@ export const useChangePassword = () => {
         })
       })
   }
-  return { changePassword, isLoading }
+  return { submitHandler, isLoading }
+}
+export const useUpdateUserProfile = () => {
+  const [updateProfile, { isLoading }] = useUpdateMutation()
+  const update = (data: any, handler?: () => void) => {
+    updateProfile(data)
+      .unwrap()
+      .then((res) => {
+        Toast.show({
+          type: 'success',
+          text1: 'Update profile successfully',
+          text2: res?.message || 'Update profile successfully!',
+        })
+        handler?.()
+      })
+      .catch((err) => {
+        Toast.show({
+          type: 'error',
+          text1: 'Update profile failed',
+          text2: err?.data?.message || 'An error occurred',
+        })
+      })
+  }
+  return { update, isLoading }
 }
 export default useSignup

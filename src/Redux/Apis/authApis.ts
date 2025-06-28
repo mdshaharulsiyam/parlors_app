@@ -47,7 +47,7 @@ const auth_apis = parlorsApi.injectEndpoints({
     }),
     update: builder.mutation({
       query: (data) => ({
-        url: `/auth/update-user`,
+        url: `/auth/update-profile`,
         method: "PATCH",
         body: data
       }),
@@ -55,15 +55,15 @@ const auth_apis = parlorsApi.injectEndpoints({
     }),
     change_password: builder.mutation({
       query: (data) => ({
-        url: `/auth/change-password`,
-        method: "PATCh",
+        url: `auth/change-password`,
+        method: "PATCH",
         body: data
       }),
       invalidatesTags: ['auth']
     }),
     forget: builder.mutation({
       query: (data) => ({
-        url: `auth/send-verify-email`,
+        url: `verification/create`,
         method: "POST",
         body: data
       }),

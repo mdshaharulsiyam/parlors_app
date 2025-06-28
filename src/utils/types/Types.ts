@@ -58,8 +58,8 @@ export interface IImage {
 
 export interface IShopInput {
   name: string,
-  email: string,
-  contact: string,
+  email?: string,
+  contact?: string,
 }
 export interface IShopInputLabel {
   name: string,
@@ -111,4 +111,29 @@ export interface IUserProfile {
   point: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IServicesInput {
+  name: string,
+  price: string,
+  description: string,
+  img: string,
+  category: string,
+  sub_category: string,
+}
+export interface IServicesInputLabel {
+  name: string,
+  price: string,
+  description: string,
+  img: string,
+  category: string,
+  sub_category: string,
+}
+export interface IServicesInputError {
+  name: boolean,
+  price: boolean,
+  description: boolean,
+  img: boolean,
+  category: boolean,
+  sub_category: boolean,
 }

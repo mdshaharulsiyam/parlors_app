@@ -1,6 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
+  ActivityIndicator,
   Image,
   ImageSourcePropType,
   StyleSheet,
@@ -10,11 +11,15 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 import { INewPassword } from '../../../types/loginType';
+import { useResetPassword } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setResetToken } from '../../Redux/States/userSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 const Reset = () => {
@@ -31,17 +36,34 @@ const Reset = () => {
     password: '123456',
     confirmPassword: '123456',
   });
-
+  const { submitHandler: resetPassword, isLoading: resetLoading } = useResetPassword()
+  const dispatch = useDispatch()
   const submitHandler = () => {
-    navigate.navigate('Tabs', { screen: 'Home', });
+    let invalid = false
+    // navigate.navigate('Tabs', { screen: 'Home', });
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof INewPassword] === '') {
         setError(prev => ({ ...prev, [key]: true }));
+        invalid = true
       } else {
         setError(prev => ({ ...prev, [key]: false }));
       }
     });
-
+    if (invalid) {
+      Toast.show({
+        type: 'error',
+        text1: 'failed to reset password',
+        text2: 'Please fill all fields',
+      });
+    }
+    const data = {
+      password: inputValue.password,
+      confirm_password: inputValue.confirmPassword
+    }
+    resetPassword(data, () => {
+      dispatch(setResetToken(''))
+      navigate.navigate('Stacks', { screen: 'SignIn', })
+    })
   };
   return (
     <SafeAreaView
@@ -119,15 +141,21 @@ const Reset = () => {
             paddingHorizontal: 25,
           }}>
           <GradientButton handler={() => submitHandler()}>
-            <Text
-              style={{
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: 700,
-                fontSize: 18,
-              }}>
-              Submit
-            </Text>
+            {
+              resetLoading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text
+                  style={{
+                    color: 'white',
+                    textAlign: 'center',
+                    fontWeight: 700,
+                    fontSize: 18,
+                  }}>
+                  Submit
+                </Text>
+              )
+            }
           </GradientButton>
         </View>
       </View>

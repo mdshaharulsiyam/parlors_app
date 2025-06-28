@@ -10,11 +10,12 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import Address from '../../components/ManageShop/Address';
 import AvailableTme from '../../components/ManageShop/AvailableTme';
 import Profile from '../../components/ManageShop/Profile';
+import Services from '../../components/ManageShop/Services';
 import Workers from '../../components/ManageShop/Workers';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 
-const tabs = ['profile', 'address', 'workers', 'available time']
+const tabs = ['profile', 'address', 'workers', 'available time', 'services']
 const ShopManage = () => {
   const [currentTab, setCurrentTab] = useState(tabs[0])
   const { themeColors, height } = useGlobalContext();
@@ -23,6 +24,7 @@ const ShopManage = () => {
     "address": <Address />,
     "workers": <Workers />,
     "available time": <AvailableTme />,
+    "services": <Services />,
   }
   return (
     <SafeAreaView

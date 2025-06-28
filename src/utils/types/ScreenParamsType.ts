@@ -20,7 +20,7 @@ export type ScreenParamsType = {
   Cart: undefined;
   Checkout: undefined;
   Shops: undefined;
-  Stacks: { screen: string, params: { id: string } };
+  Stacks: { screen: string, params?: { id?: string } };
   Order: undefined;
   Tabs: { screen: string, params?: { screen?: string, params?: { id: string } } };
   Verify: { from: string, email: string };

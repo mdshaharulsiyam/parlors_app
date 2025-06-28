@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DatePicker from 'react-native-date-picker';
+import { useDispatch } from 'react-redux';
+import { useCreateVendor } from '../../ApisCalls/vendorApisCall';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setAvailableTime } from '../../Redux/States/vendorSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import GradientButton from '../Shared/GradientButton';
@@ -13,7 +16,7 @@ interface Time {
   to: Date | null;
 }
 
-interface SelectedTime {
+export interface SelectedTime {
   friday: Time;
   saturday: Time;
   sunday: Time;
@@ -23,7 +26,9 @@ interface SelectedTime {
   thursday: Time;
 }
 
-const AvailableTime: React.FC = () => {
+const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) => {
+  const dispatch = useDispatch()
+  const { createVendorHandler, isLoading } = useCreateVendor()
   const { themeColors } = useGlobalContext()
   const [selectedTime, setSelectedTime] = useState<SelectedTime>({
     friday: { checked: false, from: null, to: null },
@@ -91,12 +96,17 @@ const AvailableTime: React.FC = () => {
     setCurrentDayForPicker(day);
     setOpenToPicker(true);
   };
-
+  const submitHandler = () => {
+    if (creating) {
+      dispatch(setAvailableTime(selectedTime))
+      createVendorHandler(selectedTime)
+    }
+  }
   return (
     <View style={[styles.container, {
       backgroundColor: themeColors.white as string
     }]}>
-      <GradientButton handler={() => { }}>
+      <GradientButton handler={handleSelectSameTimeForAll}>
         <Text style={[commonStyles.ButtonText, {
           color: themeColors.black as string,
           textAlign: 'center',
@@ -166,7 +176,13 @@ const AvailableTime: React.FC = () => {
           )}
         </View>
       ))}
-
+      <GradientButton handler={submitHandler}>
+        {isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={[commonStyles.ButtonText, {
+          color: themeColors.black as string,
+          textAlign: 'center',
+          textTransform: 'capitalize',
+        }]}>Save</Text>}
+      </GradientButton>
       {/* Render single DatePickers outside of the loop */}
       {Platform.OS !== 'web' && currentDayForPicker && (
         <>
@@ -197,7 +213,6 @@ export default AvailableTime;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   header: {
     fontSize: 28,
@@ -208,7 +223,7 @@ const styles = StyleSheet.create({
   dayCard: {
     borderRadius: 12,
     marginBottom: 15,
-    padding: 15,
+    padding: 10,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
@@ -223,10 +238,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   timeButtonsContainer: {
-    marginLeft: 20,
+    marginLeft: 10,
     flexDirection: 'row',
     gap: 15,
-    marginTop: 10,
+    marginTop: 6,
   },
 
 });

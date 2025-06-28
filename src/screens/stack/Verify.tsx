@@ -4,10 +4,12 @@ import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, View }
 import { OtpInput } from 'react-native-otp-entry';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
 import { useVerifyOtp } from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
 import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setResetToken } from '../../Redux/States/userSlice';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
@@ -20,6 +22,7 @@ const Verify = () => {
   const { themeColors } = useGlobalContext();
   const [code, setCode] = useState('')
   const { verifyOtp, isLoading } = useVerifyOtp()
+  const dispatch = useDispatch()
   const handleOtpChange = useCallback(() => {
     if (code?.length != 6) {
       return Toast.show({
@@ -28,7 +31,15 @@ const Verify = () => {
         text2: "Please enter a valid 6-digit OTP.",
       });
     };
-    verifyOtp({ code, email }, () => from == "signup" ? navigate.navigate('Login') : navigate.navigate('Reset'))
+    const storeData = async (token: any) => {
+      if (from == "signup") {
+        navigate.navigate('Login')
+      } else {
+        token && dispatch(setResetToken(token))
+        navigate.navigate('Reset')
+      }
+    }
+    verifyOtp({ code, email }, storeData)
 
   }, [code, from, email])
 

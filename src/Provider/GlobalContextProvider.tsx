@@ -67,6 +67,9 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     }
     getData()
   }, [])
+  useEffect(() => {
+    dispatch(setUser(data?.data))
+  }, [data])
   return (
     <GlobalContext.Provider value={values}>
       {children}
