@@ -7,7 +7,7 @@ import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import { IParlor } from '../../utils/types/Types';
 import ParlorCard from '../Shared/ParlorCard';
-const topBarbers: IParlor[] = [
+export const topBarbers: IParlor[] = [
   {
     _id: '1',
     name: 'John Doe',
@@ -95,7 +95,7 @@ const Parlors = () => {
   return (
     <SafeAreaView style={{ paddingHorizontal: 5, backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
-        Vendors
+        Services
       </Text>
       <FlatList
         ListFooterComponent={<View style={{ height: 50 }} />}
