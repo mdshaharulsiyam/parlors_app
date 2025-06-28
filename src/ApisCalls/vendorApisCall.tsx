@@ -1,4 +1,5 @@
 import moment from 'moment'
+import Toast from 'react-native-toast-message'
 import { useSelector } from 'react-redux'
 import { useCreateVendorMutation } from '../Redux/Apis/vendorApis'
 import { SelectedTime } from '../components/ManageShop/AvailableTme'
@@ -28,25 +29,23 @@ export const useCreateVendor = () => {
       address,
       availableTime: timeFormate,
     }
-    console.log(data)
-    return
-    // createVendor(data)
-    //   .unwrap()
-    //   .then((res) => {
-    //     Toast.show({
-    //       type: 'success',
-    //       text1: 'Vendor created successfully',
-    //       text2: res?.message || 'Vendor created successfully',
-    //     })
-    //     handler?.()
-    //   })
-    //   .catch((err) => {
-    //     Toast.show({
-    //       type: 'error',
-    //       text1: 'Vendor creation failed',
-    //       text2: err?.data?.message || 'An error occurred',
-    //     })
-    //   })
+    createVendor(data)
+      .unwrap()
+      .then((res) => {
+        Toast.show({
+          type: 'success',
+          text1: 'Vendor created successfully',
+          text2: res?.message || 'Vendor created successfully',
+        })
+        handler?.()
+      })
+      .catch((err) => {
+        Toast.show({
+          type: 'error',
+          text1: 'Vendor creation failed',
+          text2: err?.data?.message || 'An error occurred',
+        })
+      })
   }
   return { createVendorHandler, isLoading }
 }
