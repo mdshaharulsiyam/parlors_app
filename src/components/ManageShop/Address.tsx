@@ -3,54 +3,45 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
+import { useAddressApiCall } from '../../ApisCalls/addressApiCall';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { setAddress, setIndex } from '../../Redux/States/vendorSlice';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IAddressInput, IAddressInputError, IAddressInputLabel, SelectTypes } from '../../utils/types/Types';
+import { IAddressInput, IAddressInputError, IAddressInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 
-const district: SelectTypes[] = [
-  { label: 'Paid', value: 'paid' },
-  { label: 'Unpaid', value: 'unpaid' },
-];
-const sub_district: SelectTypes[] = [
-  { label: 'Paid', value: 'paid' },
-  { label: 'Unpaid', value: 'unpaid' },
-];
-const union: SelectTypes[] = [
-  { label: 'Paid', value: 'paid' },
-  { label: 'Unpaid', value: 'unpaid' },
-];
-const post: SelectTypes[] = [
-  { label: 'Paid', value: 'paid' },
-  { label: 'Unpaid', value: 'unpaid' },
-];
 const Address = ({ creating = false }: { creating?: boolean }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const { themeColors } = useGlobalContext()
   const dispatch = useDispatch()
   const [inputValue, setInputValue] = useState<IAddressInput>({
-    district: '',
-    sub_district: '',
-    union: '',
-    post: '',
+    divisions: '',
+    districts: '',
+    upazilas: '',
+    unions: '',
     street_address: '',
   });
+
   const [error, setError] = useState<IAddressInputError>({
-    district: false,
-    sub_district: false,
-    union: false,
-    post: false,
+    divisions: false,
+    districts: false,
+    upazilas: false,
+    unions: false,
     street_address: false,
   })
   const [inputLabel, setInputLabel] = useState<IAddressInputLabel>({
-    district: 'Zila',
-    sub_district: 'Upzila',
-    union: 'Union',
-    post: 'Post office',
+    divisions: 'Zila',
+    districts: 'Upzila',
+    upazilas: 'Union',
+    unions: 'Post office',
     street_address: 'Street Address',
+  })
+  const { divisions, districts, upazilas, unions } = useAddressApiCall({
+    division_id: inputValue.divisions,
+    district_id: inputValue.districts,
+    upazilla_id: inputValue.upazilas,
   })
   const submitHandler = () => {
     let isInvalid = false;
@@ -90,7 +81,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
               }]}>{inputLabel[key as keyof IAddressInputLabel]}</Text>
               <SingleSelectDropDown
                 name={key}
-                data={key === 'district' ? district : key === 'sub_district' ? sub_district : key === 'union' ? union : post}
+                data={key === 'divisions' ? divisions : key === 'districts' ? districts : key === 'upazilas' ? upazilas : unions}
                 value={inputValue[key as keyof IAddressInput]}
                 inputValue={inputValue}
                 setInputValue={setInputValue}

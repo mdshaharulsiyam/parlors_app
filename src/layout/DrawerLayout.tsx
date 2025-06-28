@@ -25,7 +25,6 @@ const Drawer = createDrawerNavigator();
 
 const DrawerLayout = () => {
   const { themeColors } = useGlobalContext();
-
   const headerBaseStyle = (height: number) => ({
     backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
     height,
