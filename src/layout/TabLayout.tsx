@@ -18,6 +18,7 @@ import Home from '../screens/tab/Home';
 import { commonStyles } from '../utils/styles/Styles';
 import { ScreenParamsType } from '../utils/types/ScreenParamsType';
 import StackLayout from './StackLayout';
+
 const Tab = createBottomTabNavigator();
 
 const TabLayout = () => {
@@ -33,7 +34,7 @@ const TabLayout = () => {
       <Tab.Screen
         name="Parlors"
         component={Parlors}
-        options={{ headerShown: false, tabBarLabel: 'Vendors' }}
+        options={{ headerShown: false, tabBarLabel: 'Services' }}
       />
       <Tab.Screen
         name="Stacks"
