@@ -70,6 +70,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
 
     }
   }
+  // console.log({ districts, upazilas, unions, divisions })
   return (
     <View>
       {Object.keys(inputValue).map((key, index, arr) => {
