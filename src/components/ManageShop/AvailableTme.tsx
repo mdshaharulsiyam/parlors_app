@@ -100,7 +100,7 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
   const submitHandler = async () => {
     if (creating) {
       const locations = await getLocation() as { latitude: number, longitude: number }
-      const coordinates = [locations?.latitude || 0, locations?.longitude || 0]
+      const coordinates = [locations?.longitude || 0, locations?.latitude || 0,]
       dispatch(setAvailableTime(selectedTime))
       createVendorHandler(selectedTime, coordinates)
     }

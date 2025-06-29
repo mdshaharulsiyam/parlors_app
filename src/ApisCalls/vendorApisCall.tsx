@@ -26,6 +26,7 @@ export const useCreateVendor = () => {
     })
     const data = {
       ...profile,
+      phone: profile?.contact,
       address: JSON.stringify(address),
       availableTime: JSON.stringify(timeFormate),
       coordinates: JSON.stringify(coordinates),

@@ -6,16 +6,26 @@ import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { setIndex, setProfile } from '../../Redux/States/vendorSlice';
+import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 import ImageUpload from '../Shared/ImageUpload';
-
+const businessCategoryData = [
+  { label: 'Salon', value: 'salon' },
+  { label: 'Restaurant', value: 'restaurant' },
+  { label: 'Medical', value: 'medical' },
+  { label: 'Fitness', value: 'fitness' },
+  { label: 'Real Estate', value: 'real_estate' },
+  { label: 'Services', value: 'services' },
+  { label: 'Other', value: 'other' },
+]
 const Profile = ({ creating = false }: { creating?: boolean }) => {
   const dispatch = useDispatch()
   const [isUpdating, setIsUpdating] = useState(false);
   const [inputValue, setInputValue] = useState<IShopInput>({
     name: '',
+    business_category: '',
     email: '',
     contact: '',
   });
@@ -23,9 +33,11 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
     name: false,
     email: false,
     contact: false,
+    business_category: false,
   })
   const [inputLabel, setInputLabel] = useState<IShopInputLabel>({
     name: 'Shop name',
+    business_category: 'Business Category',
     email: 'Shop Email (optional)',
     contact: 'Shop Phone (optional)',
   })
@@ -92,39 +104,63 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
           </ImageUpload>
         </View>
       }
-      {Object.keys(inputValue).map((key, index) => (
-        <View key={index}>
-          <Text style={[globalStyles.inputLabel, {
-            color: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
-          }]}>
-            {inputLabel[key as keyof IShopInputLabel]}
-          </Text>
-          <View >
-            <TextInput
-              value={inputValue[key as keyof IShopInput]}
-              onChangeText={text => {
-                setInputValue({ ...inputValue, [key]: text });
-                setError({ ...error, [key]: false });
-              }}
-              placeholder={`Enter ${key}`}
-              placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
-              style={[
-                globalStyles.input,
-                {
-                  borderColor: error[key as keyof IShopInput]
-                    ? themeColors.red as string
-                    : hexToRGBA(themeColors.black as string, 0.4),
-                  borderWidth: error[key as keyof IShopInput] ? 1 : 0,
-                  backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
-                  color: themeColors.black as string,
-                }
+      {Object.keys(inputValue).map((key, index) => {
+        if (key === 'business_category') {
+          return (
+            <View key={index}>
+              <Text style={[globalStyles.inputLabel, {
+                color: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
+              }]}>
+                {inputLabel[key as keyof IShopInputLabel]}
+              </Text>
+              <SingleSelectDropDown
+                name={key}
+                data={businessCategoryData}
+                value={inputValue[key as keyof IShopInput] as string}
+                inputValue={inputValue}
+                placeholder={inputLabel[key as keyof IShopInputLabel]}
+                setInputValue={setInputValue}
+                setError={setError}
+                error={error}
+              />
+            </View>
+          )
+        } else {
+          return (
+            <View key={index}>
+              <Text style={[globalStyles.inputLabel, {
+                color: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
+              }]}>
+                {inputLabel[key as keyof IShopInputLabel]}
+              </Text>
+              <View >
+                <TextInput
+                  value={inputValue[key as keyof IShopInput]}
+                  onChangeText={text => {
+                    setInputValue({ ...inputValue, [key]: text });
+                    setError({ ...error, [key]: false });
+                  }}
+                  placeholder={`Enter ${key}`}
+                  placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
+                  style={[
+                    globalStyles.input,
+                    {
+                      borderColor: error[key as keyof IShopInput]
+                        ? themeColors.red as string
+                        : hexToRGBA(themeColors.black as string, 0.4),
+                      borderWidth: error[key as keyof IShopInput] ? 1 : 0,
+                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                      color: themeColors.black as string,
+                    }
 
-              ]}
-            />
+                  ]}
+                />
 
-          </View>
-        </View>
-      ))}
+              </View>
+            </View>
+          )
+        }
+      })}
       <GradientButton handler={submitHandler}>
         {isUpdating ? (
           <ActivityIndicator size="small" color={themeColors.white as string} />

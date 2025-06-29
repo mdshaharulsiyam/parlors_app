@@ -60,16 +60,19 @@ export interface IShopInput {
   name: string,
   email?: string,
   contact?: string,
+  business_category?: string,
 }
 export interface IShopInputLabel {
   name: string,
   email: string,
   contact: string,
+  business_category: string,
 }
 export interface IShopInputError {
   name: boolean,
   email: boolean,
   contact: boolean,
+  business_category: boolean,
 }
 export interface IAddressInput {
   divisions: string,
