@@ -16,6 +16,10 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const { themeColors } = useGlobalContext()
   const dispatch = useDispatch()
+  const [divisionSearch, setDivisionSearch] = useState('')
+  const [districtSearch, setDistrictSearch] = useState('')
+  const [upazillaSearch, setUpazillaSearch] = useState('')
+  const [unionSearch, setUnionSearch] = useState('')
   const [inputValue, setInputValue] = useState<IAddressInput>({
     divisions: '',
     districts: '',
@@ -31,17 +35,23 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
     unions: false,
     street_address: false,
   })
+
   const [inputLabel, setInputLabel] = useState<IAddressInputLabel>({
-    divisions: 'Zila',
-    districts: 'Upzila',
-    upazilas: 'Union',
-    unions: 'Post office',
+    divisions: 'Division',
+    districts: 'District',
+    upazilas: 'Upazila',
+    unions: 'Union',
     street_address: 'Street Address',
   })
+
   const { divisions, districts, upazilas, unions } = useAddressApiCall({
     division_id: inputValue.divisions,
     district_id: inputValue.districts,
     upazilla_id: inputValue.upazilas,
+    unionSearch,
+    districtSearch,
+    upazillaSearch,
+    divisionSearch,
   })
   const submitHandler = () => {
     let isInvalid = false;
@@ -70,7 +80,44 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
 
     }
   }
-  // console.log({ districts, upazilas, unions, divisions })
+  const handleReset = (key: keyof IAddressInput) => {
+    if (key === 'divisions') {
+      setInputValue({
+        "divisions": inputValue?.divisions,
+        "districts": "",
+        "upazilas": "",
+        "unions": "",
+        "street_address": inputValue?.street_address,
+      })
+    }
+    if (key === 'districts') {
+      setInputValue({
+        "divisions": inputValue?.divisions,
+        "districts": inputValue?.districts,
+        "upazilas": "",
+        "unions": "",
+        "street_address": inputValue?.street_address,
+      })
+    }
+    if (key === 'upazilas') {
+      setInputValue({
+        "divisions": inputValue?.divisions,
+        "districts": inputValue?.districts,
+        "upazilas": inputValue?.upazilas,
+        "unions": "",
+        "street_address": inputValue?.street_address,
+      })
+    }
+    if (key === 'unions') {
+      setInputValue({
+        "divisions": inputValue?.divisions,
+        "districts": inputValue?.districts,
+        "upazilas": inputValue?.upazilas,
+        "unions": inputValue?.unions,
+        "street_address": inputValue?.street_address,
+      })
+    }
+  }
   return (
     <View>
       {Object.keys(inputValue).map((key, index, arr) => {
@@ -88,6 +135,8 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
                 setInputValue={setInputValue}
                 setError={setError}
                 error={error}
+                onChangeText={key === 'divisions' ? setDivisionSearch : key === 'districts' ? setDistrictSearch : key === 'upazilas' ? setUpazillaSearch : setUnionSearch}
+                resetHandler={() => handleReset(key as keyof IAddressInput)}
               />
             </View>
           );

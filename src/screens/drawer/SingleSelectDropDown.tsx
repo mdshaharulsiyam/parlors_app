@@ -17,6 +17,8 @@ const SingleSelectDropDown = ({
   setError,
   placeholder,
   handler,
+  resetHandler,
+  onChangeText,
 }: ISingleDropDownProps) => {
   const { themeColors } = useGlobalContext()
   return (
@@ -39,6 +41,7 @@ const SingleSelectDropDown = ({
           ? handler(item.value)
           : setInputValue({ ...inputValue, [name]: item.value });
         setError({ ...error, [name]: false });
+        resetHandler?.();
       }}
       itemTextStyle={{ color: themeColors.black as string }}
       itemContainerStyle={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), borderWidth: 0, }}
@@ -49,7 +52,18 @@ const SingleSelectDropDown = ({
         backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
         overflow: 'hidden',
       }}
+
       dropdownPosition="auto"
+      search
+      searchPlaceholder="Search..."
+      searchField="label"
+      inputSearchStyle={{
+        color: themeColors.black as string,
+        borderColor: hexToRGBA(themeColors.black as string, 0.3),
+      }}
+      onChangeText={text => {
+        console.log('Search text:', text);
+      }}
       renderItem={(item: any) => {
         const isSelected = item.value === value;
         return (
