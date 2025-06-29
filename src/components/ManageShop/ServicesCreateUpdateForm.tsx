@@ -117,12 +117,12 @@ const ServicesCreateUpdateForm = () => {
       })}
       <GradientButton handler={submitHandler}>
         {false ? (
-          <ActivityIndicator size="small" color={themeColors.white as string} />
+          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
         ) : (
           <Text
             style={[
               {
-                color: themeColors.white as string,
+                color: themeColors.constWhite as string,
                 textAlign: 'center',
                 fontSize: 16,
                 fontWeight: '600',

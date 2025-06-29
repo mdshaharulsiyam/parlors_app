@@ -40,13 +40,13 @@ const Workers = () => {
       </View>
       <GradientButton handler={() => { }}>
         {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.white as string} />
+          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
         ) : (
           <Text
             style={[
               styles.buttonText,
               {
-                color: themeColors.black as string,
+                color: themeColors.constWhite as string,
                 textAlign: 'center',
                 textTransform: 'capitalize',
               },

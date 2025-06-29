@@ -123,7 +123,7 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
     }]}>
       <GradientButton handler={handleSelectSameTimeForAll}>
         <Text style={[commonStyles.ButtonText, {
-          color: themeColors.black as string,
+          color: themeColors.constWhite as string,
           textAlign: 'center',
           textTransform: 'capitalize',
         }]}>
@@ -192,8 +192,8 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
         </View>
       ))}
       <GradientButton handler={submitHandler}>
-        {isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={[commonStyles.ButtonText, {
-          color: themeColors.black as string,
+        {isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text style={[commonStyles.ButtonText, {
+          color: themeColors.constWhite as string,
           textAlign: 'center',
           textTransform: 'capitalize',
         }]}>Save</Text>}

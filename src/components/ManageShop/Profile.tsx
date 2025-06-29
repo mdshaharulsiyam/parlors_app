@@ -163,12 +163,12 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
       })}
       <GradientButton handler={submitHandler}>
         {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.white as string} />
+          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
         ) : (
           <Text
             style={[
               {
-                color: themeColors.black as string,
+                color: themeColors.constWhite as string,
                 fontSize: 16,
                 fontWeight: 'bold',
                 textAlign: 'center',

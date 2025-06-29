@@ -277,9 +277,9 @@ const Profile = () => {
         <View style={{ paddingHorizontal: 25, marginBottom: 120, }}>
           <GradientButton handler={() => submitHandler()}>
             {
-              isLoading ? <ActivityIndicator size="large" color="#FFFFFF" /> : <Text
+              isLoading ? <ActivityIndicator size="large" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: '700',
                   fontSize: 18,

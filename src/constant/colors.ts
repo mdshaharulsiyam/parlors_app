@@ -6,6 +6,8 @@ export interface ITheme {
   yellow: String;
   red: String;
   green: String;
+  constWhite: String;
+  constBlack: String;
 }
 export const Colors = {
   light: {
@@ -28,6 +30,8 @@ export const Colors = {
     yellow: '#FF9B17',
     red: '#FF0000',
     green: '#00FF00',
+    constWhite: '#FFFFFF',
+    constBlack: '#000000',
   } as ITheme,
   dark: {
     primary: '#017FF4',
@@ -37,6 +41,8 @@ export const Colors = {
     yellow: '#FF9B17',
     red: '#FF0000',
     green: '#00FF00',
+    constWhite: '#FFFFFF',
+    constBlack: '#000000',
   } as ITheme,
 };
 

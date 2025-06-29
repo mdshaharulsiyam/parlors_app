@@ -108,9 +108,9 @@ const Verify = () => {
           <GradientButton
             handler={handleOtpChange}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#0000ff" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: '700',
                   fontSize: 18,

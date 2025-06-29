@@ -178,9 +178,9 @@ const SignIn = () => {
           }}>
           <GradientButton handler={() => submitHandler()}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: 700,
                   fontSize: 18,
@@ -216,9 +216,9 @@ const SignIn = () => {
           /> */}
           <GradientButton handler={() => signIn()}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: 700,
                   fontSize: 18,

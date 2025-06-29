@@ -120,6 +120,20 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
   }
   return (
     <View>
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 15 }}>
+        <GradientButton handler={() => dispatch(setIndex(1))} padding={10}>
+          <Text style={[
+            {
+              color: themeColors.constWhite as string,
+              textAlign: 'center',
+              fontSize: 16,
+              fontWeight: '600',
+            },
+          ]}>
+            Back
+          </Text>
+        </GradientButton>
+      </View>
       {Object.keys(inputValue).map((key, index, arr) => {
         if (key !== 'street_address') {
           return (
@@ -175,7 +189,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
       })}
       <GradientButton handler={submitHandler}>
         {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.white as string} />
+          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
         ) : (
           <Text
             style={[

@@ -72,7 +72,7 @@ const Details = () => {
     //console.log('Book button pressed!');
     // Add your navigation or booking logic here
   };
-  const textColor = themeColors.black as string;
+  const textColor = themeColors.constWhite as string;
   return (
     <ScrollView style={[styles.container, {
       backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
