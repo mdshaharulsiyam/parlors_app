@@ -81,7 +81,6 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
     }
   }
   const handleReset = (key: keyof IAddressInput, value?: string) => {
-    console.log(key)
     if (key === 'divisions') {
       setInputValue({
         "divisions": value as string,

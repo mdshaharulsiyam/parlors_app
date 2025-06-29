@@ -16,7 +16,7 @@ export const useCreateVendor = () => {
     wednesday: [],
     thursday: [],
   }
-  const createVendorHandler = (availableTime: SelectedTime, handler?: () => void) => {
+  const createVendorHandler = (availableTime: SelectedTime, coordinates: number[], handler?: () => void) => {
     Object.entries(availableTime).map(([day, time]) => {
       if (!time.checked) {
         timeFormate[day as keyof SelectedTime] = []
@@ -28,7 +28,9 @@ export const useCreateVendor = () => {
       profile,
       address,
       availableTime: timeFormate,
+      coordinates: JSON.stringify(coordinates),
     }
+
     createVendor(data)
       .unwrap()
       .then((res) => {
