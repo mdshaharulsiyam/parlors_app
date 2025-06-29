@@ -41,7 +41,7 @@ const SingleSelectDropDown = ({
           ? handler(item.value)
           : setInputValue({ ...inputValue, [name]: item.value });
         setError({ ...error, [name]: false });
-        resetHandler?.();
+        resetHandler?.(item?.value);
       }}
       itemTextStyle={{ color: themeColors.black as string }}
       itemContainerStyle={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), borderWidth: 0, }}
@@ -62,7 +62,7 @@ const SingleSelectDropDown = ({
         borderColor: hexToRGBA(themeColors.black as string, 0.3),
       }}
       onChangeText={text => {
-        console.log('Search text:', text);
+        onChangeText?.(text)
       }}
       renderItem={(item: any) => {
         const isSelected = item.value === value;

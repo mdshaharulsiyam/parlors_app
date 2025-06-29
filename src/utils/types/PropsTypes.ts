@@ -18,5 +18,5 @@ export interface ISingleDropDownProps {
   placeholder?: string;
   handler?: (arg0?: any) => void;
   onChangeText?: React.Dispatch<React.SetStateAction<string>>;
-  resetHandler?: () => void;
+  resetHandler?: (value?: string) => void;
 }

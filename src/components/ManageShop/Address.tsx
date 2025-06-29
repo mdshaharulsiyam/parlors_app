@@ -80,10 +80,11 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
 
     }
   }
-  const handleReset = (key: keyof IAddressInput) => {
+  const handleReset = (key: keyof IAddressInput, value?: string) => {
+    console.log(key)
     if (key === 'divisions') {
       setInputValue({
-        "divisions": inputValue?.divisions,
+        "divisions": value as string,
         "districts": "",
         "upazilas": "",
         "unions": "",
@@ -93,7 +94,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
     if (key === 'districts') {
       setInputValue({
         "divisions": inputValue?.divisions,
-        "districts": inputValue?.districts,
+        "districts": value as string,
         "upazilas": "",
         "unions": "",
         "street_address": inputValue?.street_address,
@@ -103,7 +104,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
       setInputValue({
         "divisions": inputValue?.divisions,
         "districts": inputValue?.districts,
-        "upazilas": inputValue?.upazilas,
+        "upazilas": value as string,
         "unions": "",
         "street_address": inputValue?.street_address,
       })
@@ -113,7 +114,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
         "divisions": inputValue?.divisions,
         "districts": inputValue?.districts,
         "upazilas": inputValue?.upazilas,
-        "unions": inputValue?.unions,
+        "unions": value as string,
         "street_address": inputValue?.street_address,
       })
     }
@@ -136,7 +137,7 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
                 setError={setError}
                 error={error}
                 onChangeText={key === 'divisions' ? setDivisionSearch : key === 'districts' ? setDistrictSearch : key === 'upazilas' ? setUpazillaSearch : setUnionSearch}
-                resetHandler={() => handleReset(key as keyof IAddressInput)}
+                resetHandler={(value) => handleReset(key as keyof IAddressInput, value)}
               />
             </View>
           );

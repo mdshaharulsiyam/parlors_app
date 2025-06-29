@@ -18,10 +18,10 @@ export const useAddressApiCall = ({
   upazillaSearch?: string,
   divisionSearch?: string,
 }) => {
-  const { data: divisions, isLoading: isLoadingDiv } = useGetDivisionsQuery({ page: 1, search: divisionSearch });
-  const { data: districts, isLoading: districtLoading } = useGetDistrictsQuery({ division_id, search: districtSearch });
-  const { data: upazilas, isLoading: upazillaLoading } = useGetUpazilasQuery({ district_id, search: upazillaSearch });
-  const { data: unions, isLoading: unionLoading } = useGetUnionsQuery({ upazilla_id, search: unionSearch });
+  const { data: divisions, isLoading: isLoadingDiv } = useGetDivisionsQuery({ page: 1, search: divisionSearch, });
+  const { data: districts, isLoading: districtLoading } = useGetDistrictsQuery({ division_id, search: districtSearch, });
+  const { data: upazilas, isLoading: upazillaLoading } = useGetUpazilasQuery({ district_id, search: upazillaSearch, });
+  const { data: unions, isLoading: unionLoading } = useGetUnionsQuery({ upazilla_id, search: unionSearch, });
 
   const mappedDivisions = useMemo(() => (
     divisions?.data?.map((item: any) => ({ label: item?.name, value: item?.id }))
