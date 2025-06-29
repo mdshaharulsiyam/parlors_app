@@ -56,18 +56,19 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
         ]);
         if (role && token) {
           await Promise.all([
-            dispatch(setRole(role)),
-            dispatch(setToken(token)),
+            dispatch(setRole(JSON.parse(role))),
+            dispatch(setToken(JSON.parse(token))),
             dispatch(setUser(data?.data)),
           ])
         }
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
     }
     getData()
   }, [])
   useEffect(() => {
+    dispatch(setRole(data?.data?.role))
     dispatch(setUser(data?.data))
   }, [data])
   return (

@@ -77,9 +77,9 @@ const Verify = () => {
           type="numeric"
           secureTextEntry={false}
           focusStickBlinkingDuration={500}
-          // onFocus={() => console.log('Focused')}
-          // onBlur={() => console.log('Blurred')}
-          // onTextChange={text => console.log(text)}
+          // onFocus={() => //console.log('Focused')}
+          // onBlur={() => //console.log('Blurred')}
+          // onTextChange={text => //console.log(text)}
           onFilled={text => setCode(text)}
           textInputProps={{
             accessibilityLabel: 'One-Time Password',

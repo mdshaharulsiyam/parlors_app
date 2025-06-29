@@ -17,17 +17,17 @@ import SearchInput from './SearchInput';
 const FilterOptions = () => {
   const { themeColors, search, setSearch, setModalOpen } = useGlobalContext();
   const [inputValue, setInputValue] = useState<IAddressInput>({
-    district: '',
-    sub_district: '',
-    union: '',
-    post: '',
+    divisions: '',
+    districts: '',
+    upazilas: '',
+    unions: '',
     street_address: '',
   });
   const [error, setError] = useState<IAddressInputError>({
-    district: false,
-    sub_district: false,
-    union: false,
-    post: false,
+    divisions: false,
+    districts: false,
+    upazilas: false,
+    unions: false,
     street_address: false,
   })
   const handleSearch = (value: string) => console.log(value);

@@ -75,7 +75,7 @@ const Messages = ({ route }: any) => {
   const white = themeColors.white as string
   const handleSendMessage = useCallback(() => {
     if (newMessage.trim()) {
-      console.log('Sending:', newMessage);
+      //console.log('Sending:', newMessage);
       setNewMessage('');
     }
   }, [newMessage]);

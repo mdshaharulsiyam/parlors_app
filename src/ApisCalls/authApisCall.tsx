@@ -46,7 +46,7 @@ export const useLogin = () => {
 
       })
       .catch((err) => {
-        console.log(err, 'err')
+        //console.log(err, 'err')
         Toast.show({
           type: 'error',
           text1: 'Login failed',
@@ -70,7 +70,7 @@ export const useVerifyOtp = () => {
         handler?.(res?.data?.resetToken)
       })
       .catch((err) => {
-        console.log(err, 'err')
+        //console.log(err, 'err')
         Toast.show({
           type: 'error',
           text1: 'Otp verification failed',
@@ -118,7 +118,7 @@ export const useResetPassword = () => {
         handler?.()
       })
       .catch((err) => {
-        console.log(err, 'err')
+        //console.log(err, 'err')
         Toast.show({
           type: 'error',
           text1: 'Reset password failed',

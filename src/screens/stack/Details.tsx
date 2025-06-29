@@ -69,7 +69,7 @@ const Details = () => {
 
   // Handle book button press
   const handleBookPress = () => {
-    console.log('Book button pressed!');
+    //console.log('Book button pressed!');
     // Add your navigation or booking logic here
   };
   const textColor = themeColors.black as string;

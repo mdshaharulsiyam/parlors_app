@@ -35,9 +35,15 @@ export const vendorSlice = createSlice({
     setIndex: (state, action: PayloadAction<0 | 1 | 2>) => {
       state.index = action.payload;
     },
+    resetVendor: (state) => {
+      state.address = null;
+      state.profile = null;
+      state.availableTime = null;
+      state.index = 0;
+    },
   },
 });
 
-export const { setAddress, setProfile, updateProfile, setAvailableTime, setIndex } = vendorSlice.actions;
+export const { setAddress, setProfile, updateProfile, setAvailableTime, setIndex, resetVendor } = vendorSlice.actions;
 
 export default vendorSlice.reducer;

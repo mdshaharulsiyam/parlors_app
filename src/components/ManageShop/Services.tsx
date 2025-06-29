@@ -11,7 +11,7 @@ const Services = () => {
     <FlatList
       ListFooterComponent={<View style={{ height: 50 }} />}
       onEndReached={e => {
-        console.log(e);
+        //console.log(e);
       }}
       onEndReachedThreshold={0.5}
       numColumns={2}
