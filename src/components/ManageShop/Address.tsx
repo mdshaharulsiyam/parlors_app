@@ -120,20 +120,22 @@ const Address = ({ creating = false }: { creating?: boolean }) => {
   }
   return (
     <View>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 15 }}>
-        <GradientButton handler={() => dispatch(setIndex(1))} padding={10}>
-          <Text style={[
-            {
-              color: themeColors.constWhite as string,
-              textAlign: 'center',
-              fontSize: 16,
-              fontWeight: '600',
-            },
-          ]}>
-            Back
-          </Text>
-        </GradientButton>
-      </View>
+      {
+        creating && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 15 }}>
+          <GradientButton handler={() => dispatch(setIndex(0))} padding={10}>
+            <Text style={[
+              {
+                color: themeColors.constWhite as string,
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: '600',
+              },
+            ]}>
+              Back
+            </Text>
+          </GradientButton>
+        </View>
+      }
       {Object.keys(inputValue).map((key, index, arr) => {
         if (key !== 'street_address') {
           return (

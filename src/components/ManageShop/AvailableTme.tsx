@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useCreateVendor } from '../../ApisCalls/vendorApisCall';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { setRole } from '../../Redux/States/userSlice';
-import { resetVendor, setAvailableTime } from '../../Redux/States/vendorSlice';
+import { resetVendor, setAvailableTime, setIndex } from '../../Redux/States/vendorSlice';
 import { getLocation } from '../../utils/getLocations';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
@@ -121,6 +121,23 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
     <View style={[styles.container, {
       backgroundColor: themeColors.white as string
     }]}>
+
+      {
+        creating && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 15 }}>
+          <GradientButton handler={() => dispatch(setIndex(1))} padding={10}>
+            <Text style={[
+              {
+                color: themeColors.constWhite as string,
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: '600',
+              },
+            ]}>
+              Back
+            </Text>
+          </GradientButton>
+        </View>
+      }
       <GradientButton handler={handleSelectSameTimeForAll}>
         <Text style={[commonStyles.ButtonText, {
           color: themeColors.constWhite as string,
