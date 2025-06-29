@@ -25,13 +25,16 @@ export const useCreateVendor = () => {
       }
     })
     const data = {
-      profile,
-      address,
-      availableTime: timeFormate,
+      ...profile,
+      address: JSON.stringify(address),
+      availableTime: JSON.stringify(timeFormate),
       coordinates: JSON.stringify(coordinates),
     }
-
-    createVendor(data)
+    const formData = new FormData()
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value)
+    })
+    createVendor(formData)
       .unwrap()
       .then((res) => {
         Toast.show({
