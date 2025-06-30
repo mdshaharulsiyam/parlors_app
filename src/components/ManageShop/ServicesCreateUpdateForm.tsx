@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IServicesInput, IServicesInputError, IServicesInputLabel } from '../../utils/types/Types';
+import { IImage, IServicesInput, IServicesInputError, IServicesInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
+import ImageUpload from '../Shared/ImageUpload';
 
 
 const ServicesCreateUpdateForm = () => {
   const { themeColors } = useGlobalContext()
+  const [img, setImg] = useState<IImage[]>([])
   const [inputValue, setInputValue] = useState<IServicesInput>({
     name: '',
     price: '',
@@ -58,6 +61,13 @@ const ServicesCreateUpdateForm = () => {
   }
   return (
     <View>
+      <Text style={{
+        color: themeColors.black as string,
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginVertical: 10,
+      }}>Service Listing Form</Text>
       {Object.keys(inputValue).map((key, index, arr) => {
         if (key == 'Category' || key == 'Sub Category') {
           return (
@@ -82,6 +92,27 @@ const ServicesCreateUpdateForm = () => {
               />
             </View>
           );
+        }
+        if (key === "img") {
+          return <ImageUpload
+            images={img}
+            setImages={setImg}
+          >
+            <View style={[globalStyles.inputLabel, {
+              flexDirection: 'row', alignItems: 'flex-start', gap: 10,
+              backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+              padding: 10,
+              borderRadius: 5,
+              paddingTop: 20,
+            }]}>
+              <Image source={OtherIcons.Camera as ImageSourcePropType} style={{ width: 20, height: 20, tintColor: themeColors.black as string }} />
+              <Text style={[globalStyles.inputLabel, {
+                color: hexToRGBA(themeColors.black as string, 0.8),
+              }]}>
+                Add Image
+              </Text>
+            </View>
+          </ImageUpload>
         }
         return (
           <View key={key} style={{}}>
