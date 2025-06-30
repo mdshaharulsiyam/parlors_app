@@ -1,15 +1,21 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { Ratio3_2 } from '../../utils/calculateHeight';
 import { topBarbers } from '../Home/Parlors';
+import GradientButton from '../Shared/GradientButton';
 import ParlorCard from '../Shared/ParlorCard';
 
 const Services = () => {
-  const { width } = useGlobalContext();
+  const { width, themeColors } = useGlobalContext();
   return (
     <FlatList
       ListFooterComponent={<View style={{ height: 50 }} />}
+      ListHeaderComponent={<View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 }}>
+        <GradientButton handler={() => { }}>
+          <Text style={{ color: themeColors.constWhite as string }}>Add Service</Text>
+        </GradientButton>
+      </View>}
       onEndReached={e => {
         //console.log(e);
       }}
