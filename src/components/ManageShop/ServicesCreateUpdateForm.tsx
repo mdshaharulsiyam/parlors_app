@@ -17,7 +17,7 @@ const ServicesCreateUpdateForm = () => {
   const [img, setImg] = useState<IImage[]>([])
   const [categorySearch, setCategorySearch] = useState('')
   const [subCategorySearch, setSubCategorySearch] = useState('')
-  const { categories, subCategories, isLoading } = useCategoriesApiCall(categorySearch, subCategorySearch)
+
   const [inputValue, setInputValue] = useState<IServicesInput>({
     name: '',
     category: '',
@@ -34,6 +34,7 @@ const ServicesCreateUpdateForm = () => {
     category: false,
     sub_category: false,
   })
+  const { categories, subCategories, isLoading } = useCategoriesApiCall({ categorySearch, subCategorySearch, category: inputValue.category })
   const [inputLabel, setInputLabel] = useState<IServicesInputLabel>({
     name: 'Name',
     price: 'Price',
