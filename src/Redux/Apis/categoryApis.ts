@@ -15,7 +15,20 @@ const categoryApi = baseApi.injectEndpoints({
         }
       },
     }),
+    getSubCategories: builder.query({
+      query: ({ limit = 10, search, page = 1 }) => {
+        return {
+          url: '/service/get-all',
+          method: 'GET',
+          params: {
+            limit,
+            search,
+            page,
+          }
+        }
+      },
+    }),
   }),
 })
 
-export const { useGetCategoriesQuery } = categoryApi
+export const { useGetCategoriesQuery, useGetSubCategoriesQuery } = categoryApi
