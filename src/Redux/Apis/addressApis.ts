@@ -1,6 +1,6 @@
-import { parlorsApi } from '../baseApis';
+import { baseApi } from '../baseApis';
 
-const addressApis = parlorsApi.injectEndpoints({
+const addressApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDivisions: builder.query({
       query: ({ page = 1, limit = 10, search }) => ({

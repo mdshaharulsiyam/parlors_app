@@ -1,6 +1,6 @@
-import { parlorsApi } from '../baseApis';
+import { baseApi } from '../baseApis';
 
-const vendorApis = parlorsApi.injectEndpoints({
+const vendorApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createVendor: builder.mutation({
       query: (data) => ({
