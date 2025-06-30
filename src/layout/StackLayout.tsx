@@ -5,6 +5,7 @@ import Details from '../screens/stack/Details';
 import Forget from '../screens/stack/Forget';
 import Messages from '../screens/stack/Messages';
 import Reset from '../screens/stack/Reset';
+import ServiceAddEdit from '../screens/stack/ServiceAddEdit';
 import SignIn from '../screens/stack/SignIn';
 import SignUp from '../screens/stack/SignUp';
 import Verify from '../screens/stack/Verify';
@@ -15,11 +16,13 @@ const StackLayout = () => {
   const { themeColors } = useGlobalContext();
   return (
     <Stack.Navigator >
-      {/* <Stack.Screen
-        name="Checkout"
-        component={Checkout}
-        options={{ headerShown: false }}
-      /> */}
+      <Stack.Screen
+        name="ServiceAddEdit"
+        component={ServiceAddEdit}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="SignIn"
         component={SignIn}
