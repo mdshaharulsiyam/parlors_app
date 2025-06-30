@@ -12,7 +12,8 @@
     "android:release": "react-native run-android --variant=release",
     "build:apk": "cd android && ./gradlew assembleRelease",
     "build:aab": "cd android && ./gradlew bundleRelease",
-    "show:keys": "keytool -list -v -keystore android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android"
+    "show:keys": "keytool -list -v -keystore android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android",
+    "log-android": "react-native log-android"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.1.2",

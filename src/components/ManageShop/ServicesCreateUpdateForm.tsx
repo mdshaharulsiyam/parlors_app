@@ -94,26 +94,32 @@ const ServicesCreateUpdateForm = () => {
           );
         }
         if (key === "img") {
-          return <ImageUpload
-            images={img}
-            setImages={setImg}
-          >
-            <View style={[globalStyles.inputLabel, {
-              flexDirection: 'row', alignItems: 'flex-start', gap: 10,
-              backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
-              padding: 10,
-              borderRadius: 5,
-              paddingTop: 20,
-            }]}>
-              <Image source={OtherIcons.Camera as ImageSourcePropType} style={{ width: 20, height: 20, tintColor: themeColors.black as string }} />
-              <Text style={[globalStyles.inputLabel, {
-                color: hexToRGBA(themeColors.black as string, 0.8),
+          return <View>
+            <Text style={[globalStyles.inputLabel, {
+              color: hexToRGBA(themeColors.black as string, 0.8),
+            }]}>{inputLabel[key as keyof IServicesInputLabel]}</Text>
+            <ImageUpload
+              images={img}
+              setImages={setImg}
+            >
+              <View style={[globalStyles.inputLabel, {
+                flexDirection: 'row', alignItems: 'flex-start', gap: 10,
+                backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                padding: 10,
+                borderRadius: 5,
+                paddingTop: 20,
               }]}>
-                Add Image
-              </Text>
-            </View>
-          </ImageUpload>
+                <Image source={OtherIcons.Camera as ImageSourcePropType} style={{ width: 20, height: 20, tintColor: themeColors.black as string }} />
+                <Text style={[globalStyles.inputLabel, {
+                  color: hexToRGBA(themeColors.black as string, 0.8),
+                }]}>
+                  Add Image
+                </Text>
+              </View>
+            </ImageUpload>
+          </View>
         }
+
         return (
           <View key={key} style={{}}>
             <Text style={[globalStyles.inputLabel, {

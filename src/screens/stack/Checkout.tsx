@@ -1,14 +1,15 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+"use dom"
 
 const Checkout = () => {
   return (
-    <View>
-      <Text>Checkout</Text>
-    </View>
+    <div>
+      <h1>Checkout</h1>
+      <form action="">
+        <input type="text" />
+      </form>
+    </div>
   );
 };
 
 export default Checkout;
 
-const styles = StyleSheet.create({});
