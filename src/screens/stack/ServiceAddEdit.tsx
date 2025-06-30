@@ -10,7 +10,7 @@ const ServiceAddEdit = () => {
   const { themeColors } = useGlobalContext()
   return (
     <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), padding: 15 }}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ServicesCreateUpdateForm />
       </ScrollView>
     </SafeAreaView>

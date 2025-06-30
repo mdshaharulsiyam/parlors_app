@@ -16,11 +16,11 @@ const ServicesCreateUpdateForm = () => {
   const [img, setImg] = useState<IImage[]>([])
   const [inputValue, setInputValue] = useState<IServicesInput>({
     name: '',
-    price: '',
-    description: '',
-    img: '',
     category: '',
     sub_category: '',
+    price: '',
+    img: '',
+    description: '',
   });
   const [error, setError] = useState<IServicesInputError>({
     name: false,
@@ -113,7 +113,9 @@ const ServicesCreateUpdateForm = () => {
                 <Text style={[globalStyles.inputLabel, {
                   color: hexToRGBA(themeColors.black as string, 0.8),
                 }]}>
-                  Add Image
+                  {
+                    img.length > 0 ? img?.[0]?.name : 'Add Image'
+                  }
                 </Text>
               </View>
             </ImageUpload>
