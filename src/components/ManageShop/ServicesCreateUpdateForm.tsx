@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { useCategoriesApiCall } from '../../ApisCalls/categoryApiCall';
 import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
@@ -14,6 +15,9 @@ import ImageUpload from '../Shared/ImageUpload';
 const ServicesCreateUpdateForm = () => {
   const { themeColors } = useGlobalContext()
   const [img, setImg] = useState<IImage[]>([])
+  const [categorySearch, setCategorySearch] = useState('')
+  const [subCategorySearch, setSubCategorySearch] = useState('')
+  const { categories, subCategories, isLoading } = useCategoriesApiCall(categorySearch, subCategorySearch)
   const [inputValue, setInputValue] = useState<IServicesInput>({
     name: '',
     category: '',
@@ -69,7 +73,7 @@ const ServicesCreateUpdateForm = () => {
         marginVertical: 10,
       }}>Service Listing Form</Text>
       {Object.keys(inputValue).map((key, index, arr) => {
-        if (key == 'Category' || key == 'Sub Category') {
+        if (key == 'category' || key == 'sub_category') {
           return (
             <View key={key}>
               <Text style={[globalStyles.inputLabel, {
@@ -77,13 +81,8 @@ const ServicesCreateUpdateForm = () => {
               }]}>{inputLabel[key as keyof IServicesInputLabel]}</Text>
               <SingleSelectDropDown
                 name={key}
-                data={key === 'Category' ? [{
-                  label: 'Category',
-                  value: 'category',
-                }] : [{
-                  label: 'Sub Category',
-                  value: 'sub_category',
-                }]}
+                data={key === 'category' ? categories : subCategories}
+                onChangeText={key === 'category' ? setCategorySearch : setSubCategorySearch}
                 value={inputValue[key as keyof IServicesInput]}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
