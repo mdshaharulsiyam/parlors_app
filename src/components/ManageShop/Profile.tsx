@@ -11,6 +11,7 @@ import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 import ImageUpload from '../Shared/ImageUpload';
+import LocationNotice from '../Shared/LocationNotice';
 const businessCategoryData = [
   { label: 'Salon', value: 'salon' },
   { label: 'Restaurant', value: 'restaurant' },
@@ -103,6 +104,11 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
             </View>
           </ImageUpload>
         </View>
+      }
+      {
+        creating && (
+          <LocationNotice />
+        )
       }
       {Object.keys(inputValue).map((key, index) => {
         if (key === 'business_category') {
