@@ -38,10 +38,10 @@ const ServicesCreateUpdateForm = () => {
   const [inputLabel, setInputLabel] = useState<IServicesInputLabel>({
     name: 'Name',
     price: 'Price',
-    description: 'Description',
     img: 'Image',
     category: 'Category',
     sub_category: 'Sub Category',
+    description: 'Description',
   })
   const submitHandler = () => {
     let isInvalid = false;
@@ -136,6 +136,8 @@ const ServicesCreateUpdateForm = () => {
                   setInputValue({ ...inputValue, [key]: text });
                   setError({ ...error, [key]: false });
                 }}
+                multiline={key === 'description'}
+                numberOfLines={key === 'description' ? 4 : 1}
                 placeholder={`Enter your ${inputLabel[key as keyof IServicesInputLabel]}`}
                 placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
                 style={[
@@ -147,6 +149,8 @@ const ServicesCreateUpdateForm = () => {
                     borderWidth: error[key as keyof IServicesInputError] ? 1 : 0,
                     backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
                     color: themeColors.black as string,
+                    height: key === 'description' ? 150 : undefined,
+                    textAlignVertical: key === 'description' ? 'top' : 'center',
                   }
                 ]}
               />
