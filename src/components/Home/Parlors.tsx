@@ -105,12 +105,15 @@ const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
         }}
         onEndReachedThreshold={0.5}
         numColumns={horizontal ? 1 : 2}
-        columnWrapperStyle={{
-          justifyContent: 'space-between',
-          marginBottom: 10,
-          gap: 10,
-        }}
+        {...(!horizontal && {
+          columnWrapperStyle: {
+            justifyContent: 'space-between',
+            marginBottom: 10,
+            gap: 10,
+          },
+        })}
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         data={topBarbers}
         keyExtractor={item => item?._id}
         renderItem={({ item }) => (

@@ -149,7 +149,7 @@ const Details = () => {
         ))}
       </View>
       {/* sevicess */}
-      <Parlors />
+      <Parlors horizontal={true} />
       {/* Rating & Review */}
       <View style={styles.ratingInfo}>
         <Text style={{
