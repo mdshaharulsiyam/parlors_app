@@ -1,5 +1,6 @@
 import arrowLeft from "../assets/arrowLeft.png";
 import Camera from "../assets/Camera.png";
+import Cross from "../assets/cross.png";
 import Eye from "../assets/eye.png";
 import EyeX from "../assets/eyeX.png";
 import Filter from "../assets/filter.png";
@@ -22,5 +23,6 @@ export const OtherIcons = {
   Logo: logo,
   Camera: Camera,
   Profile: Profile,
-  arrowLeft: arrowLeft
+  arrowLeft: arrowLeft,
+  Cross: Cross
 };
