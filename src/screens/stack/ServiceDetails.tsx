@@ -9,11 +9,10 @@ import {
   View
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import Parlors from '../../components/Home/Parlors';
 import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-const Details = () => {
+const ServiceDetails = () => {
   const { themeColors } = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -148,8 +147,7 @@ const Details = () => {
           </Text>
         ))}
       </View>
-      {/* sevicess */}
-      <Parlors />
+
       {/* Rating & Review */}
       <View style={styles.ratingInfo}>
         <Text style={{
@@ -189,7 +187,6 @@ const Details = () => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-
       <View style={{ flexDirection: "column", gap: 10, marginBottom: 70 }}>
         <GradientButton handler={() => setOpen(true)}>
           <Text style={{
@@ -229,7 +226,7 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default ServiceDetails;
 
 const styles = StyleSheet.create({
   container: {

@@ -35,7 +35,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   const { width, height } = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
+  const themeColors = useColorScheme() === 'dark' ? Colors.dark : Colors.light;
   const { data } = useGet_profileQuery(undefined)
   const values = {
     themeColors,
