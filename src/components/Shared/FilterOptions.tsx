@@ -15,7 +15,7 @@ import SearchInput from './SearchInput';
 
 
 const FilterOptions = () => {
-  const { themeColors, search, setSearch, setModalOpen } = useGlobalContext();
+  const { themeColors, search, setSearch } = useGlobalContext();
   const [inputValue, setInputValue] = useState<IAddressInput>({
     divisions: '',
     districts: '',
