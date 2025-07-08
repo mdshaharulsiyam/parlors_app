@@ -11,10 +11,10 @@ import {
 } from '@react-navigation/native';
 import React from 'react';
 import { Image, ImageSourcePropType, TouchableOpacity, View } from 'react-native';
-import Parlors from '../components/Home/Parlors';
 import { tabIcons } from '../constant/images';
 import { useGlobalContext } from '../Provider/GlobalContextProvider';
 import Home from '../screens/tab/Home';
+import Parlors from '../screens/tab/Parlors';
 import { commonStyles } from '../utils/styles/Styles';
 import { ScreenParamsType } from '../utils/types/ScreenParamsType';
 import StackLayout from './StackLayout';

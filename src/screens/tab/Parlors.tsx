@@ -96,7 +96,7 @@ const Parlors = () => {
   const { width, height } = Dimensions.get('window');
   const { themeColors, } = useGlobalContext();
   return (
-    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5 }}>
       <FlatList
         onEndReached={e => {
           //console.log(e);
