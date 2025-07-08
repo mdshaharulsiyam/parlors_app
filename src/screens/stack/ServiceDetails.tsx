@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
@@ -19,8 +20,14 @@ const ServiceDetails = () => {
   // Static data
   const shopDetails = {
     id: '1',
-    shopName: 'My Amazing Shop',
-    shopImage: 'https://placehold.co/400x400.png?text=Shop+Name',
+    name: 'service name ',
+    img: [
+      'https://placehold.co/400x400.png?text=service+name+1',
+      'https://placehold.co/400x400.png?text=service+name+2',
+      'https://placehold.co/400x400.png?text=service+name+3',
+      'https://placehold.co/400x400.png?text=service+name+4',
+      'https://placehold.co/400x400.png?text=service+name+5',
+    ],
     totalWorkers: 10,
     ownerName: 'John Doe',
     ownerEmail: 'johndoe@example.com',
@@ -66,7 +73,7 @@ const ServiceDetails = () => {
       },
     ],
   };
-
+  const [selectedImage, setSelectedImage] = useState(shopDetails?.img[0]);
   // Handle book button press
   const handleBookPress = () => {
     //console.log('Book button pressed!');
@@ -77,11 +84,29 @@ const ServiceDetails = () => {
     <ScrollView style={[styles.container, {
       backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
     }]}>
-      <Text style={[styles.shopName, {
+      <Text style={[styles.name, {
         color: themeColors.black as string,
-      }]}>{shopDetails.shopName}</Text>
-      <Image source={{ uri: shopDetails.shopImage }} style={styles.shopImage} />
-
+      }]}>{shopDetails.name}</Text>
+      <Image source={{ uri: selectedImage }} style={styles.img} />
+      <FlatList
+        data={shopDetails?.img}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingVertical: 10,
+        }}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => setSelectedImage(item)}>
+            <Image source={{ uri: item }} style={{
+              width: 100,
+              height: 100,
+              margin: 5,
+              borderRadius: 10,
+            }} />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
       <View style={[styles.ownerInfo, {
         backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
       }]}>
@@ -233,17 +258,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15,
   },
-  shopName: {
+  name: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
   },
-  shopImage: {
+  img: {
     width: '100%',
     height: 200,
     borderRadius: 10,
-    marginBottom: 15,
   },
   ownerInfo: {
     flexDirection: 'row',
