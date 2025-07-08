@@ -102,7 +102,7 @@ const TopBerber = () => {
         data={topBarbers}
         contentContainerStyle={{ gap: 10 }}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => <ParlorCard item={item} height={188} />}
+        renderItem={({ item }) => <ParlorCard item={item} height={188} cardFor='shop' />}
       />
     </View>
   );
