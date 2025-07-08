@@ -1,5 +1,5 @@
 import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
-const baseUrl = 'http://10.0.60.189:5004/'
+const baseUrl = 'http://10.0.60.189:5004'
 export const generateImageUrl = (imagePath: string): string => imagePath?.includes('http') ? imagePath : imagePath?.startsWith('/') ? `${baseUrl}${imagePath}` : `${baseUrl}/${imagePath}`;
 // export const baseApi = createApi({
 //   reducerPath: 'baseApi',
@@ -52,5 +52,5 @@ export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: timeoutFetchBaseQuery({ baseUrl: baseUrl }, 5000),
   endpoints: (builder) => ({}),
-  tagTypes: ['auth', 'vendor']
+  tagTypes: ['auth', 'vendor', 'banner']
 });

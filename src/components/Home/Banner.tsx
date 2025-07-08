@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { useGet_bannersQuery } from '../../Redux/Apis/bannerApis';
+import { generateImageUrl } from '../../Redux/baseApis';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const { width } = Dimensions.get('window');
@@ -29,6 +31,7 @@ const data = [
   'Item 3',
 ];
 const Banner = () => {
+  const { data } = useGet_bannersQuery(undefined)
   const flatListRef = useRef<FlatList<any> | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigation<DrawerNavigationProp<ScreenParamsType>>();
@@ -54,7 +57,7 @@ const Banner = () => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [data.length]);
+  }, [data?.data?.length]);
 
   return (
     <View>
@@ -64,19 +67,22 @@ const Banner = () => {
         refreshing={false}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        data={data}
+        data={data?.data || []}
         keyExtractor={(item, index) => index.toString()}
         pagingEnabled={true}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         snapToAlignment="center"
-        renderItem={({ item }) => (
-          <TouchableOpacity>
-            <Image
-              source={{ uri: 'https://placehold.co/400x400.png' }}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          console.log(generateImageUrl(item?.img))
+          return (
+            <TouchableOpacity>
+              <Image
+                source={{ uri: generateImageUrl(item?.img) }}
+                style={styles.image}
+              />
+            </TouchableOpacity>
+          )
+        }}
       // onMomentumScrollEnd={event => {
       //   const index = Math.round(event.nativeEvent.contentOffset.x / width);
       //   setActiveIndex(index);
