@@ -107,6 +107,11 @@ const ServiceDetails = () => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
+      <Text style={[styles.sectionTitle, {
+        color: themeColors.black as string,
+      }]}>
+        Owner Details
+      </Text>
       <View style={[styles.ownerInfo, {
         backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
       }]}>
@@ -129,11 +134,6 @@ const ServiceDetails = () => {
       }]}>
         Total Workers: {shopDetails.totalWorkers}
       </Text>
-
-      {/* Worker Images Slider */}
-      <Text style={[styles.sectionTitle, {
-        color: themeColors.black as string,
-      }]}>Workers</Text>
       <FlatList
         data={shopDetails.workerImages}
         horizontal

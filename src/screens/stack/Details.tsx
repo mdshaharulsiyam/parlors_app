@@ -103,11 +103,6 @@ const Details = () => {
       }]}>
         Total Workers: {shopDetails.totalWorkers}
       </Text>
-
-      {/* Worker Images Slider */}
-      <Text style={[styles.sectionTitle, {
-        color: themeColors.black as string,
-      }]}>Workers</Text>
       <FlatList
         data={shopDetails.workerImages}
         horizontal
