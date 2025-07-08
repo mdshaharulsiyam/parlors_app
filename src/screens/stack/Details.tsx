@@ -8,9 +8,7 @@ import {
   Text,
   View
 } from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import Parlors from '../../components/Home/Parlors';
-import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 const Details = () => {
@@ -190,7 +188,7 @@ const Details = () => {
         />
       </View>
 
-      <View style={{ flexDirection: "column", gap: 10, marginBottom: 70 }}>
+      {/* <View style={{ flexDirection: "column", gap: 10, marginBottom: 70 }}>
         <GradientButton handler={() => setOpen(true)}>
           <Text style={{
             color: textColor,
@@ -224,7 +222,7 @@ const Details = () => {
             Book Now
           </Text>
         </GradientButton>
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
@@ -296,6 +294,7 @@ const styles = StyleSheet.create({
   },
   ratingInfo: {
     marginTop: 20,
+    marginBottom: 100,
   },
   reviewCard: {
     flexDirection: 'row',
