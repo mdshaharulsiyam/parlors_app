@@ -83,6 +83,11 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
       {children}
 
       <BottomSheet
+        backgroundStyle={{ backgroundColor: themeColors.white as string }}
+        handleIndicatorStyle={{
+          backgroundColor: themeColors.black as string,
+          height: 5,
+        }}
         index={-1}
         snapPoints={['25%', '50%', '90%']}
         ref={bottomSheetRef}

@@ -20,7 +20,7 @@ const SearchFilterTrigger = () => {
       <SearchInput />
 
       <TouchableOpacity
-        onPress={() => bottomSheetRef.current?.expand()}
+        onPress={() => bottomSheetRef.current?.snapToIndex(1)}
         style={{
           backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
           padding: 6,
@@ -38,7 +38,7 @@ const SearchFilterTrigger = () => {
           }}
         />
       </TouchableOpacity>
-    </View>
+    </View >
   );
 };
 
