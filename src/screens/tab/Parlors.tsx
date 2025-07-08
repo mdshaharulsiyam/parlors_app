@@ -2,14 +2,13 @@ import React from 'react';
 import {
   Dimensions,
   FlatList,
-  Modal,
-  StyleSheet,
-  View
+  StyleSheet
 } from 'react-native';
-import FilterOptions from '../../components/Shared/FilterOptions';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ParlorCard from '../../components/Shared/ParlorCard';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IParlor } from '../../utils/types/Types';
 const Barbers: IParlor[] = [
   {
@@ -95,9 +94,9 @@ const Barbers: IParlor[] = [
 ];
 const Parlors = () => {
   const { width, height } = Dimensions.get('window');
-  const { themeColors, modalOpen, setModalOpen } = useGlobalContext();
+  const { themeColors, } = useGlobalContext();
   return (
-    <View>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
       <FlatList
         onEndReached={e => {
           //console.log(e);
@@ -123,23 +122,7 @@ const Parlors = () => {
           />
         )}
       />
-      <Modal
-        visible={modalOpen}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalOpen(false)}>
-        <View
-          style={{
-            width,
-            height, //: height - 200,
-            backgroundColor: themeColors.background,
-            // bottom: 0,
-            // position: 'absolute',
-          }}>
-          <FilterOptions />
-        </View>
-      </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
