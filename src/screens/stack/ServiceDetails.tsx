@@ -147,11 +147,6 @@ const ServiceDetails = () => {
       <View style={styles.bookingInfo}>
         <Text style={{
           color: textColor
-        }}>
-          Total Booking Possible at a Time: {[shopDetails.totalBooking]}
-        </Text>
-        <Text style={{
-          color: textColor
         }}>Completed Booking: {shopDetails.completedBooking}</Text>
         <Text style={{
           color: textColor
@@ -162,7 +157,7 @@ const ServiceDetails = () => {
       </View>
 
       {/* Shop Timings */}
-      <Text style={[styles.sectionTitle, { color: textColor }]}>Opening Hours</Text>
+      <Text style={[styles.sectionTitle, { color: textColor }]}>Available Times</Text>
       <View style={styles.openDetails}>
         {shopDetails.openDetails.map((day, index) => (
           <Text key={index} style={[styles.openingTime, {
@@ -181,7 +176,7 @@ const ServiceDetails = () => {
         <Text style={{
           color: textColor
         }}>Total Rating: {shopDetails.totalRating}</Text>
-        <Text style={styles.sectionTitle}>Reviews</Text>
+        <Text style={[styles.sectionTitle, { color: textColor }]}>Reviews</Text>
         <FlatList
           data={shopDetails.reviews}
           horizontal

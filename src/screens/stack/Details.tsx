@@ -103,6 +103,7 @@ const Details = () => {
       }]}>
         Total Workers: {shopDetails.totalWorkers}
       </Text>
+
       <FlatList
         data={shopDetails.workerImages}
         horizontal
