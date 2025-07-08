@@ -22,7 +22,7 @@ const ParlorCard = ({
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
-          screen: 'Details',
+          screen: 'ServiceDetails',
           params: { id: item?._id?.toString() },
         })
       }
