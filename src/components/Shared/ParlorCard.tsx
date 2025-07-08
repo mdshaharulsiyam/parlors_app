@@ -11,10 +11,12 @@ const ParlorCard = ({
   item,
   width = 250,
   height = 170,
+  cardFor = 'shop'
 }: {
   item: IParlor;
   width?: any;
   height?: any;
+  cardFor?: 'shop' | 'service';
 }) => {
   const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
@@ -22,7 +24,7 @@ const ParlorCard = ({
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
-          screen: 'ServiceDetails',
+          screen: cardFor === 'shop' ? 'ServiceDetails' : 'Details',
           params: { id: item?._id?.toString() },
         })
       }
