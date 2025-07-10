@@ -9,7 +9,7 @@ export const commonStyles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   Button: {
     paddingVertical: 12,
