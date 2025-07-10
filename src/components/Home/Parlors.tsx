@@ -2,6 +2,7 @@ import React from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
 import { Ratio3_2 } from '../../utils/calculateHeight';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
@@ -92,6 +93,7 @@ export const topBarbers: IParlor[] = [
 const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
+  const { data } = useGetServicesQuery({ limit: 10, page: 1 });
   return (
     <SafeAreaView style={{ paddingHorizontal: 5, backgroundColor: hexToRGBA(themeColors.white as string, 0.95) }}>
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
