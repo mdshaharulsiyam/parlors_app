@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useGet_bannersQuery } from '../../Redux/Apis/bannerApis';
 import { generateImageUrl } from '../../Redux/baseApis';
+import { Ratio3_2 } from '../../utils/calculateHeight';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const { width } = Dimensions.get('window');
@@ -82,7 +83,7 @@ const Banner = () => {
 const styles = StyleSheet.create({
   image: {
     width: width,
-    height: 250,
+    height: Ratio3_2(width),
     marginRight: 10,
   },
   text: {
