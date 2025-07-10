@@ -9,9 +9,23 @@ const vendorApis = baseApi.injectEndpoints({
         body: data
       }),
       invalidatesTags: ['auth', 'vendor']
+    }),
+    getVendor: builder.query({
+      query: ({ limit = 10, search = '', page = 1, sort = '', order = '' }) => ({
+        url: '/business/get-all',
+        method: 'GET',
+        params: {
+          limit,
+          search,
+          page,
+          sort,
+          order
+        }
+      }),
+      providesTags: ['vendor']
     })
   })
 
 })
 
-export const { useCreateVendorMutation } = vendorApis
+export const { useCreateVendorMutation, useGetVendorQuery } = vendorApis
