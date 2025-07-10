@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { generateImageUrl } from '../../Redux/baseApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ICategory } from '../../utils/types/Types';
 
@@ -15,8 +16,8 @@ const CategoryCard = ({ item }: { item: ICategory }) => {
         styles.card,
       ]}>
       <Image
-        resizeMode="contain"
-        source={{ uri: item?.img }}
+        resizeMode="cover"
+        source={{ uri: generateImageUrl(item?.img) }}
         style={[styles.image]}
       />
       <View
@@ -33,7 +34,7 @@ const CategoryCard = ({ item }: { item: ICategory }) => {
             },
             styles.text,
           ]}>
-          {item?.category}
+          {item?.name}
         </Text>
       </View>
     </View>

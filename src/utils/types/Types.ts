@@ -26,7 +26,7 @@ export interface IBusiness {
 
 export interface ICategory {
   _id: string;
-  category: string;
+  name: string;
   img: string
 }
 
