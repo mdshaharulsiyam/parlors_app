@@ -27,7 +27,7 @@ const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
         {...(!horizontal && {
           columnWrapperStyle: {
             justifyContent: 'space-between',
-            marginBottom: 20,
+            marginBottom: 10,
             gap: 10,
           },
         })}
@@ -39,8 +39,8 @@ const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
           <ParlorCard
             key={item?._id}
             item={item}
-            width={width / 2 - 30}
-            height={Ratio3_2(width / 2 - 30)}
+            width={width / 2 - 20}
+            height={Ratio3_2(width / 2 - 20)}
           />
         )}
 
