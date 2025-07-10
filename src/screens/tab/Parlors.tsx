@@ -9,6 +9,7 @@ import ParlorCard from '../../components/Shared/ParlorCard';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
+import { Ratio3_2 } from '../../utils/calculateHeight';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 
 const Parlors = () => {
@@ -16,7 +17,7 @@ const Parlors = () => {
   const { themeColors, } = useGlobalContext();
   const { data } = useGetServicesQuery({ limit: 10, page: 1 });
   return (
-    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5 }}>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5, height }}>
       <FlatList
         onEndReached={e => {
           //console.log(e);
@@ -37,8 +38,8 @@ const Parlors = () => {
           <ParlorCard
             key={item?._id}
             item={item}
-            width={width / 2 - 30}
-            height={100}
+            width={width / 2 - 20}
+            height={Ratio3_2(width / 2 - 20)}
           />
         )}
       />
