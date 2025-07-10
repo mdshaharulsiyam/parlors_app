@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
+  ImageSourcePropType,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View
 } from 'react-native';
+import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
 import { IAddressInput, IAddressInputError } from '../../utils/types/Types';
@@ -15,25 +18,25 @@ import SearchInput from './SearchInput';
 
 
 const FilterOptions = () => {
-  const { themeColors, search, setSearch, setModalOpen } = useGlobalContext();
+  const { themeColors, search, setSearch, bottomSheetRef } = useGlobalContext();
   const [inputValue, setInputValue] = useState<IAddressInput>({
-    district: '',
-    sub_district: '',
-    union: '',
-    post: '',
+    divisions: '',
+    districts: '',
+    upazilas: '',
+    unions: '',
     street_address: '',
   });
   const [error, setError] = useState<IAddressInputError>({
-    district: false,
-    sub_district: false,
-    union: false,
-    post: false,
+    divisions: false,
+    districts: false,
+    upazilas: false,
+    unions: false,
     street_address: false,
   })
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
-    setModalOpen(false);
+    bottomSheetRef.current?.close();
   };
   return (
     <ScrollView
@@ -51,8 +54,14 @@ const FilterOptions = () => {
           }}>
           Filter by
         </Text>
-        <TouchableOpacity onPress={() => setModalOpen(false)}>
-          <Text style={{ color: themeColors.black as string }}>Close</Text>
+        <TouchableOpacity onPress={() => bottomSheetRef?.current?.close()}>
+          <Text style={{ color: themeColors.black as string }}>
+            <Image source={OtherIcons.Cross as ImageSourcePropType} style={{
+              height: 30,
+              width: 30,
+              tintColor: themeColors.black as string
+            }} />
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -76,12 +85,12 @@ const FilterOptions = () => {
       <View style={{ marginTop: 10, marginBottom: 160 }}>
         <GradientButton handler={handleSubmit}>
           {false ? (
-            <ActivityIndicator size="small" color={themeColors.white as string} />
+            <ActivityIndicator size="small" color={themeColors.constWhite as string} />
           ) : (
             <Text
               style={[
                 {
-                  color: themeColors.black as string,
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontSize: 16,
                   fontWeight: '600',

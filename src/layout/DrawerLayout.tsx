@@ -120,10 +120,10 @@ const DrawerLayout = () => {
   );
 };
 
-
 function DrawerContent(props: DrawerContentComponentProps) {
   const dispatch = useDispatch()
-  const role = useSelector((state: any) => state?.user?.role)
+  const { role } = useSelector((state: any) => state?.user)
+  console.log(role === 'VENDOR')
   const { themeColors, } = useGlobalContext();
   const logout = async () => {
     await Promise.all([
@@ -148,15 +148,15 @@ function DrawerContent(props: DrawerContentComponentProps) {
       role ? { label: 'Chat', screen: 'Chat' } : null,
       role ? { label: 'Booking', screen: 'Booking' } : null,
       role ? { label: 'Profile', screen: 'Profile' } : null,
-      role !== 'VENDOR' ? { label: 'Manage Shop', screen: 'ShopManage' } : null,
+      role && role === 'VENDOR' ? { label: 'Manage Shop', screen: 'ShopManage' } : null,
       !role ? { label: 'Sign in', screen: 'SignIn', isStack: true } : null,
       !role ? { label: 'Sign up', screen: 'SignUp', isStack: true } : null,
       role ? { label: 'Change Password', screen: 'changePassword' } : null,
-      role !== 'VENDOR' ? { label: 'I am vendor', screen: 'VendorSignUp' } : null,
+      role && role !== 'VENDOR' ? { label: 'Vendor Sign Up', screen: 'VendorSignUp' } : null,
       { label: 'Privacy', screen: 'Privacy' },
       { label: 'About', screen: 'About' },
       role ? { label: 'Logout', action: () => logout() } : null,
-      { label: 'Close Drawer', action: () => props.navigation.closeDrawer() },
+      { label: 'Close', action: () => props.navigation.closeDrawer() },
     ].filter(Boolean);
   }, [role, props.navigation]);
 

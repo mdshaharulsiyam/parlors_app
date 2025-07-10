@@ -1,6 +1,6 @@
-import { parlorsApi } from '../baseApis';
+import { baseApi } from '../baseApis';
 
-const vendorApis = parlorsApi.injectEndpoints({
+const vendorApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createVendor: builder.mutation({
       query: (data) => ({
@@ -9,9 +9,24 @@ const vendorApis = parlorsApi.injectEndpoints({
         body: data
       }),
       invalidatesTags: ['auth', 'vendor']
+    }),
+    getVendor: builder.query({
+      query: ({ limit = 10, search = '', page = 1, sort = '', order = '', top = false }) => ({
+        url: '/business/get-all',
+        method: 'GET',
+        params: {
+          limit,
+          search,
+          page,
+          sort,
+          order,
+          top
+        }
+      }),
+      providesTags: ['vendor']
     })
   })
 
 })
 
-export const { useCreateVendorMutation } = vendorApis
+export const { useCreateVendorMutation, useGetVendorQuery } = vendorApis

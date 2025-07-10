@@ -28,13 +28,13 @@ export const signIn = async () => {
   try {
     //   await GoogleSignin.hasPlayServices();
     const response = await GoogleSignin.signIn();
-    console.log(response);
+    //console.log(response);
     if (response) {
     } else {
       // sign in was cancelled by user
     }
   } catch (error: any) {
-    console.log(error);
+    //console.log(error);
     if (error) {
       switch (error?.code) {
         case statusCodes.IN_PROGRESS:
@@ -178,9 +178,9 @@ const SignIn = () => {
           }}>
           <GradientButton handler={() => submitHandler()}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: 700,
                   fontSize: 18,
@@ -216,9 +216,9 @@ const SignIn = () => {
           /> */}
           <GradientButton handler={() => signIn()}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: 700,
                   fontSize: 18,

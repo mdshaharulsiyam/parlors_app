@@ -67,9 +67,9 @@ const Forget = () => {
         }}>
           <GradientButton handler={handleSendVerificationEmail}>
             {isLoading ? (
-              <ActivityIndicator size="large" color={themeColors.green as string} />
+              <ActivityIndicator size="large" color={themeColors.constWhite as string} />
             ) : (
-              <Text style={[styles.buttonText, { color: themeColors.white as string, textAlign: "center" }]}>
+              <Text style={[styles.buttonText, { color: themeColors.constWhite as string, textAlign: "center" }]}>
                 Send Verification Email
               </Text>
             )}

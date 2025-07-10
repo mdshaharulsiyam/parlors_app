@@ -4,7 +4,7 @@ import {
   ImageSourcePropType,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { OtherIcons } from '../../constant/images';
@@ -12,12 +12,15 @@ import { hexToRGBA } from '../../utils/hexToRGBA';
 import SearchInput from './SearchInput';
 
 const SearchFilterTrigger = () => {
-  const { themeColors, setModalOpen } = useGlobalContext();
+  const { themeColors, bottomSheetRef } = useGlobalContext();
+
+
   return (
     <View style={styles.headerContainer}>
       <SearchInput />
+
       <TouchableOpacity
-        onPress={() => setModalOpen(true)}
+        onPress={() => bottomSheetRef.current?.snapToIndex(1)}
         style={{
           backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
           padding: 6,
@@ -35,7 +38,7 @@ const SearchFilterTrigger = () => {
           }}
         />
       </TouchableOpacity>
-    </View>
+    </View >
   );
 };
 

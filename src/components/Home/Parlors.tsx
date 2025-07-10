@@ -89,7 +89,7 @@ export const topBarbers: IParlor[] = [
     img: 'https://placehold.co/186x124.png?text=Sophia+Martinez',
   },
 ];
-const Parlors = () => {
+const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
   return (
@@ -98,18 +98,22 @@ const Parlors = () => {
         Services
       </Text>
       <FlatList
+        horizontal={horizontal}
         ListFooterComponent={<View style={{ height: 50 }} />}
         onEndReached={e => {
-          console.log(e);
+          //console.log(e);
         }}
         onEndReachedThreshold={0.5}
-        numColumns={2}
-        columnWrapperStyle={{
-          justifyContent: 'space-between',
-          marginBottom: 10,
-          gap: 10,
-        }}
+        numColumns={horizontal ? 1 : 2}
+        {...(!horizontal && {
+          columnWrapperStyle: {
+            justifyContent: 'space-between',
+            marginBottom: 10,
+            gap: 10,
+          },
+        })}
         showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         data={topBarbers}
         keyExtractor={item => item?._id}
         renderItem={({ item }) => (

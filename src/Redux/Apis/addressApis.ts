@@ -1,37 +1,51 @@
-import { parlorsApi } from '../baseApis';
+import { baseApi } from '../baseApis';
 
-const addressApis = parlorsApi.injectEndpoints({
+const addressApis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getDivisions: builder.query({
-      query: () => ({
+      query: ({ page = 1, limit = 10, search }) => ({
         url: '/divisions/get-all',
-        method: 'GET'
+        method: 'GET',
+        params: {
+          page,
+          limit,
+          search
+        }
       }),
     }),
     getDistricts: builder.query({
-      query: ({ division_id }) => ({
+      query: ({ division_id, page = 1, limit = 10, search }) => ({
         url: '/districts/get-all',
         method: 'GET',
         params: {
-          division_id
+          division_id,
+          page,
+          limit,
+          search
         }
       }),
     }),
     getUpazilas: builder.query({
-      query: ({ district_id }) => ({
+      query: ({ district_id, page = 1, limit = 10, search }) => ({
         url: '/upazilas/get-all',
         method: 'GET',
         params: {
-          district_id
+          district_id,
+          page,
+          limit,
+          search
         }
       }),
     }),
     getUnions: builder.query({
-      query: ({ upazilla_id }) => ({
+      query: ({ upazilla_id, page = 1, limit = 10, search }) => ({
         url: '/union/get-all',
         method: 'GET',
         params: {
-          upazilla_id
+          upazilla_id,
+          page,
+          limit,
+          search
         }
       }),
     })

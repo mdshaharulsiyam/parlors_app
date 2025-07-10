@@ -1,22 +1,15 @@
+import React from 'react';
 import {
   Dimensions,
   FlatList,
-  Image,
-  ImageSourcePropType,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+  StyleSheet
 } from 'react-native';
-import React from 'react';
-import {IParlor} from '../../utils/types/Types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ParlorCard from '../../components/Shared/ParlorCard';
-import SearchInput from '../../components/Shared/SearchInput';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {OtherIcons} from '../../constant/images';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
-import FilterOptions from '../../components/Shared/FilterOptions';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
+import { IParlor } from '../../utils/types/Types';
 const Barbers: IParlor[] = [
   {
     _id: '1',
@@ -100,13 +93,13 @@ const Barbers: IParlor[] = [
   },
 ];
 const Parlors = () => {
-  const {width, height} = Dimensions.get('window');
-  const {themeColors, modalOpen, setModalOpen} = useGlobalContext();
+  const { width, height } = Dimensions.get('window');
+  const { themeColors, } = useGlobalContext();
   return (
-    <View>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5 }}>
       <FlatList
         onEndReached={e => {
-          console.log(e);
+          //console.log(e);
         }}
         ListHeaderComponent={() => <SearchFilterTrigger />}
         stickyHeaderIndices={[0]}
@@ -120,7 +113,7 @@ const Parlors = () => {
         showsVerticalScrollIndicator={false}
         data={Barbers}
         keyExtractor={item => item?._id}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <ParlorCard
             key={item?._id}
             item={item}
@@ -129,23 +122,7 @@ const Parlors = () => {
           />
         )}
       />
-      <Modal
-        visible={modalOpen}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalOpen(false)}>
-        <View
-          style={{
-            width,
-            height, //: height - 200,
-            backgroundColor: themeColors.background,
-            // bottom: 0,
-            // position: 'absolute',
-          }}>
-          <FilterOptions />
-        </View>
-      </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

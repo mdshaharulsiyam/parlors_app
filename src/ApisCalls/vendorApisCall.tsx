@@ -16,7 +16,7 @@ export const useCreateVendor = () => {
     wednesday: [],
     thursday: [],
   }
-  const createVendorHandler = (availableTime: SelectedTime, handler?: () => void) => {
+  const createVendorHandler = (availableTime: SelectedTime, coordinates: number[], handler?: () => void) => {
     Object.entries(availableTime).map(([day, time]) => {
       if (!time.checked) {
         timeFormate[day as keyof SelectedTime] = []
@@ -25,11 +25,17 @@ export const useCreateVendor = () => {
       }
     })
     const data = {
-      profile,
-      address,
-      availableTime: timeFormate,
+      ...profile,
+      phone: profile?.contact,
+      address: JSON.stringify(address),
+      availableTime: JSON.stringify(timeFormate),
+      coordinates: JSON.stringify(coordinates),
     }
-    createVendor(data)
+    const formData = new FormData()
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value)
+    })
+    createVendor(formData)
       .unwrap()
       .then((res) => {
         Toast.show({

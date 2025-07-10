@@ -280,9 +280,9 @@ const SignUp = () => {
         <View style={{ paddingHorizontal: 25 }}>
           <GradientButton handler={() => submitHandler()}>
             {
-              isLoadingSignup ? <ActivityIndicator size="large" color="#FFFFFF" /> : <Text
+              isLoadingSignup ? <ActivityIndicator size="large" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: '700',
                   fontSize: 18,
@@ -305,9 +305,9 @@ const SignUp = () => {
         <View style={{ marginBottom: 120, marginTop: 20 }}>
           <GradientButton handler={() => signIn()}>
             {
-              isLoadingSignup ? <ActivityIndicator size="small" color="#FFFFFF" /> : <Text
+              isLoadingSignup ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: 700,
                   fontSize: 18,

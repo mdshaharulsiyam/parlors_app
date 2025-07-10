@@ -77,9 +77,9 @@ const Verify = () => {
           type="numeric"
           secureTextEntry={false}
           focusStickBlinkingDuration={500}
-          // onFocus={() => console.log('Focused')}
-          // onBlur={() => console.log('Blurred')}
-          // onTextChange={text => console.log(text)}
+          // onFocus={() => //console.log('Focused')}
+          // onBlur={() => //console.log('Blurred')}
+          // onTextChange={text => //console.log(text)}
           onFilled={text => setCode(text)}
           textInputProps={{
             accessibilityLabel: 'One-Time Password',
@@ -108,9 +108,9 @@ const Verify = () => {
           <GradientButton
             handler={handleOtpChange}>
             {
-              isLoading ? <ActivityIndicator size="small" color="#0000ff" /> : <Text
+              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
                 style={{
-                  color: 'white',
+                  color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: '700',
                   fontSize: 18,

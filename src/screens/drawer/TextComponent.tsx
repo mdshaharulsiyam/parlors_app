@@ -10,7 +10,7 @@ const TextComponent = () => {
           uri: 'https://personal-shop-ten.vercel.app/login'
         }}
         onMessage={(event) => {
-          console.log('Message from WebView:', event?.nativeEvent?.data);
+          //console.log('Message from WebView:', event?.nativeEvent?.data);
         }}
         javaScriptEnabled={true}
         style={{ marginTop: 20 }}
@@ -22,7 +22,7 @@ const TextComponent = () => {
           uri: 'https://ammur.vercel.app/auth/sign-in'
         }}
         onMessage={(event) => {
-          console.log('Message from WebView:', event?.nativeEvent?.data);
+          //console.log('Message from WebView:', event?.nativeEvent?.data);
         }}
         javaScriptEnabled={true}
         style={{ marginTop: 20 }}

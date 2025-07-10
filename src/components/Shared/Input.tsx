@@ -9,7 +9,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import React from 'react';
-import {OtherIcons} from '../../constant/images';
+import { OtherIcons } from '../../constant/images';
 
 interface InputProps extends TextInputProps {
   secureTextEntry?: boolean;
@@ -45,7 +45,7 @@ const Input: React.FC<InputProps> = ({
   errorMessage = 'This field is required',
   inputType = 'text',
   bordersColor = 'gray',
-  handleSubmit = value => {},
+  handleSubmit = value => { },
   setInputValue = value => console.log('setting', value),
   ...props
 }: InputProps) => {
@@ -115,22 +115,22 @@ const Input: React.FC<InputProps> = ({
       {inputType === 'password' && (
         <TouchableOpacity
           onPress={togglePasswordVisibility}
-          style={{position: 'absolute', right: 10, top: 10}}>
+          style={{ position: 'absolute', right: 10, top: 10 }}>
           {showPassword ? (
             <Image
               source={OtherIcons.Eye as ImageSourcePropType}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
             />
           ) : (
             <Image
               source={OtherIcons.EyeX as ImageSourcePropType}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
             />
           )}
         </TouchableOpacity>
       )}
       {showValidationMessage && (
-        <Text style={{color: 'red', fontSize: 12, marginTop: 5}}>
+        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
           {errorMessage || validationMessage}
         </Text>
       )}

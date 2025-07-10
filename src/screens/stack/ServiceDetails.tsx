@@ -6,20 +6,28 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native';
-import Parlors from '../../components/Home/Parlors';
+import DatePicker from 'react-native-date-picker';
+import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-const Details = () => {
+const ServiceDetails = () => {
   const { themeColors } = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   // Static data
   const shopDetails = {
     id: '1',
-    shopName: 'My Amazing Shop',
-    shopImage: 'https://placehold.co/400x400.png?text=Shop+Name',
+    name: 'service name ',
+    img: [
+      'https://placehold.co/400x400.png?text=service+name+1',
+      'https://placehold.co/400x400.png?text=service+name+2',
+      'https://placehold.co/400x400.png?text=service+name+3',
+      'https://placehold.co/400x400.png?text=service+name+4',
+      'https://placehold.co/400x400.png?text=service+name+5',
+    ],
     totalWorkers: 10,
     ownerName: 'John Doe',
     ownerEmail: 'johndoe@example.com',
@@ -65,7 +73,7 @@ const Details = () => {
       },
     ],
   };
-
+  const [selectedImage, setSelectedImage] = useState(shopDetails?.img[0]);
   // Handle book button press
   const handleBookPress = () => {
     //console.log('Book button pressed!');
@@ -76,11 +84,34 @@ const Details = () => {
     <ScrollView style={[styles.container, {
       backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
     }]}>
-      <Text style={[styles.shopName, {
+      <Text style={[styles.name, {
         color: themeColors.black as string,
-      }]}>{shopDetails.shopName}</Text>
-      <Image source={{ uri: shopDetails.shopImage }} style={styles.shopImage} />
-
+      }]}>{shopDetails.name}</Text>
+      <Image source={{ uri: selectedImage }} style={styles.img} />
+      <FlatList
+        data={shopDetails?.img}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingVertical: 10,
+        }}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => setSelectedImage(item)}>
+            <Image source={{ uri: item }} style={{
+              width: 100,
+              height: 100,
+              margin: 5,
+              borderRadius: 10,
+            }} />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      <Text style={[styles.sectionTitle, {
+        color: themeColors.black as string,
+      }]}>
+        Owner Details
+      </Text>
       <View style={[styles.ownerInfo, {
         backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
       }]}>
@@ -103,7 +134,6 @@ const Details = () => {
       }]}>
         Total Workers: {shopDetails.totalWorkers}
       </Text>
-
       <FlatList
         data={shopDetails.workerImages}
         horizontal
@@ -117,11 +147,6 @@ const Details = () => {
       <View style={styles.bookingInfo}>
         <Text style={{
           color: textColor
-        }}>
-          Total Booking Possible at a Time: {[shopDetails.totalBooking]}
-        </Text>
-        <Text style={{
-          color: textColor
         }}>Completed Booking: {shopDetails.completedBooking}</Text>
         <Text style={{
           color: textColor
@@ -132,7 +157,7 @@ const Details = () => {
       </View>
 
       {/* Shop Timings */}
-      <Text style={[styles.sectionTitle, { color: textColor }]}>Opening Hours</Text>
+      <Text style={[styles.sectionTitle, { color: textColor }]}>Available Times</Text>
       <View style={styles.openDetails}>
         {shopDetails.openDetails.map((day, index) => (
           <Text key={index} style={[styles.openingTime, {
@@ -142,8 +167,7 @@ const Details = () => {
           </Text>
         ))}
       </View>
-      {/* sevicess */}
-      <Parlors horizontal={true} />
+
       {/* Rating & Review */}
       <View style={styles.ratingInfo}>
         <Text style={{
@@ -152,7 +176,7 @@ const Details = () => {
         <Text style={{
           color: textColor
         }}>Total Rating: {shopDetails.totalRating}</Text>
-        <Text style={styles.sectionTitle}>Reviews</Text>
+        <Text style={[styles.sectionTitle, { color: textColor }]}>Reviews</Text>
         <FlatList
           data={shopDetails.reviews}
           horizontal
@@ -183,8 +207,7 @@ const Details = () => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-
-      {/* <View style={{ flexDirection: "column", gap: 10, marginBottom: 70 }}>
+      <View style={{ flexDirection: "column", gap: 10, marginBottom: 70 }}>
         <GradientButton handler={() => setOpen(true)}>
           <Text style={{
             color: textColor,
@@ -218,29 +241,28 @@ const Details = () => {
             Book Now
           </Text>
         </GradientButton>
-      </View> */}
+      </View>
     </ScrollView>
   );
 };
 
-export default Details;
+export default ServiceDetails;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 15,
   },
-  shopName: {
+  name: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
   },
-  shopImage: {
+  img: {
     width: '100%',
     height: 200,
     borderRadius: 10,
-    marginBottom: 15,
   },
   ownerInfo: {
     flexDirection: 'row',
@@ -290,7 +312,6 @@ const styles = StyleSheet.create({
   },
   ratingInfo: {
     marginTop: 20,
-    marginBottom: 100,
   },
   reviewCard: {
     flexDirection: 'row',

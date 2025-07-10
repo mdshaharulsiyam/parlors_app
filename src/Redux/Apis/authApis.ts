@@ -1,7 +1,7 @@
-import { parlorsApi } from "../baseApis"
+import { baseApi } from "../baseApis"
 
 // auth / profile
-const auth_apis = parlorsApi.injectEndpoints({
+const auth_apis = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     get_profile: builder.query({
       query: () => ({

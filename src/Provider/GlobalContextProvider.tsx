@@ -1,8 +1,10 @@
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Dimensions, useColorScheme } from 'react-native';
 import { useDispatch } from 'react-redux';
+import FilterOptions from '../components/Shared/FilterOptions';
 import { Colors, ITheme } from '../constant/colors';
 import { useGet_profileQuery } from '../Redux/Apis/authApis';
 import { setRole, setToken, setUser } from '../Redux/States/userSlice';
@@ -12,11 +14,10 @@ interface GlobalContextType {
   themeColors: ITheme;
   setSearch: (arg1: string) => void;
   search: string;
-  setModalOpen: (arg1: boolean) => void;
-  modalOpen: boolean;
   width: number;
   height: number;
   profile: IUserProfile | null;
+  bottomSheetRef: React.RefObject<BottomSheet | null>;
 }
 
 interface GlobalProviderProps {
@@ -34,19 +35,23 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
   const dispatch = useDispatch()
   const { width, height } = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const themeColors = useColorScheme() !== 'dark' ? Colors.dark : Colors.light;
+  const themeColors = useColorScheme() === 'dark' ? Colors.dark : Colors.light;
   const { data } = useGet_profileQuery(undefined)
+  const bottomSheetRef = useRef<BottomSheet | null>(null);
+
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
   const values = {
     themeColors,
     setSearch,
     search,
-    setModalOpen,
-    modalOpen,
     width,
     height,
     profile: data?.data,
+    bottomSheetRef
   };
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -56,23 +61,42 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
         ]);
         if (role && token) {
           await Promise.all([
-            dispatch(setRole(role)),
-            dispatch(setToken(token)),
+            dispatch(setRole(JSON.parse(role))),
+            dispatch(setToken(JSON.parse(token))),
             dispatch(setUser(data?.data)),
           ])
         }
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
     }
     getData()
   }, [])
+
   useEffect(() => {
+    dispatch(setRole(data?.data?.role))
     dispatch(setUser(data?.data))
   }, [data])
+
   return (
     <GlobalContext.Provider value={values}>
       {children}
+
+      <BottomSheet
+        backgroundStyle={{ backgroundColor: themeColors.white as string }}
+        handleIndicatorStyle={{
+          backgroundColor: themeColors.black as string,
+          height: 5,
+        }}
+        index={-1}
+        snapPoints={['25%', '50%', '90%']}
+        ref={bottomSheetRef}
+        onChange={handleSheetChanges}
+      >
+        <BottomSheetView>
+          <FilterOptions />
+        </BottomSheetView>
+      </BottomSheet>
     </GlobalContext.Provider>
   );
 };

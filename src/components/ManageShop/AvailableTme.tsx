@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -5,7 +7,9 @@ import DatePicker from 'react-native-date-picker';
 import { useDispatch } from 'react-redux';
 import { useCreateVendor } from '../../ApisCalls/vendorApisCall';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { setAvailableTime } from '../../Redux/States/vendorSlice';
+import { setRole } from '../../Redux/States/userSlice';
+import { resetVendor, setAvailableTime, setIndex } from '../../Redux/States/vendorSlice';
+import { getLocation } from '../../utils/getLocations';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 import GradientButton from '../Shared/GradientButton';
@@ -27,6 +31,7 @@ export interface SelectedTime {
 }
 
 const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) => {
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
   const dispatch = useDispatch()
   const { createVendorHandler, isLoading } = useCreateVendor()
   const { themeColors } = useGlobalContext()
@@ -96,19 +101,46 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
     setCurrentDayForPicker(day);
     setOpenToPicker(true);
   };
-  const submitHandler = () => {
+  const submitHandler = async () => {
     if (creating) {
+      const locations = await getLocation() as { latitude: number, longitude: number }
+      const coordinates = [locations?.longitude || 0, locations?.latitude || 0]
       dispatch(setAvailableTime(selectedTime))
-      createVendorHandler(selectedTime)
+      createVendorHandler(selectedTime, coordinates, async () => {
+        dispatch(resetVendor())
+        await AsyncStorage.setItem('role', 'VENDOR')
+        dispatch(setRole('VENDOR'))
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Tabs' }],
+        });
+      })
     }
   }
   return (
     <View style={[styles.container, {
       backgroundColor: themeColors.white as string
     }]}>
+
+      {
+        creating && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 15 }}>
+          <GradientButton handler={() => dispatch(setIndex(1))} padding={10}>
+            <Text style={[
+              {
+                color: themeColors.constWhite as string,
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: '600',
+              },
+            ]}>
+              Back
+            </Text>
+          </GradientButton>
+        </View>
+      }
       <GradientButton handler={handleSelectSameTimeForAll}>
         <Text style={[commonStyles.ButtonText, {
-          color: themeColors.black as string,
+          color: themeColors.constWhite as string,
           textAlign: 'center',
           textTransform: 'capitalize',
         }]}>
@@ -177,8 +209,8 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
         </View>
       ))}
       <GradientButton handler={submitHandler}>
-        {isLoading ? <ActivityIndicator size="small" color="white" /> : <Text style={[commonStyles.ButtonText, {
-          color: themeColors.black as string,
+        {isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text style={[commonStyles.ButtonText, {
+          color: themeColors.constWhite as string,
           textAlign: 'center',
           textTransform: 'capitalize',
         }]}>Save</Text>}

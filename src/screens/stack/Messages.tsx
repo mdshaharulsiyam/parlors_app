@@ -75,7 +75,7 @@ const Messages = ({ route }: any) => {
   const white = themeColors.white as string
   const handleSendMessage = useCallback(() => {
     if (newMessage.trim()) {
-      console.log('Sending:', newMessage);
+      //console.log('Sending:', newMessage);
       setNewMessage('');
     }
   }, [newMessage]);
@@ -121,7 +121,7 @@ const Messages = ({ route }: any) => {
         />
         <GradientButton handler={handleSendMessage} padding={8} borderWidth={0}>
           <Text style={{
-            color: hexToRGBA(black, 0.9),
+            color: themeColors.constWhite as string,
           }}>Send</Text>
         </GradientButton>
       </View>

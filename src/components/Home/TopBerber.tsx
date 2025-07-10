@@ -1,9 +1,10 @@
 import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useGetVendorQuery } from '../../Redux/Apis/vendorApis';
 import { commonStyles } from '../../utils/styles/Styles';
 import { IParlor } from '../../utils/types/Types';
-import ParlorCard from '../Shared/ParlorCard';
+import BusinessCard from '../Shared/BusinessCard';
 const topBarbers: IParlor[] = [
   {
     _id: '1',
@@ -89,6 +90,7 @@ const topBarbers: IParlor[] = [
 
 const TopBerber = () => {
   const { themeColors } = useGlobalContext();
+  const { data } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true });
   return (
     <View style={{ paddingHorizontal: 5 }}>
       <View>
@@ -99,10 +101,10 @@ const TopBerber = () => {
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        data={topBarbers}
+        data={data?.data || []}
         contentContainerStyle={{ gap: 10 }}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => <ParlorCard item={item} height={188} />}
+        renderItem={({ item }) => <BusinessCard item={item} height={188} cardFor='shop' />}
       />
     </View>
   );

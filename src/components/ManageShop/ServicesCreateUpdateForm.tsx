@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { useCategoriesApiCall } from '../../ApisCalls/categoryApiCall';
+import { OtherIcons } from '../../constant/images';
 import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IServicesInput, IServicesInputError, IServicesInputLabel } from '../../utils/types/Types';
+import { IImage, IServicesInput, IServicesInputError, IServicesInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
+import ImageUpload from '../Shared/ImageUpload';
 
 
 const ServicesCreateUpdateForm = () => {
   const { themeColors } = useGlobalContext()
+  const [img, setImg] = useState<IImage[]>([])
+  const [categorySearch, setCategorySearch] = useState('')
+  const [subCategorySearch, setSubCategorySearch] = useState('')
+
   const [inputValue, setInputValue] = useState<IServicesInput>({
     name: '',
-    price: '',
-    description: '',
-    img: '',
     category: '',
     sub_category: '',
+    price: '',
+    img: '',
+    description: '',
   });
   const [error, setError] = useState<IServicesInputError>({
     name: false,
@@ -27,13 +34,14 @@ const ServicesCreateUpdateForm = () => {
     category: false,
     sub_category: false,
   })
+  const { categories, subCategories, isLoading } = useCategoriesApiCall({ categorySearch, subCategorySearch, category: inputValue.category })
   const [inputLabel, setInputLabel] = useState<IServicesInputLabel>({
     name: 'Name',
     price: 'Price',
-    description: 'Description',
     img: 'Image',
     category: 'Category',
     sub_category: 'Sub Category',
+    description: 'Description',
   })
   const submitHandler = () => {
     let isInvalid = false;
@@ -58,8 +66,15 @@ const ServicesCreateUpdateForm = () => {
   }
   return (
     <View>
+      <Text style={{
+        color: themeColors.black as string,
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginVertical: 10,
+      }}>Service Listing Form</Text>
       {Object.keys(inputValue).map((key, index, arr) => {
-        if (key == 'Category' || key == 'Sub Category') {
+        if (key == 'category' || key == 'sub_category') {
           return (
             <View key={key}>
               <Text style={[globalStyles.inputLabel, {
@@ -67,13 +82,8 @@ const ServicesCreateUpdateForm = () => {
               }]}>{inputLabel[key as keyof IServicesInputLabel]}</Text>
               <SingleSelectDropDown
                 name={key}
-                data={key === 'Category' ? [{
-                  label: 'Category',
-                  value: 'category',
-                }] : [{
-                  label: 'Sub Category',
-                  value: 'sub_category',
-                }]}
+                data={key === 'category' ? categories : subCategories}
+                onChangeText={key === 'category' ? setCategorySearch : setSubCategorySearch}
                 value={inputValue[key as keyof IServicesInput]}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
@@ -83,6 +93,35 @@ const ServicesCreateUpdateForm = () => {
             </View>
           );
         }
+        if (key === "img") {
+          return <View>
+            <Text style={[globalStyles.inputLabel, {
+              color: hexToRGBA(themeColors.black as string, 0.8),
+            }]}>{inputLabel[key as keyof IServicesInputLabel]}</Text>
+            <ImageUpload
+              images={img}
+              setImages={setImg}
+            >
+              <View style={[globalStyles.inputLabel, {
+                flexDirection: 'row', alignItems: 'flex-start', gap: 10,
+                backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                padding: 10,
+                borderRadius: 5,
+                paddingTop: 20,
+              }]}>
+                <Image source={OtherIcons.Camera as ImageSourcePropType} style={{ width: 20, height: 20, tintColor: themeColors.black as string }} />
+                <Text style={[globalStyles.inputLabel, {
+                  color: hexToRGBA(themeColors.black as string, 0.8),
+                }]}>
+                  {
+                    img.length > 0 ? img?.[0]?.name : 'Add Image'
+                  }
+                </Text>
+              </View>
+            </ImageUpload>
+          </View>
+        }
+
         return (
           <View key={key} style={{}}>
             <Text style={[globalStyles.inputLabel, {
@@ -97,6 +136,8 @@ const ServicesCreateUpdateForm = () => {
                   setInputValue({ ...inputValue, [key]: text });
                   setError({ ...error, [key]: false });
                 }}
+                multiline={key === 'description'}
+                numberOfLines={key === 'description' ? 4 : 1}
                 placeholder={`Enter your ${inputLabel[key as keyof IServicesInputLabel]}`}
                 placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
                 style={[
@@ -108,6 +149,8 @@ const ServicesCreateUpdateForm = () => {
                     borderWidth: error[key as keyof IServicesInputError] ? 1 : 0,
                     backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
                     color: themeColors.black as string,
+                    height: key === 'description' ? 150 : undefined,
+                    textAlignVertical: key === 'description' ? 'top' : 'center',
                   }
                 ]}
               />
@@ -117,12 +160,12 @@ const ServicesCreateUpdateForm = () => {
       })}
       <GradientButton handler={submitHandler}>
         {false ? (
-          <ActivityIndicator size="small" color={themeColors.white as string} />
+          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
         ) : (
           <Text
             style={[
               {
-                color: themeColors.white as string,
+                color: themeColors.constWhite as string,
                 textAlign: 'center',
                 fontSize: 16,
                 fontWeight: '600',

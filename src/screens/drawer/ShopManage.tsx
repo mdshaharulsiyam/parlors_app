@@ -1,6 +1,9 @@
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   FlatList,
+  Image,
+  ImagePropsBase,
   Text,
   TouchableOpacity,
   View
@@ -12,11 +15,14 @@ import AvailableTme from '../../components/ManageShop/AvailableTme';
 import Profile from '../../components/ManageShop/Profile';
 import Services from '../../components/ManageShop/Services';
 import Workers from '../../components/ManageShop/Workers';
+import GradientButton from '../../components/Shared/GradientButton';
+import { OtherIcons } from '../../constant/images';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { commonStyles } from '../../utils/styles/Styles';
 
 const tabs = ['profile', 'address', 'workers', 'available time', 'services']
 const ShopManage = () => {
+  const navigation = useNavigation<NavigationProp<ParamListBase>>()
   const [currentTab, setCurrentTab] = useState(tabs[0])
   const { themeColors, height } = useGlobalContext();
   const components = {
@@ -38,17 +44,27 @@ const ShopManage = () => {
           <View style={{
             marginBottom: 15,
           }}>
-            <Text
-              style={{
-                color: themeColors.black as string,
-                fontWeight: '600',
-                fontSize: 20,
-                textTransform: 'capitalize',
-                marginTop: 5,
-                marginBottom: 10,
-              }}>
-              Manage Shop {currentTab}
-            </Text>
+            <View style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginVertical: 10,
+            }}>
+              <GradientButton handler={() => navigation.goBack()} padding={5} borderWidth={0}>
+                <Image
+                  source={OtherIcons.arrowLeft as ImagePropsBase}
+                  style={{ width: 20, height: 20, tintColor: themeColors.constWhite as string }}
+                />
+              </GradientButton>
+              <Text
+                style={{
+                  color: themeColors.black as string,
+                  fontWeight: '600',
+                  fontSize: 20,
+                  textTransform: 'capitalize',
+                }}>
+                Manage Shop {currentTab}
+              </Text>
+            </View>
             <FlatList
               data={tabs}
               horizontal

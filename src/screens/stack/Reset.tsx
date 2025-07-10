@@ -143,11 +143,11 @@ const Reset = () => {
           <GradientButton handler={() => submitHandler()}>
             {
               resetLoading ? (
-                <ActivityIndicator size="small" color="white" />
+                <ActivityIndicator size="small" color={themeColors.constWhite as string} />
               ) : (
                 <Text
                   style={{
-                    color: 'white',
+                    color: themeColors.constWhite as string,
                     textAlign: 'center',
                     fontWeight: 700,
                     fontSize: 18,
