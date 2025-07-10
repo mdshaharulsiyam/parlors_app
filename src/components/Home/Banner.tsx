@@ -45,7 +45,7 @@ const Banner = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1) % data.length;
+        const nextIndex = (prevIndex + 1) % data?.length;
         if (flatListRef.current) {
           flatListRef.current?.scrollToOffset({
             offset: nextIndex * width + 10 * nextIndex,
