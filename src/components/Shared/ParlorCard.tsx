@@ -51,8 +51,8 @@ const ParlorCard = ({
       />
       <View style={{ marginLeft: 10, padding: 6 }}>
         <Text style={{ fontWeight: 'bold', color: themeColors.black as string }}>{item?.name}</Text>
-        {/* <Text style={{ color: themeColors.black as string, marginVertical: 2 }}>{item?.address}</Text> */}
-        {/* <Text style={{ color: themeColors.black as string }}>{item?.category}</Text> */}
+        <Text style={{ color: themeColors.black as string, marginVertical: 2 }}>{item?.address}</Text>
+        <Text style={{ color: themeColors.black as string }}>{item?.category}</Text>
       </View>
     </TouchableOpacity>
   );

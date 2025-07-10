@@ -4,7 +4,7 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetVendorQuery } from '../../Redux/Apis/vendorApis';
 import { commonStyles } from '../../utils/styles/Styles';
 import { IParlor } from '../../utils/types/Types';
-import ParlorCard from '../Shared/ParlorCard';
+import BusinessCard from '../Shared/BusinessCard';
 const topBarbers: IParlor[] = [
   {
     _id: '1',
@@ -104,7 +104,7 @@ const TopBerber = () => {
         data={data?.data || []}
         contentContainerStyle={{ gap: 10 }}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => <ParlorCard item={item} height={188} cardFor='shop' />}
+        renderItem={({ item }) => <BusinessCard item={item} height={188} cardFor='shop' />}
       />
     </View>
   );

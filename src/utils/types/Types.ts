@@ -6,6 +6,23 @@ export interface IParlor {
   category: string; // Added category
   img: string
 }
+export interface IBusiness {
+  _id: string,
+  name: string,
+  banner: string,
+  address: {
+    divisions: string,
+    districts: string,
+    unions: string,
+    upazilas: string,
+    street_address: string,
+    _id: string
+  },
+  business_category: string,
+  coordinates: number[],
+  total_rated: number,
+  rating: number,
+}
 
 export interface ICategory {
   _id: string;
