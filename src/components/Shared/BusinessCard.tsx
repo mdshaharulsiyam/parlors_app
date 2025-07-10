@@ -12,12 +12,10 @@ const BusinessCard = ({
   item,
   width = 250,
   height = 170,
-  cardFor = 'shop'
 }: {
   item: IBusiness;
   width?: any;
   height?: any;
-  cardFor?: 'shop' | 'service';
 }) => {
   const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
@@ -25,7 +23,7 @@ const BusinessCard = ({
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
-          screen: cardFor === 'shop' ? 'ServiceDetails' : 'Details',
+          screen: 'ServiceDetails',
           params: { id: item?._id?.toString() },
         })
       }

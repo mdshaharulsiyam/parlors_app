@@ -104,7 +104,7 @@ const TopBerber = () => {
         data={data?.data || []}
         contentContainerStyle={{ gap: 10 }}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => <BusinessCard item={item} height={188} cardFor='shop' />}
+        renderItem={({ item }) => <BusinessCard item={item} height={188} />}
       />
     </View>
   );
