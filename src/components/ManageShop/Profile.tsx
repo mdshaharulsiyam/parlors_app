@@ -220,23 +220,28 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
           )
         }
       })}
-      <GradientButton handler={submitHandler}>
-        {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
-        ) : (
-          <Text
-            style={[
-              {
-                color: themeColors.constWhite as string,
-                fontSize: 16,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              },
-            ]}>
-            Save
-          </Text>
-        )}
-      </GradientButton>
+      <View style={{
+        marginTop: 20,
+        marginBottom: 120,
+      }}>
+        <GradientButton handler={submitHandler}>
+          {isUpdating ? (
+            <ActivityIndicator size="small" color={themeColors.constWhite as string} />
+          ) : (
+            <Text
+              style={[
+                {
+                  color: themeColors.constWhite as string,
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                },
+              ]}>
+              Save
+            </Text>
+          )}
+        </GradientButton>
+      </View>
     </>
   )
 }
