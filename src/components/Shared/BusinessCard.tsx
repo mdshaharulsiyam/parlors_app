@@ -7,7 +7,7 @@ import { hexToRGBA } from '../../utils/hexToRGBA';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 import { IParlor } from '../../utils/types/Types';
 
-const ParlorCard = ({
+const BusinessCard = ({
   item,
   width = 250,
   height = 170,
@@ -51,11 +51,11 @@ const ParlorCard = ({
       />
       <View style={{ marginLeft: 10, padding: 6 }}>
         <Text style={{ fontWeight: 'bold', color: themeColors.black as string }}>{item?.name}</Text>
-        {/* <Text style={{ color: themeColors.black as string, marginVertical: 2 }}>{item?.address}</Text> */}
-        {/* <Text style={{ color: themeColors.black as string }}>{item?.category}</Text> */}
+        <Text style={{ color: themeColors.black as string, marginVertical: 2 }}>{item?.address}</Text>
+        <Text style={{ color: themeColors.black as string }}>{item?.category}</Text>
       </View>
     </TouchableOpacity>
   );
 };
 
-export default ParlorCard;
+export default BusinessCard;
