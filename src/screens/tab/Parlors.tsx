@@ -8,95 +8,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ParlorCard from '../../components/Shared/ParlorCard';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
+import { Ratio3_2 } from '../../utils/calculateHeight';
 import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IParlor } from '../../utils/types/Types';
-const Barbers: IParlor[] = [
-  {
-    _id: '1',
-    name: 'John Doe',
-    rating: 4.8,
-    address: '123 Main St, New York, USA',
-    category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=John+Doe',
-  },
-  {
-    _id: '2',
-    name: 'Jane Smith',
-    rating: 4.7,
-    address: '456 Oak Ave, Los Angeles, USA',
-    category: 'Beard Styling', // Added category
-    img: 'https://placehold.co/400x400.png?text=Jane+Smith',
-  },
-  {
-    _id: '3',
-    name: 'Michael Brown',
-    rating: 4.9,
-    address: '789 Pine Blvd, Chicago, USA',
-    category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Michael+Brown',
-  },
-  {
-    _id: '4',
-    name: 'Emily Davis',
-    rating: 4.6,
-    address: '101 Maple Rd, Houston, USA',
-    category: "Women's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Emily+Davis',
-  },
-  {
-    _id: '5',
-    name: 'Chris Wilson',
-    rating: 4.5,
-    address: '202 Birch Ln, Miami, USA',
-    category: 'Beard Styling', // Added category
-    img: 'https://placehold.co/400x400.png?text=Chris+Wilson',
-  },
-  {
-    _id: '6',
-    name: 'Sarah Lee',
-    rating: 4.7,
-    address: '303 Cedar St, San Francisco, USA',
-    category: "Women's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Sarah+Lee',
-  },
-  {
-    _id: '7',
-    name: 'David Kim',
-    rating: 4.8,
-    address: '404 Elm Dr, Boston, USA',
-    category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=David+Kim',
-  },
-  {
-    _id: '8',
-    name: 'Olivia Taylor',
-    rating: 4.9,
-    address: '505 Willow Ct, Dallas, USA',
-    category: "Women's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Olivia+Taylor',
-  },
-  {
-    _id: '9',
-    name: 'William Clark',
-    rating: 4.6,
-    address: '606 Redwood Ave, Seattle, USA',
-    category: 'Beard Styling', // Added category
-    img: 'https://placehold.co/400x400.png?text=William+Clark',
-  },
-  {
-    _id: '10',
-    name: 'Sophia Martinez',
-    rating: 4.7,
-    address: '707 Pinecrest Rd, Denver, USA',
-    category: "Men's Haircuts", // Added category
-    img: 'https://placehold.co/400x400.png?text=Sophia+Martinez',
-  },
-];
+
 const Parlors = () => {
   const { width, height } = Dimensions.get('window');
   const { themeColors, } = useGlobalContext();
+  const { data } = useGetServicesQuery({ limit: 10, page: 1 });
   return (
-    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5 }}>
+    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5, height }}>
       <FlatList
         onEndReached={e => {
           //console.log(e);
@@ -111,14 +32,14 @@ const Parlors = () => {
           gap: 10,
         }}
         showsVerticalScrollIndicator={false}
-        data={Barbers}
+        data={data?.data || []}
         keyExtractor={item => item?._id}
         renderItem={({ item }) => (
           <ParlorCard
             key={item?._id}
             item={item}
-            width={width / 2 - 30}
-            height={100}
+            width={width / 2 - 20}
+            height={Ratio3_2(width / 2 - 20)}
           />
         )}
       />

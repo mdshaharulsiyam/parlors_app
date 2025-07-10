@@ -52,5 +52,5 @@ export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: timeoutFetchBaseQuery({ baseUrl: baseUrl }, 5000),
   endpoints: (builder) => ({}),
-  tagTypes: ['auth', 'vendor', 'banner']
+  tagTypes: ['auth', 'vendor', 'banner', 'serviceListing']
 });

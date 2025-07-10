@@ -12,24 +12,11 @@ import {
 } from 'react-native';
 import { useGet_bannersQuery } from '../../Redux/Apis/bannerApis';
 import { generateImageUrl } from '../../Redux/baseApis';
+import { Ratio3_2 } from '../../utils/calculateHeight';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
 
 const { width } = Dimensions.get('window');
 
-const data = [
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 1',
-  'Item 2',
-  'Item 3',
-];
 const Banner = () => {
   const { data } = useGet_bannersQuery(undefined)
   const flatListRef = useRef<FlatList<any> | null>(null);
@@ -45,7 +32,7 @@ const Banner = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1) % data?.length;
+        const nextIndex = (prevIndex + 1) % data?.data?.length;
         if (flatListRef.current) {
           flatListRef.current?.scrollToOffset({
             offset: nextIndex * width + 10 * nextIndex,
@@ -96,7 +83,7 @@ const Banner = () => {
 const styles = StyleSheet.create({
   image: {
     width: width,
-    height: 250,
+    height: Ratio3_2(width),
     marginRight: 10,
   },
   text: {

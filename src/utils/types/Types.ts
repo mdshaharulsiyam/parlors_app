@@ -1,10 +1,12 @@
 export interface IParlor {
-  _id: string;
-  name: string;
-  rating: number;
-  address: string;
-  category: string; // Added category
-  img: string
+  _id: string,
+  name: string,
+  services: string[],
+  price: number,
+  status: string,
+  img: string,
+  total_rated: number,
+  rating: number
 }
 export interface IBusiness {
   _id: string,
@@ -26,7 +28,7 @@ export interface IBusiness {
 
 export interface ICategory {
   _id: string;
-  category: string;
+  name: string;
   img: string
 }
 

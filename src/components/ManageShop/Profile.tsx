@@ -7,6 +7,7 @@ import { globalStyles } from '../../constant/styles';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { setIndex, setProfile } from '../../Redux/States/vendorSlice';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
+import { Ratio3_2 } from '../../utils/calculateHeight';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
@@ -23,6 +24,7 @@ const businessCategoryData = [
 ]
 const Profile = ({ creating = false }: { creating?: boolean }) => {
   const dispatch = useDispatch()
+  const { width } = useGlobalContext();
   const [isUpdating, setIsUpdating] = useState(false);
   const [inputValue, setInputValue] = useState<IShopInput>({
     name: '',
@@ -72,37 +74,88 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
             alignItems: "center",
           }}
         >
-          <ImageUpload images={images} setImages={setImages}>
+          <View style={{
+            position: 'relative',
+            width: width - 50,
+            height: Ratio3_2(width - 50),
+          }}>
             <View
               style={[
                 styles.profileImageContainer, {
-                  backgroundColor: themeColors.white as string,
                   borderWidth: 1,
                   borderColor: hexToRGBA(themeColors.black as string, 0.2),
                   borderRadius: 50,
-                  position: 'relative',
                 }]}>
               <Image
                 source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
                 style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
+                  width: width - 50,
+                  height: Ratio3_2(width - 50),
                 }}
               />
-              <Image
-                source={OtherIcons.Camera as ImageSourcePropType}
-                style={{
-                  position: 'absolute',
-                  bottom: 10,
-                  right: 5,
-                  width: 20,
-                  height: 20,
-                  tintColor: themeColors.primary as string,
-                }}
-              />
+              <View style={{
+                position: 'absolute',
+                top: 10,
+                right: 0,
+              }}>
+                <ImageUpload images={images} setImages={setImages}>
+                  <Image
+                    source={OtherIcons.Camera as ImageSourcePropType}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 50,
+                      backgroundColor: themeColors.white as string,
+                      padding: 5,
+                      borderWidth: 1,
+                      borderColor: hexToRGBA(themeColors.black as string, 0.2),
+                      tintColor: themeColors.primary as string,
+                    }}
+                  />
+                </ImageUpload>
+              </View>
             </View>
-          </ImageUpload>
+            <View style={{
+              position: 'absolute',
+              bottom: 10,
+              left: 10,
+              width: 100,
+              height: 100,
+            }}>
+              <ImageUpload images={images} setImages={setImages}>
+                <View
+                  style={[
+                    styles.profileImageContainer, {
+                      backgroundColor: themeColors.white as string,
+                      borderWidth: 1,
+                      borderColor: hexToRGBA(themeColors.black as string, 0.2),
+                      borderRadius: 50,
+                      position: 'relative',
+                    }]}>
+                  <Image
+                    source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+                    style={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: 50,
+                    }}
+                  />
+                  <Image
+                    source={OtherIcons.Camera as ImageSourcePropType}
+                    style={{
+                      position: 'absolute',
+                      bottom: 10,
+                      right: 5,
+                      width: 20,
+                      height: 20,
+                      tintColor: themeColors.primary as string,
+                    }}
+                  />
+                </View>
+              </ImageUpload>
+            </View>
+          </View>
+
         </View>
       }
       {
@@ -167,23 +220,28 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
           )
         }
       })}
-      <GradientButton handler={submitHandler}>
-        {isUpdating ? (
-          <ActivityIndicator size="small" color={themeColors.constWhite as string} />
-        ) : (
-          <Text
-            style={[
-              {
-                color: themeColors.constWhite as string,
-                fontSize: 16,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              },
-            ]}>
-            Save
-          </Text>
-        )}
-      </GradientButton>
+      <View style={{
+        marginTop: 20,
+        marginBottom: 120,
+      }}>
+        <GradientButton handler={submitHandler}>
+          {isUpdating ? (
+            <ActivityIndicator size="small" color={themeColors.constWhite as string} />
+          ) : (
+            <Text
+              style={[
+                {
+                  color: themeColors.constWhite as string,
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                },
+              ]}>
+              Save
+            </Text>
+          )}
+        </GradientButton>
+      </View>
     </>
   )
 }
@@ -202,8 +260,6 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     position: 'relative',
     marginBottom: 20,
-    width: 100
-    // backgroundColor: hexToRGBA('#000000', 0.5),
   },
   profileImage: { width: 100, height: 100, borderRadius: 50 },
 

@@ -19,7 +19,7 @@ const Home = () => {
         stickyHeaderIndices={[0]}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20, gap: 10, paddingHorizontal: 5 }}
+        contentContainerStyle={{ paddingBottom: 20, gap: 30, paddingHorizontal: 5 }}
       />
     </SafeAreaView >
   );
