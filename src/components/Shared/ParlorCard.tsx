@@ -50,7 +50,8 @@ const ParlorCard = ({
           },
         ]}
       />
-      <Text style={{ color: themeColors.white as string, position: 'absolute', top: 10, left: 10, backgroundColor: themeColors.black as string, padding: 5, borderRadius: 5, opacity: 0.8, fontWeight: 'bold' }}>{item?.rating?.toFixed(2)}⭐</Text>
+      <Text style={{ color: themeColors.white as string, position: 'absolute', top: 10, right: 10, backgroundColor: themeColors.black as string, padding: 5, borderRadius: 5, opacity: 0.8, fontWeight: 'bold' }}>{item?.rating?.toFixed(2)}⭐</Text>
+      <Text style={{ color: themeColors.white as string, position: 'absolute', top: 10, left: 10, backgroundColor: themeColors.black as string, padding: 5, borderRadius: 5, opacity: 0.8, fontWeight: 'bold' }}>৳ {item?.price}</Text>
       <View style={{ marginLeft: 10, paddingVertical: 6 }}>
         <Text style={{ fontWeight: 'bold', color: themeColors.black as string, marginBottom: 5 }}>{item?.name}</Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
@@ -59,6 +60,7 @@ const ParlorCard = ({
               <Text style={{
                 color: themeColors.black as string,
                 padding: 2,
+                paddingHorizontal: 5,
                 borderRadius: 5,
                 backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
               }} key={index}>{service}</Text>
