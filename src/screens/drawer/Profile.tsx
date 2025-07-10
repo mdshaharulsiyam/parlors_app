@@ -85,7 +85,7 @@ const Profile = () => {
 
   return (
     <SafeAreaView
-      style={{ backgroundColor: hexToRGBA(themeColors.white as string, .95) }}
+      style={{ backgroundColor: hexToRGBA(themeColors.white as string, .95), }}
     >
       <ScrollView
         style={{
@@ -93,7 +93,7 @@ const Profile = () => {
           height: '100%',
           paddingHorizontal: 20,
           paddingVertical: 20,
-          zIndex: 1
+          zIndex: 1,
         }}>
         {Object.keys(inputValue).map((key, index, arr) => {
 
