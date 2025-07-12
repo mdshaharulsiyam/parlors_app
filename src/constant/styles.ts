@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { hexToRGBA } from '../utils/hexToRGBA';
-import { Colors } from './colors';
+import {StyleSheet} from 'react-native';
+import {hexToRGBA} from '../utils/hexToRGBA';
+import {Colors} from './colors';
 
 export const globalStyles = StyleSheet.create({
   container: {
@@ -22,7 +22,7 @@ export const globalStyles = StyleSheet.create({
   input: {
     height: 56,
     width: '100%',
-    borderWidth: .5,
+    borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 14,
     marginBottom: 15,

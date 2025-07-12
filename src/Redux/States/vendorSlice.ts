@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SelectedTime } from '../../components/ManageShop/AvailableTme';
-import { IAddressInput, IShopInput } from '../../utils/types/Types';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {SelectedTime} from '../../components/ManageShop/AvailableTme';
+import {IAddressInput, IShopInput} from '../../utils/types/Types';
 
 interface VendorState {
   address: IAddressInput | null;
@@ -27,7 +27,7 @@ export const vendorSlice = createSlice({
       state.profile = action.payload;
     },
     updateProfile: (state, action: PayloadAction<IShopInput>) => {
-      state.profile = { ...state.profile, ...action.payload };
+      state.profile = {...state.profile, ...action.payload};
     },
     setAvailableTime: (state, action: PayloadAction<SelectedTime>) => {
       state.availableTime = action.payload;
@@ -35,7 +35,7 @@ export const vendorSlice = createSlice({
     setIndex: (state, action: PayloadAction<0 | 1 | 2>) => {
       state.index = action.payload;
     },
-    resetVendor: (state) => {
+    resetVendor: state => {
       state.address = null;
       state.profile = null;
       state.availableTime = null;
@@ -44,6 +44,13 @@ export const vendorSlice = createSlice({
   },
 });
 
-export const { setAddress, setProfile, updateProfile, setAvailableTime, setIndex, resetVendor } = vendorSlice.actions;
+export const {
+  setAddress,
+  setProfile,
+  updateProfile,
+  setAvailableTime,
+  setIndex,
+  resetVendor,
+} = vendorSlice.actions;
 
 export default vendorSlice.reducer;

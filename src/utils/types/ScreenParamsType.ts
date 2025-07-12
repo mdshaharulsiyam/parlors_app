@@ -2,8 +2,8 @@ export type ScreenParamsType = {
   Home: undefined;
   Profile: undefined;
   Settings: undefined;
-  Details: { id: string };
-  Messages: { id: string };
+  Details: {id: string};
+  Messages: {id: string};
   Login: undefined;
   Register: undefined;
   ForgotPassword: undefined;
@@ -20,9 +20,9 @@ export type ScreenParamsType = {
   Cart: undefined;
   Checkout: undefined;
   Shops: undefined;
-  Stacks: { screen: string, params?: { id?: string } };
+  Stacks: {screen: string; params?: {id?: string}};
   Order: undefined;
-  Tabs: { screen: string, params?: { screen?: string, params?: { id: string } } };
-  Verify: { from: string, email: string };
+  Tabs: {screen: string; params?: {screen?: string; params?: {id: string}}};
+  Verify: {from: string; email: string};
   Reset: undefined;
 };

@@ -22,9 +22,6 @@ export const Colors = {
     // primary: '#4CAF50', // medium green
     // secondary: '#F0FDF4', // light green tint
 
-
-
-
     black: '#000000',
     white: '#FFFFFF',
     yellow: '#FF9B17',

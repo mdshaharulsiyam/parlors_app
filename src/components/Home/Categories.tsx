@@ -1,16 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useGetCategoriesQuery } from '../../Redux/Apis/categoryApis';
-import { commonStyles } from '../../utils/styles/Styles';
+import React, {useEffect, useRef, useState} from 'react';
+import {FlatList, Text, View} from 'react-native';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {useGetCategoriesQuery} from '../../Redux/Apis/categoryApis';
+import {commonStyles} from '../../utils/styles/Styles';
 import CategoryCard from '../Shared/CategoryCard';
+import Empty from '../Shared/Empty';
+import Loader from '../Shared/Loader';
 
-
-const Categories = () => {
-  const { themeColors } = useGlobalContext();
+const Categories = ({refreshing}: {refreshing: boolean}) => {
+  const {themeColors} = useGlobalContext();
   const ref = useRef<FlatList<any | null>>(null);
   const [Index, setIndex] = useState(0);
-  const { data } = useGetCategoriesQuery({ page: 1, limit: 20 });
+  const {data, isLoading, isFetching, refetch} = useGetCategoriesQuery({
+    page: 1,
+    limit: 20,
+  });
+  useEffect(() => {
+    if (refreshing) {
+      refetch();
+    }
+  }, [refreshing]);
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex(prevIndex => {
@@ -27,19 +36,24 @@ const Categories = () => {
     return () => clearInterval(interval);
   }, [ref, data?.data?.length]);
 
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
   return (
-    <View style={{ paddingHorizontal: 5 }}>
-      <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
+    <View style={{paddingHorizontal: 5}}>
+      <Text
+        style={[commonStyles.headerText, {color: themeColors.black as string}]}>
         Categories
       </Text>
+      <Empty data={data} />
       <FlatList
         ref={ref}
         data={data?.data || []}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 10 }}
+        contentContainerStyle={{gap: 10}}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => <CategoryCard item={item} />}
+        renderItem={({item}) => <CategoryCard item={item} />}
       />
     </View>
   );

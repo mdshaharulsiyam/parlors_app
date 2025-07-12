@@ -1,15 +1,14 @@
 import React from 'react';
-import { Image, ImageSourcePropType, Text, View } from 'react-native';
-import { OtherIcons } from '../../constant/images';
-import { globalStyles } from '../../constant/styles';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IImage } from '../../utils/types/Types';
+import {Image, ImageSourcePropType, Text, View} from 'react-native';
+import {OtherIcons} from '../../constant/images';
+import {globalStyles} from '../../constant/styles';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {IImage} from '../../utils/types/Types';
 import ImageUpload from './ImageUpload';
 
-
 const NameImage = () => {
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const [images, setImages] = React.useState<IImage[]>([]);
   return (
     <View
@@ -68,4 +67,3 @@ const NameImage = () => {
 };
 
 export default NameImage;
-

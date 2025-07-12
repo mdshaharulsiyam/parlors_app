@@ -1,27 +1,27 @@
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
   Text,
   TextInput,
-  View
+  View,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {ScrollView} from 'react-native-gesture-handler';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { useForgetPassword } from '../../ApisCalls/authApisCall';
+import {useForgetPassword} from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 
 const Forget = () => {
   const navigation = useNavigation<StackNavigationProp<ScreenParamsType>>();
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const [email, setEmail] = useState('');
-  const { ForgetSubmitHandler, isLoading } = useForgetPassword()
+  const {ForgetSubmitHandler, isLoading} = useForgetPassword();
   const handleSendVerificationEmail = () => {
     if (!email) {
       return Toast.show({
@@ -30,18 +30,21 @@ const Forget = () => {
       });
     }
 
-    ForgetSubmitHandler({ email }, () => {
-      navigation.navigate('Verify', { from: 'forget', email })
-    })
+    ForgetSubmitHandler({email}, () => {
+      navigation.navigate('Verify', {from: 'forget', email});
+    });
     // navigation.navigate('Verify');
   };
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: themeColors.white as string }]}>
+      style={[
+        styles.container,
+        {backgroundColor: themeColors.white as string},
+      ]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Title */}
-        <Text style={[styles.title, { color: themeColors.black as string }]}>
+        <Text style={[styles.title, {color: themeColors.black as string}]}>
           Forgot Password
         </Text>
 
@@ -62,14 +65,25 @@ const Forget = () => {
           onChangeText={setEmail}
         />
 
-        <View style={{
-          width: "100%"
-        }}>
+        <View
+          style={{
+            width: '100%',
+          }}>
           <GradientButton handler={handleSendVerificationEmail}>
             {isLoading ? (
-              <ActivityIndicator size="large" color={themeColors.constWhite as string} />
+              <ActivityIndicator
+                size="large"
+                color={themeColors.constWhite as string}
+              />
             ) : (
-              <Text style={[styles.buttonText, { color: themeColors.constWhite as string, textAlign: "center" }]}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    color: themeColors.constWhite as string,
+                    textAlign: 'center',
+                  },
+                ]}>
                 Send Verification Email
               </Text>
             )}

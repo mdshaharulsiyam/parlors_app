@@ -1,27 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, FlatList, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
 import { Ratio3_2 } from '../../utils/calculateHeight';
 import { commonStyles } from '../../utils/styles/Styles';
+import Empty from '../Shared/Empty';
+import Loader from '../Shared/Loader';
 import ParlorCard from '../Shared/ParlorCard';
 
-const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
+const Parlors = ({
+  horizontal = false,
+  refreshing,
+}: {
+  horizontal?: boolean;
+  refreshing?: boolean;
+}) => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
-  const { data } = useGetServicesQuery({ limit: 10, page: 1 });
+
+  const { data, isLoading, isFetching, refetch } = useGetServicesQuery({
+    limit: 20,
+    page: 1,
+  });
+  useEffect(() => {
+    if (refreshing) {
+      refetch();
+    }
+  }, [refreshing]);
+
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
   return (
-    <SafeAreaView style={{ paddingHorizontal: 5, }}>
-      <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
+    <SafeAreaView style={{ paddingHorizontal: 5, marginBottom: 10 }}>
+      <Text
+        style={[commonStyles.headerText, { color: themeColors.black as string }]}>
         Services
       </Text>
+      <Empty data={data} />
       <FlatList
         horizontal={horizontal}
         ListFooterComponent={<View style={{ height: 50 }} />}
-        onEndReached={e => {
-          //console.log(e);
-        }}
         onEndReachedThreshold={0.5}
         numColumns={horizontal ? 1 : 2}
         {...(!horizontal && {
@@ -43,7 +63,6 @@ const Parlors = ({ horizontal = false }: { horizontal?: boolean }) => {
             height={Ratio3_2(width / 2 - 20)}
           />
         )}
-
       />
     </SafeAreaView>
   );

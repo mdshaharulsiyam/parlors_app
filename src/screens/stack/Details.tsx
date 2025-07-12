@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 //
 import {
   FlatList,
@@ -6,13 +6,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  View
+  View,
 } from 'react-native';
 import Parlors from '../../components/Home/Parlors';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 const Details = () => {
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   // Static data
@@ -31,13 +31,13 @@ const Details = () => {
     ],
     totalBooking: 50,
     openDetails: [
-      { day: 'Monday', hours: '9AM-5PM' },
-      { day: 'Tuesday', hours: '9AM-5PM' },
-      { day: 'Wednesday', hours: '9AM-5PM' },
-      { day: 'Thursday', hours: '9AM-5PM' },
-      { day: 'Friday', hours: '9AM-5PM' },
-      { day: 'Saturday', hours: '10AM-4PM' },
-      { day: 'Sunday', hours: 'Closed' },
+      {day: 'Monday', hours: '9AM-5PM'},
+      {day: 'Tuesday', hours: '9AM-5PM'},
+      {day: 'Wednesday', hours: '9AM-5PM'},
+      {day: 'Thursday', hours: '9AM-5PM'},
+      {day: 'Friday', hours: '9AM-5PM'},
+      {day: 'Saturday', hours: '10AM-4PM'},
+      {day: 'Sunday', hours: 'Closed'},
     ],
     completedBooking: 20,
     ongoingBooking: 15,
@@ -73,71 +73,118 @@ const Details = () => {
   };
   const textColor = themeColors.constWhite as string;
   return (
-    <ScrollView style={[styles.container, {
-      backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
-    }]}>
-      <Text style={[styles.shopName, {
-        color: themeColors.black as string,
-      }]}>{shopDetails.shopName}</Text>
-      <Image source={{ uri: shopDetails.shopImage }} style={styles.shopImage} />
+    <ScrollView
+      style={[
+        styles.container,
+        {
+          backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+        },
+      ]}>
+      <Text
+        style={[
+          styles.shopName,
+          {
+            color: themeColors.black as string,
+          },
+        ]}>
+        {shopDetails.shopName}
+      </Text>
+      <Image source={{uri: shopDetails.shopImage}} style={styles.shopImage} />
 
-      <View style={[styles.ownerInfo, {
-        backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
-      }]}>
+      <View
+        style={[
+          styles.ownerInfo,
+          {
+            backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
+          },
+        ]}>
         <Image
-          source={{ uri: shopDetails.ownerImage }}
+          source={{uri: shopDetails.ownerImage}}
           style={styles.ownerImage}
         />
         <View style={styles.ownerDetails}>
-          <Text style={[styles.ownerName, {
-            color: themeColors.black as string,
-          }]}>{shopDetails.ownerName}</Text>
-          <Text style={[styles.ownerEmail, {
-            color: themeColors.black as string,
-          }]}>{shopDetails.ownerEmail}</Text>
+          <Text
+            style={[
+              styles.ownerName,
+              {
+                color: themeColors.black as string,
+              },
+            ]}>
+            {shopDetails.ownerName}
+          </Text>
+          <Text
+            style={[
+              styles.ownerEmail,
+              {
+                color: themeColors.black as string,
+              },
+            ]}>
+            {shopDetails.ownerEmail}
+          </Text>
         </View>
       </View>
 
-      <Text style={[styles.sectionTitle, {
-        color: themeColors.black as string,
-      }]}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: themeColors.black as string,
+          },
+        ]}>
         Total Workers: {shopDetails.totalWorkers}
       </Text>
 
       <FlatList
         data={shopDetails.workerImages}
         horizontal
-        renderItem={({ item }) => (
-          <Image source={{ uri: item }} style={styles.workerImage} />
+        renderItem={({item}) => (
+          <Image source={{uri: item}} style={styles.workerImage} />
         )}
         keyExtractor={(item, index) => index.toString()}
       />
 
       {/* Booking Information */}
       <View style={styles.bookingInfo}>
-        <Text style={{
-          color: textColor
-        }}>
+        <Text
+          style={{
+            color: textColor,
+          }}>
           Total Booking Possible at a Time: {[shopDetails.totalBooking]}
         </Text>
-        <Text style={{
-          color: textColor
-        }}>Completed Booking: {shopDetails.completedBooking}</Text>
-        <Text style={{
-          color: textColor
-        }}>Ongoing Booking: {shopDetails.ongoingBooking}</Text>
-        <Text style={{
-          color: textColor
-        }}>Canceled Booking: {shopDetails.canceledBooking}</Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Completed Booking: {shopDetails.completedBooking}
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Ongoing Booking: {shopDetails.ongoingBooking}
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Canceled Booking: {shopDetails.canceledBooking}
+        </Text>
       </View>
 
       {/* Shop Timings */}
-      <Text style={[styles.sectionTitle, { color: textColor }]}>Opening Hours</Text>
+      <Text style={[styles.sectionTitle, {color: textColor}]}>
+        Opening Hours
+      </Text>
       <View style={styles.openDetails}>
         {shopDetails.openDetails.map((day, index) => (
-          <Text key={index} style={[styles.openingTime, {
-            color: textColor
-          }]}>
+          <Text
+            key={index}
+            style={[
+              styles.openingTime,
+              {
+                color: textColor,
+              },
+            ]}>
             {day.day} - {day.hours}
           </Text>
         ))}
@@ -146,37 +193,64 @@ const Details = () => {
       <Parlors horizontal={true} />
       {/* Rating & Review */}
       <View style={styles.ratingInfo}>
-        <Text style={{
-          color: textColor
-        }}>Total Rated: {shopDetails.totalRated}</Text>
-        <Text style={{
-          color: textColor
-        }}>Total Rating: {shopDetails.totalRating}</Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Total Rated: {shopDetails.totalRated}
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Total Rating: {shopDetails.totalRating}
+        </Text>
         <Text style={styles.sectionTitle}>Reviews</Text>
         <FlatList
           data={shopDetails.reviews}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
-            paddingVertical: 20
+            paddingVertical: 20,
           }}
-          renderItem={({ item }) => (
-            <View style={[styles.reviewCard, {
-              backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
-            }]}>
-              <Image source={{ uri: item.userImage }} style={styles.userImage} />
+          renderItem={({item}) => (
+            <View
+              style={[
+                styles.reviewCard,
+                {
+                  backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
+                },
+              ]}>
+              <Image source={{uri: item.userImage}} style={styles.userImage} />
               <View style={styles.reviewContent}>
-                <Text style={[styles.userName, {
-                  color: textColor
-                }]}>{item.userName}</Text>
-                <Text numberOfLines={2} style={[styles.reviewText, {
-                  color: textColor
-                }]}>
+                <Text
+                  style={[
+                    styles.userName,
+                    {
+                      color: textColor,
+                    },
+                  ]}>
+                  {item.userName}
+                </Text>
+                <Text
+                  numberOfLines={2}
+                  style={[
+                    styles.reviewText,
+                    {
+                      color: textColor,
+                    },
+                  ]}>
                   {item.review}
                 </Text>
-                <Text style={[styles.rating, {
-                  color: hexToRGBA(themeColors.yellow as string, 0.8)
-                }]}>Rating: {item.rating} ★</Text>
+                <Text
+                  style={[
+                    styles.rating,
+                    {
+                      color: hexToRGBA(themeColors.yellow as string, 0.8),
+                    },
+                  ]}>
+                  Rating: {item.rating} ★
+                </Text>
               </View>
             </View>
           )}
@@ -246,7 +320,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   ownerImage: {
     width: 50,

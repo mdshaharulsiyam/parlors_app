@@ -1,14 +1,14 @@
-import { baseApi } from '../baseApis';
+import {baseApi} from '../baseApis';
 
 const banner_apis = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     get_banners: builder.query({
       query: () => ({
         url: `banner/get-all`,
-        method: 'GET'
+        method: 'GET',
       }),
-      providesTags: ['banner']
+      providesTags: ['banner'],
     }),
-  })
-})
-export const { useGet_bannersQuery } = banner_apis
+  }),
+});
+export const {useGet_bannersQuery} = banner_apis;

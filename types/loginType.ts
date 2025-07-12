@@ -6,7 +6,7 @@ export interface IForget {
   email: string;
 }
 export interface ISignUp {
-  'name': string;
+  name: string;
   email: string;
   contact: string;
   gender: string;
@@ -43,7 +43,7 @@ export interface IInvoiceForm {
   status: string;
 }
 export interface IUpdateProfile {
-  'name': string;
+  name: string;
   email: string;
   contact: string;
   gender: string;

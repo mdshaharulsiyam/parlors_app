@@ -1,6 +1,6 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import { useGlobalContext } from '../Provider/GlobalContextProvider';
+import {useGlobalContext} from '../Provider/GlobalContextProvider';
 import Details from '../screens/stack/Details';
 import Forget from '../screens/stack/Forget';
 import Messages from '../screens/stack/Messages';
@@ -14,9 +14,9 @@ import Verify from '../screens/stack/Verify';
 const Stack = createNativeStackNavigator();
 
 const StackLayout = () => {
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   return (
-    <Stack.Navigator >
+    <Stack.Navigator>
       <Stack.Screen
         name="ServiceAddEdit"
         component={ServiceAddEdit}
@@ -30,7 +30,7 @@ const StackLayout = () => {
         options={{
           headerShown: true,
           headerTransparent: true,
-          title: "Sign In",
+          title: 'Sign In',
           headerTitleAlign: 'center',
 
           headerTitleStyle: {
@@ -46,7 +46,7 @@ const StackLayout = () => {
         options={{
           headerShown: true,
           headerTransparent: true,
-          title: "Sign Up",
+          title: 'Sign Up',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             color: themeColors.black as string,
@@ -60,7 +60,7 @@ const StackLayout = () => {
         options={{
           headerShown: true,
           headerTransparent: true,
-          title: "Forget Password",
+          title: 'Forget Password',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             color: themeColors.black as string,
@@ -74,7 +74,7 @@ const StackLayout = () => {
         options={{
           headerShown: true,
           headerTransparent: true,
-          title: "Reset Password",
+          title: 'Reset Password',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             color: themeColors.black as string,
@@ -88,7 +88,7 @@ const StackLayout = () => {
         options={{
           headerShown: true,
           headerTransparent: true,
-          title: "Verify Email",
+          title: 'Verify Email',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             color: themeColors.black as string,
@@ -100,17 +100,17 @@ const StackLayout = () => {
       <Stack.Screen
         name="Details"
         component={Details}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="ServiceDetails"
         component={ServiceDetails}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Messages"
         component={Messages}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );

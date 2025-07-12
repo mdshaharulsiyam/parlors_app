@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Animated,
   StyleSheet,
@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 
 interface SelectProps {
   isMultiSelect?: boolean;
-  data?: { label: string; value: string }[];
+  data?: {label: string; value: string}[];
   selectedValue?: any;
   setSelectedValue?: (value: any) => void;
   placeholder?: string;
@@ -29,7 +29,7 @@ interface SelectProps {
     icon: string;
     red: string;
   };
-  categoryOptions?: { label: string; value: string }[];
+  categoryOptions?: {label: string; value: string}[];
   searchText?: string;
   setSearchText?: (text: string) => void;
   borderColor?: string;
@@ -42,31 +42,37 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = ({
   isMultiSelect = false,
-  data = [{ label: 'Select', value: '' }],
+  data = [{label: 'Select', value: ''}],
   selectedValue = '',
-  setSelectedValue = () => { },
+  setSelectedValue = () => {},
 
   placeholder = 'Select',
   searchPlaceholder = 'Search...',
-  renderItem = (item: any) => <Text style={{
-    padding: 5,
-
-  }}>{item.label}</Text>,
+  renderItem = (item: any) => (
+    <Text
+      style={{
+        padding: 5,
+      }}>
+      {item.label}
+    </Text>
+  ),
   renderSelectedItem = (item: any, unSelect?: (item: any) => void) => (
-    <TouchableOpacity style={{
-      padding: 8,
-      marginVertical: 5
-    }} onPress={() => unSelect?.(item)}>
+    <TouchableOpacity
+      style={{
+        padding: 8,
+        marginVertical: 5,
+      }}
+      onPress={() => unSelect?.(item)}>
       <View style={styles.selectedStyle}>
         <Text style={styles.textSelectedStyle}>{item.label}</Text>
-        <Text style={{ color: 'red' }}> - </Text>
+        <Text style={{color: 'red'}}> - </Text>
       </View>
     </TouchableOpacity>
   ),
 
   categoryOptions = [],
   searchText = '',
-  setSearchText = () => { },
+  setSearchText = () => {},
   borderColor = 'gray',
   height = 40,
   width = '100%',
@@ -74,7 +80,7 @@ const Select: React.FC<SelectProps> = ({
   validate = false,
   errorMessage = 'This field is required',
 }) => {
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const [animation] = useState(new Animated.Value(0));
   const [isTouched, setIsTouched] = useState(false);
 
@@ -104,7 +110,7 @@ const Select: React.FC<SelectProps> = ({
           ]}
           placeholderStyle={[
             styles.placeholderStyle,
-            { color: themeColors.black as string },
+            {color: themeColors.black as string},
           ]}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -119,7 +125,10 @@ const Select: React.FC<SelectProps> = ({
                 },
               ]}>
               <TextInput
-                style={[styles.searchInput, { color: themeColors.black as string }]}
+                style={[
+                  styles.searchInput,
+                  {color: themeColors.black as string},
+                ]}
                 placeholder={searchPlaceholder}
                 placeholderTextColor={themeColors.black as string}
                 value={searchText}
@@ -160,11 +169,11 @@ const Select: React.FC<SelectProps> = ({
           ]}
           placeholderStyle={[
             styles.placeholderStyle,
-            { color: themeColors.black as string },
+            {color: themeColors.black as string},
           ]}
           selectedTextStyle={[
             styles.selectedTextStyle,
-            { color: themeColors.black as string },
+            {color: themeColors.black as string},
           ]}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
@@ -186,7 +195,7 @@ const Select: React.FC<SelectProps> = ({
 
       {/* Validation error message */}
       {isTouched && validate && !selectedValue && (
-        <Text style={{ color: 'red', fontSize: 12, marginTop: 5 }}>
+        <Text style={{color: 'red', fontSize: 12, marginTop: 5}}>
           {errorMessage}
         </Text>
       )}
@@ -235,7 +244,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 5,
-    marginVertical: 8
+    marginVertical: 8,
   },
   textSelectedStyle: {
     fontSize: 14,

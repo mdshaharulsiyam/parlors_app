@@ -1,9 +1,9 @@
-import { baseApi } from '../baseApis';
+import {baseApi} from '../baseApis';
 
 const categoryApi = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getCategories: builder.query({
-      query: ({ limit = 10, search = '', page = 1 }) => {
+      query: ({limit = 10, search = '', page = 1}) => {
         return {
           url: '/category/get-all',
           method: 'GET',
@@ -11,12 +11,12 @@ const categoryApi = baseApi.injectEndpoints({
             limit,
             search,
             page,
-          }
-        }
+          },
+        };
       },
     }),
     getSubCategories: builder.query({
-      query: ({ limit = 10, search = '', page = 1 }) => {
+      query: ({limit = 10, search = '', page = 1}) => {
         return {
           url: '/service/get-all',
           method: 'GET',
@@ -24,11 +24,11 @@ const categoryApi = baseApi.injectEndpoints({
             limit,
             search,
             page,
-          }
-        }
+          },
+        };
       },
     }),
   }),
-})
+});
 
-export const { useGetCategoriesQuery, useGetSubCategoriesQuery } = categoryApi
+export const {useGetCategoriesQuery, useGetSubCategoriesQuery} = categoryApi;

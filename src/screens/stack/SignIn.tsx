@@ -1,6 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { Link, NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {Link, NavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -10,20 +13,20 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { useDispatch } from 'react-redux';
-import { ILogin } from '../../../types/loginType';
-import { useLogin } from '../../ApisCalls/authApisCall';
+import {useDispatch} from 'react-redux';
+import {ILogin} from '../../../types/loginType';
+import {useLogin} from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
-import { OtherIcons } from '../../constant/images';
-import { globalStyles } from '../../constant/styles';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { setRole, setToken } from '../../Redux/States/userSlice';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import {OtherIcons} from '../../constant/images';
+import {globalStyles} from '../../constant/styles';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {setRole, setToken} from '../../Redux/States/userSlice';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 export const signIn = async () => {
   try {
     //   await GoogleSignin.hasPlayServices();
@@ -63,12 +66,12 @@ export interface GoogleSignInResponse {
   type: 'success' | 'error';
 }
 const SignIn = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
-  const { signIn: signInHandler, isLoading } = useLogin()
+  const {signIn: signInHandler, isLoading} = useLogin();
   const [error, setError] = React.useState({
     email: false,
     password: false,
@@ -83,10 +86,10 @@ const SignIn = () => {
     let isInvalid = false;
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof ILogin] === '') {
-        setError(prev => ({ ...prev, [key]: true }));
+        setError(prev => ({...prev, [key]: true}));
         isInvalid = true;
       } else {
-        setError(prev => ({ ...prev, [key]: false }));
+        setError(prev => ({...prev, [key]: false}));
       }
     });
     if (isInvalid) {
@@ -100,45 +103,62 @@ const SignIn = () => {
       await Promise.all([
         AsyncStorage.setItem('token', res?.token),
         AsyncStorage.setItem('role', JSON.stringify(res?.role)),
-      ])
-      dispatch(setToken(res?.token))
-      dispatch(setRole(res?.role))
-      navigate.navigate('Tabs', { screen: 'Home' })
-    }
-    signInHandler(inputValue, storeData)
+      ]);
+      dispatch(setToken(res?.token));
+      dispatch(setRole(res?.role));
+      navigate.navigate('Tabs', {screen: 'Home'});
+    };
+    signInHandler(inputValue, storeData);
   };
   return (
     <SafeAreaView
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: hexToRGBA(themeColors.white as string, .95) }}>
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+      }}>
       {/* form */}
-      <View style={{ width: '100%', paddingHorizontal: 20 }}>
+      <View style={{width: '100%', paddingHorizontal: 20}}>
         {Object.keys(inputValue).map((key, index) => (
           <View key={index}>
-            <Text style={[globalStyles.inputLabel, {
-              color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string,
-            }]}>
+            <Text
+              style={[
+                globalStyles.inputLabel,
+                {
+                  color: error[key as keyof ILogin]
+                    ? (themeColors.red as string)
+                    : (themeColors.black as string),
+                },
+              ]}>
               {key.charAt(0).toUpperCase() + key.slice(1)}
             </Text>
-            <View style={{ position: 'relative' }}>
+            <View style={{position: 'relative'}}>
               <TextInput
                 value={inputValue[key as keyof ILogin]}
                 onChangeText={text => {
-                  setInputValue({ ...inputValue, [key]: text });
-                  setError({ ...error, [key]: false });
+                  setInputValue({...inputValue, [key]: text});
+                  setError({...error, [key]: false});
                 }}
                 placeholder={`Enter your ${key}`}
                 secureTextEntry={key === 'password' ? passShow : false}
-                placeholderTextColor={hexToRGBA(themeColors.black as string, 0.3)}
+                placeholderTextColor={hexToRGBA(
+                  themeColors.black as string,
+                  0.3,
+                )}
                 style={[
                   globalStyles.input,
                   {
                     borderColor: error[key as keyof ILogin]
-                      ? themeColors.red as string
+                      ? (themeColors.red as string)
                       : hexToRGBA(themeColors.black as string, 0.4),
                     borderWidth: error[key as keyof ILogin] ? 1 : 0,
-                    backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                    backgroundColor: hexToRGBA(
+                      themeColors.black as string,
+                      0.2,
+                    ),
                     color: themeColors.black as string,
-                  }
+                  },
                 ]}
               />
               {key === 'password' && (
@@ -157,7 +177,11 @@ const SignIn = () => {
                         ? (OtherIcons.Eye as ImageSourcePropType)
                         : (OtherIcons.EyeX as ImageSourcePropType)
                     }
-                    style={{ width: 20, height: 20, tintColor: themeColors.black as string }}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      tintColor: themeColors.black as string,
+                    }}
                   />
                 </TouchableOpacity>
               )}
@@ -166,10 +190,12 @@ const SignIn = () => {
         ))}
 
         <Link
-          style={{ textAlign: 'right', marginBottom: 20, }}
+          style={{textAlign: 'right', marginBottom: 20}}
           screen="Forget"
           params={{}}>
-          <Text style={{ color: themeColors.primary as string }}>Forgot password?</Text>
+          <Text style={{color: themeColors.primary as string}}>
+            Forgot password?
+          </Text>
         </Link>
 
         <View
@@ -177,8 +203,13 @@ const SignIn = () => {
             paddingHorizontal: 25,
           }}>
           <GradientButton handler={() => submitHandler()}>
-            {
-              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
+            {isLoading ? (
+              <ActivityIndicator
+                size="small"
+                color={themeColors.constWhite as string}
+              />
+            ) : (
+              <Text
                 style={{
                   color: themeColors.constWhite as string,
                   textAlign: 'center',
@@ -187,27 +218,36 @@ const SignIn = () => {
                 }}>
                 Login
               </Text>
-            }
+            )}
           </GradientButton>
         </View>
 
-        <View style={[globalStyles.flex, { marginTop: 20 }]}>
-          <Text style={[globalStyles.text, {
-            color: themeColors.black as string,
-          }]}>
+        <View style={[globalStyles.flex, {marginTop: 20}]}>
+          <Text
+            style={[
+              globalStyles.text,
+              {
+                color: themeColors.black as string,
+              },
+            ]}>
             Don't have an account ?
           </Text>
           <Link screen="SignUp" params={{}}>
-            <Text style={[{ marginLeft: 5, color: themeColors.primary as string }, globalStyles.text]}>
-              {"  "} Sign Up
+            <Text
+              style={[
+                {marginLeft: 5, color: themeColors.primary as string},
+                globalStyles.text,
+              ]}>
+              {'  '} Sign Up
             </Text>
           </Link>
         </View>
 
-        <View style={{
-          paddingHorizontal: 25,
-          marginTop: 20,
-        }}>
+        <View
+          style={{
+            paddingHorizontal: 25,
+            marginTop: 20,
+          }}>
           {/* <GoogleSigninButton
             onPress={signIn}
             disabled={isSigninInProgress}
@@ -215,25 +255,28 @@ const SignIn = () => {
             color={GoogleSigninButton.Color.Dark}
           /> */}
           <GradientButton handler={() => signIn()}>
-            {
-              isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text
+            {isLoading ? (
+              <ActivityIndicator
+                size="small"
+                color={themeColors.constWhite as string}
+              />
+            ) : (
+              <Text
                 style={{
                   color: themeColors.constWhite as string,
                   textAlign: 'center',
                   fontWeight: 700,
                   fontSize: 18,
                 }}>
-                Login with  Google
+                Login with Google
               </Text>
-            }
+            )}
           </GradientButton>
         </View>
       </View>
     </SafeAreaView>
   );
 };
-
-
 
 export default SignIn;
 

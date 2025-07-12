@@ -1,4 +1,4 @@
-"use dom"
+'use dom';
 
 const Checkout = () => {
   return (
@@ -12,4 +12,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-

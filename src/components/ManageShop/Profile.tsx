@@ -1,30 +1,43 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, Image, ImageSourcePropType, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, {useState} from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import Toast from 'react-native-toast-message';
-import { useDispatch } from 'react-redux';
-import { OtherIcons } from '../../constant/images';
-import { globalStyles } from '../../constant/styles';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { setIndex, setProfile } from '../../Redux/States/vendorSlice';
+import {useDispatch} from 'react-redux';
+import {OtherIcons} from '../../constant/images';
+import {globalStyles} from '../../constant/styles';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {setIndex, setProfile} from '../../Redux/States/vendorSlice';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
-import { Ratio3_2 } from '../../utils/calculateHeight';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IImage, IShopInput, IShopInputError, IShopInputLabel } from '../../utils/types/Types';
+import {Ratio3_2} from '../../utils/calculateHeight';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {
+  IImage,
+  IShopInput,
+  IShopInputError,
+  IShopInputLabel,
+} from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 import ImageUpload from '../Shared/ImageUpload';
 import LocationNotice from '../Shared/LocationNotice';
 const businessCategoryData = [
-  { label: 'Salon', value: 'salon' },
-  { label: 'Restaurant', value: 'restaurant' },
-  { label: 'Medical', value: 'medical' },
-  { label: 'Fitness', value: 'fitness' },
-  { label: 'Real Estate', value: 'real_estate' },
-  { label: 'Services', value: 'services' },
-  { label: 'Other', value: 'other' },
-]
-const Profile = ({ creating = false }: { creating?: boolean }) => {
-  const dispatch = useDispatch()
-  const { width } = useGlobalContext();
+  {label: 'Salon', value: 'salon'},
+  {label: 'Restaurant', value: 'restaurant'},
+  {label: 'Medical', value: 'medical'},
+  {label: 'Fitness', value: 'fitness'},
+  {label: 'Real Estate', value: 'real_estate'},
+  {label: 'Services', value: 'services'},
+  {label: 'Other', value: 'other'},
+];
+const Profile = ({creating = false}: {creating?: boolean}) => {
+  const dispatch = useDispatch();
+  const {width} = useGlobalContext();
   const [isUpdating, setIsUpdating] = useState(false);
   const [inputValue, setInputValue] = useState<IShopInput>({
     name: '',
@@ -37,67 +50,74 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
     email: false,
     contact: false,
     business_category: false,
-  })
+  });
   const [inputLabel, setInputLabel] = useState<IShopInputLabel>({
     name: 'Shop name',
     business_category: 'Business Category',
     email: 'Shop Email (optional)',
     contact: 'Shop Phone (optional)',
-  })
+  });
 
-  const { themeColors } = useGlobalContext()
+  const {themeColors} = useGlobalContext();
   const [images, setImages] = React.useState<IImage[]>([]);
   const submitHandler = () => {
     if (inputValue.name === '') {
-      setError(prev => ({ ...prev, name: true }));
+      setError(prev => ({...prev, name: true}));
       Toast.show({
         type: 'error',
         text1: 'name is required',
         text2: 'Please fill name',
       });
-      return
+      return;
     }
     if (creating) {
-      dispatch(setIndex(1))
-      dispatch(setProfile(inputValue))
+      dispatch(setIndex(1));
+      dispatch(setProfile(inputValue));
     } else {
-
     }
-  }
+  };
   return (
     <>
-      {
-        !creating && <View
+      {!creating && (
+        <View
           style={{
             flex: 1,
             justifyContent: 'center',
-            alignItems: "center",
-          }}
-        >
-          <View style={{
-            position: 'relative',
-            width: width - 50,
-            height: Ratio3_2(width - 50),
+            alignItems: 'center',
           }}>
+          <View
+            style={{
+              position: 'relative',
+              width: width - 50,
+              height: Ratio3_2(width - 50),
+            }}>
             <View
               style={[
-                styles.profileImageContainer, {
+                styles.profileImageContainer,
+                {
                   borderWidth: 1,
                   borderColor: hexToRGBA(themeColors.black as string, 0.2),
                   borderRadius: 50,
-                }]}>
+                },
+              ]}>
               <Image
-                source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+                source={{
+                  uri:
+                    images?.length > 0
+                      ? images[0].uri
+                      : 'https://via.placeholder.com/100',
+                }}
                 style={{
                   width: width - 50,
                   height: Ratio3_2(width - 50),
                 }}
               />
-              <View style={{
-                position: 'absolute',
-                top: 10,
-                right: 0,
-              }}>
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 0,
+                }}>
                 <ImageUpload images={images} setImages={setImages}>
                   <Image
                     source={OtherIcons.Camera as ImageSourcePropType}
@@ -115,25 +135,33 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
                 </ImageUpload>
               </View>
             </View>
-            <View style={{
-              position: 'absolute',
-              bottom: 10,
-              left: 10,
-              width: 100,
-              height: 100,
-            }}>
+            <View
+              style={{
+                position: 'absolute',
+                bottom: 10,
+                left: 10,
+                width: 100,
+                height: 100,
+              }}>
               <ImageUpload images={images} setImages={setImages}>
                 <View
                   style={[
-                    styles.profileImageContainer, {
+                    styles.profileImageContainer,
+                    {
                       backgroundColor: themeColors.white as string,
                       borderWidth: 1,
                       borderColor: hexToRGBA(themeColors.black as string, 0.2),
                       borderRadius: 50,
                       position: 'relative',
-                    }]}>
+                    },
+                  ]}>
                   <Image
-                    source={{ uri: images?.length > 0 ? images[0].uri : 'https://via.placeholder.com/100', }}
+                    source={{
+                      uri:
+                        images?.length > 0
+                          ? images[0].uri
+                          : 'https://via.placeholder.com/100',
+                    }}
                     style={{
                       width: 100,
                       height: 100,
@@ -155,21 +183,22 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
               </ImageUpload>
             </View>
           </View>
-
         </View>
-      }
-      {
-        creating && (
-          <LocationNotice />
-        )
-      }
+      )}
+      {creating && <LocationNotice />}
       {Object.keys(inputValue).map((key, index) => {
         if (key === 'business_category') {
           return (
             <View key={index}>
-              <Text style={[globalStyles.inputLabel, {
-                color: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
-              }]}>
+              <Text
+                style={[
+                  globalStyles.inputLabel,
+                  {
+                    color: error[key as keyof IShopInputError]
+                      ? (themeColors.red as string)
+                      : (themeColors.black as string),
+                  },
+                ]}>
                 {inputLabel[key as keyof IShopInputLabel]}
               </Text>
               <SingleSelectDropDown
@@ -183,50 +212,64 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
                 error={error}
               />
             </View>
-          )
+          );
         } else {
           return (
             <View key={index}>
-              <Text style={[globalStyles.inputLabel, {
-                color: error[key as keyof IShopInputError] ? themeColors.red as string : themeColors.black as string
-              }]}>
+              <Text
+                style={[
+                  globalStyles.inputLabel,
+                  {
+                    color: error[key as keyof IShopInputError]
+                      ? (themeColors.red as string)
+                      : (themeColors.black as string),
+                  },
+                ]}>
                 {inputLabel[key as keyof IShopInputLabel]}
               </Text>
-              <View >
+              <View>
                 <TextInput
                   value={inputValue[key as keyof IShopInput]}
                   onChangeText={text => {
-                    setInputValue({ ...inputValue, [key]: text });
-                    setError({ ...error, [key]: false });
+                    setInputValue({...inputValue, [key]: text});
+                    setError({...error, [key]: false});
                   }}
                   placeholder={`Enter ${key}`}
-                  placeholderTextColor={hexToRGBA(themeColors.black as string, 0.6)}
+                  placeholderTextColor={hexToRGBA(
+                    themeColors.black as string,
+                    0.6,
+                  )}
                   style={[
                     globalStyles.input,
                     {
                       borderColor: error[key as keyof IShopInput]
-                        ? themeColors.red as string
+                        ? (themeColors.red as string)
                         : hexToRGBA(themeColors.black as string, 0.4),
                       borderWidth: error[key as keyof IShopInput] ? 1 : 0,
-                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                      backgroundColor: hexToRGBA(
+                        themeColors.black as string,
+                        0.2,
+                      ),
                       color: themeColors.black as string,
-                    }
-
+                    },
                   ]}
                 />
-
               </View>
             </View>
-          )
+          );
         }
       })}
-      <View style={{
-        marginTop: 20,
-        marginBottom: 120,
-      }}>
+      <View
+        style={{
+          marginTop: 20,
+          marginBottom: 120,
+        }}>
         <GradientButton handler={submitHandler}>
           {isUpdating ? (
-            <ActivityIndicator size="small" color={themeColors.constWhite as string} />
+            <ActivityIndicator
+              size="small"
+              color={themeColors.constWhite as string}
+            />
           ) : (
             <Text
               style={[
@@ -243,10 +286,10 @@ const Profile = ({ creating = false }: { creating?: boolean }) => {
         </GradientButton>
       </View>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
 
 const styles = StyleSheet.create({
   selectContainer: {
@@ -261,7 +304,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 20,
   },
-  profileImage: { width: 100, height: 100, borderRadius: 50 },
+  profileImage: {width: 100, height: 100, borderRadius: 50},
 
   input: {
     width: '100%',
@@ -278,5 +321,5 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  buttonText: { fontSize: 16, fontWeight: 'bold' },
+  buttonText: {fontSize: 16, fontWeight: 'bold'},
 });

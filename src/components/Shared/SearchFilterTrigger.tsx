@@ -4,16 +4,15 @@ import {
   ImageSourcePropType,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { OtherIcons } from '../../constant/images';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {OtherIcons} from '../../constant/images';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 import SearchInput from './SearchInput';
 
 const SearchFilterTrigger = () => {
-  const { themeColors, bottomSheetRef } = useGlobalContext();
-
+  const {themeColors, bottomSheetRef} = useGlobalContext();
 
   return (
     <View style={styles.headerContainer}>
@@ -38,7 +37,7 @@ const SearchFilterTrigger = () => {
           }}
         />
       </TouchableOpacity>
-    </View >
+    </View>
   );
 };
 

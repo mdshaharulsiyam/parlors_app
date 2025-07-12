@@ -1,17 +1,32 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import DatePicker from 'react-native-date-picker';
-import { useDispatch } from 'react-redux';
-import { useCreateVendor } from '../../ApisCalls/vendorApisCall';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { setRole } from '../../Redux/States/userSlice';
-import { resetVendor, setAvailableTime, setIndex } from '../../Redux/States/vendorSlice';
-import { getLocation } from '../../utils/getLocations';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { commonStyles } from '../../utils/styles/Styles';
+import {useDispatch} from 'react-redux';
+import {useCreateVendor} from '../../ApisCalls/vendorApisCall';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {setRole} from '../../Redux/States/userSlice';
+import {
+  resetVendor,
+  setAvailableTime,
+  setIndex,
+} from '../../Redux/States/vendorSlice';
+import {getLocation} from '../../utils/getLocations';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {commonStyles} from '../../utils/styles/Styles';
 import GradientButton from '../Shared/GradientButton';
 
 interface Time {
@@ -30,29 +45,31 @@ export interface SelectedTime {
   thursday: Time;
 }
 
-const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) => {
-  const navigation = useNavigation<NavigationProp<ParamListBase>>()
-  const dispatch = useDispatch()
-  const { createVendorHandler, isLoading } = useCreateVendor()
-  const { themeColors } = useGlobalContext()
+const AvailableTime: React.FC<{creating?: boolean}> = ({creating = false}) => {
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const dispatch = useDispatch();
+  const {createVendorHandler, isLoading} = useCreateVendor();
+  const {themeColors} = useGlobalContext();
   const [selectedTime, setSelectedTime] = useState<SelectedTime>({
-    friday: { checked: false, from: null, to: null },
-    saturday: { checked: false, from: null, to: null },
-    sunday: { checked: false, from: null, to: null },
-    monday: { checked: false, from: null, to: null },
-    tuesday: { checked: false, from: null, to: null },
-    wednesday: { checked: false, from: null, to: null },
-    thursday: { checked: false, from: null, to: null },
+    friday: {checked: false, from: null, to: null},
+    saturday: {checked: false, from: null, to: null},
+    sunday: {checked: false, from: null, to: null},
+    monday: {checked: false, from: null, to: null},
+    tuesday: {checked: false, from: null, to: null},
+    wednesday: {checked: false, from: null, to: null},
+    thursday: {checked: false, from: null, to: null},
   });
 
   const [openFromPicker, setOpenFromPicker] = useState(false);
   const [openToPicker, setOpenToPicker] = useState(false);
-  const [currentDayForPicker, setCurrentDayForPicker] = useState<keyof SelectedTime | null>(null);
+  const [currentDayForPicker, setCurrentDayForPicker] = useState<
+    keyof SelectedTime | null
+  >(null);
 
   const handleCheckboxChange = (day: keyof SelectedTime): void => {
-    setSelectedTime((prevState) => ({
+    setSelectedTime(prevState => ({
       ...prevState,
-      [day]: { ...prevState[day], checked: !prevState[day].checked },
+      [day]: {...prevState[day], checked: !prevState[day].checked},
     }));
     if (!selectedTime[day].checked) {
       setCurrentDayForPicker(day);
@@ -61,11 +78,11 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
   };
 
   const handleSelectSameTimeForAll = (): void => {
-    const { from, to } = selectedTime.friday;
-    setSelectedTime((prevState) => {
-      const updatedState: SelectedTime = { ...prevState };
-      Object.keys(updatedState).forEach((day) => {
-        updatedState[day as keyof SelectedTime] = { checked: true, from, to };
+    const {from, to} = selectedTime.friday;
+    setSelectedTime(prevState => {
+      const updatedState: SelectedTime = {...prevState};
+      Object.keys(updatedState).forEach(day => {
+        updatedState[day as keyof SelectedTime] = {checked: true, from, to};
       });
       return updatedState;
     });
@@ -73,9 +90,9 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
 
   const handleFromTimeChange = (date: Date): void => {
     if (currentDayForPicker) {
-      setSelectedTime((prevState) => ({
+      setSelectedTime(prevState => ({
         ...prevState,
-        [currentDayForPicker]: { ...prevState[currentDayForPicker], from: date },
+        [currentDayForPicker]: {...prevState[currentDayForPicker], from: date},
       }));
     }
     setOpenFromPicker(false);
@@ -84,9 +101,9 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
 
   const handleToTimeChange = (date: Date): void => {
     if (currentDayForPicker) {
-      setSelectedTime((prevState) => ({
+      setSelectedTime(prevState => ({
         ...prevState,
-        [currentDayForPicker]: { ...prevState[currentDayForPicker], to: date },
+        [currentDayForPicker]: {...prevState[currentDayForPicker], to: date},
       }));
     }
     setOpenToPicker(false);
@@ -103,105 +120,159 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
   };
   const submitHandler = async () => {
     if (creating) {
-      const locations = await getLocation() as { latitude: number, longitude: number }
-      const coordinates = [locations?.longitude || 0, locations?.latitude || 0]
-      dispatch(setAvailableTime(selectedTime))
+      const locations = (await getLocation()) as {
+        latitude: number;
+        longitude: number;
+      };
+      const coordinates = [locations?.longitude || 0, locations?.latitude || 0];
+      dispatch(setAvailableTime(selectedTime));
       createVendorHandler(selectedTime, coordinates, async () => {
-        dispatch(resetVendor())
-        await AsyncStorage.setItem('role', 'VENDOR')
-        dispatch(setRole('VENDOR'))
+        dispatch(resetVendor());
+        await AsyncStorage.setItem('role', 'VENDOR');
+        dispatch(setRole('VENDOR'));
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Tabs' }],
+          routes: [{name: 'Tabs'}],
         });
-      })
+      });
     }
-  }
+  };
   return (
-    <View style={[styles.container, {
-      backgroundColor: themeColors.white as string
-    }]}>
-
-      {
-        creating && <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginBottom: 15 }}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: themeColors.white as string,
+        },
+      ]}>
+      {creating && (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            marginBottom: 15,
+          }}>
           <GradientButton handler={() => dispatch(setIndex(1))} padding={10}>
-            <Text style={[
-              {
-                color: themeColors.constWhite as string,
-                textAlign: 'center',
-                fontSize: 16,
-                fontWeight: '600',
-              },
-            ]}>
+            <Text
+              style={[
+                {
+                  color: themeColors.constWhite as string,
+                  textAlign: 'center',
+                  fontSize: 16,
+                  fontWeight: '600',
+                },
+              ]}>
               Back
             </Text>
           </GradientButton>
         </View>
-      }
+      )}
       <GradientButton handler={handleSelectSameTimeForAll}>
-        <Text style={[commonStyles.ButtonText, {
-          color: themeColors.constWhite as string,
-          textAlign: 'center',
-          textTransform: 'capitalize',
-        }]}>
+        <Text
+          style={[
+            commonStyles.ButtonText,
+            {
+              color: themeColors.constWhite as string,
+              textAlign: 'center',
+              textTransform: 'capitalize',
+            },
+          ]}>
           Set Same Time for All Days
         </Text>
       </GradientButton>
 
-      <Text style={[styles.header, {
-        color: themeColors.black as string,
-      }]}>Availability</Text>
+      <Text
+        style={[
+          styles.header,
+          {
+            color: themeColors.black as string,
+          },
+        ]}>
+        Availability
+      </Text>
 
       {Object.entries(selectedTime).map(([day, time]) => (
-        <View key={day} style={[styles.dayCard, {
-          backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
-        }]}>
+        <View
+          key={day}
+          style={[
+            styles.dayCard,
+            {
+              backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+            },
+          ]}>
           <View style={styles.dayHeader}>
             <BouncyCheckbox
               size={26}
               fillColor={themeColors.primary as string}
               text={day.charAt(0).toUpperCase() + day.slice(1)}
-              textStyle={[styles.dayText, { textDecorationLine: 'none', color: themeColors.black as string }]}
+              textStyle={[
+                styles.dayText,
+                {
+                  textDecorationLine: 'none',
+                  color: themeColors.black as string,
+                },
+              ]}
               isChecked={time.checked}
               onPress={() => handleCheckboxChange(day as keyof SelectedTime)}
               bounceEffect={1.3}
-              iconStyle={{ borderColor: themeColors.primary as string, borderRadius: 4 }}
-              innerIconStyle={{ borderWidth: 2, borderRadius: 4 }}
+              iconStyle={{
+                borderColor: themeColors.primary as string,
+                borderRadius: 4,
+              }}
+              innerIconStyle={{borderWidth: 2, borderRadius: 4}}
             />
           </View>
 
           {time.checked && (
             <View style={styles.timeButtonsContainer}>
               <TouchableOpacity
-                style={[commonStyles.Button, {
-                  backgroundColor: themeColors.white as string,
-                  borderColor: themeColors.white as string
-                }]}
-                onPress={() => openFromTimePicker(day as keyof SelectedTime)}
-              >
-                <Text style={[
-                  commonStyles.ButtonText,
+                style={[
+                  commonStyles.Button,
                   {
-                    color: themeColors.black as string
-                  }
-                ]}>
-                  From: {time.from ? time.from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Select'}
+                    backgroundColor: themeColors.white as string,
+                    borderColor: themeColors.white as string,
+                  },
+                ]}
+                onPress={() => openFromTimePicker(day as keyof SelectedTime)}>
+                <Text
+                  style={[
+                    commonStyles.ButtonText,
+                    {
+                      color: themeColors.black as string,
+                    },
+                  ]}>
+                  From:{' '}
+                  {time.from
+                    ? time.from.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : 'Select'}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[commonStyles.Button, {
-                  backgroundColor: themeColors.white as string,
-                  borderColor: themeColors.white as string
-                }]}
-                onPress={() => openToTimePicker(day as keyof SelectedTime)}
-              >
-                <Text style={[
-                  commonStyles.ButtonText,
+                style={[
+                  commonStyles.Button,
                   {
-                    color: themeColors.black as string
-                  }
-                ]}>
-                  To: {time.to ? time.to.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Select'}
+                    backgroundColor: themeColors.white as string,
+                    borderColor: themeColors.white as string,
+                  },
+                ]}
+                onPress={() => openToTimePicker(day as keyof SelectedTime)}>
+                <Text
+                  style={[
+                    commonStyles.ButtonText,
+                    {
+                      color: themeColors.black as string,
+                    },
+                  ]}>
+                  To:{' '}
+                  {time.to
+                    ? time.to.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : 'Select'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -209,11 +280,24 @@ const AvailableTime: React.FC<{ creating?: boolean }> = ({ creating = false }) =
         </View>
       ))}
       <GradientButton handler={submitHandler}>
-        {isLoading ? <ActivityIndicator size="small" color={themeColors.constWhite as string} /> : <Text style={[commonStyles.ButtonText, {
-          color: themeColors.constWhite as string,
-          textAlign: 'center',
-          textTransform: 'capitalize',
-        }]}>Save</Text>}
+        {isLoading ? (
+          <ActivityIndicator
+            size="small"
+            color={themeColors.constWhite as string}
+          />
+        ) : (
+          <Text
+            style={[
+              commonStyles.ButtonText,
+              {
+                color: themeColors.constWhite as string,
+                textAlign: 'center',
+                textTransform: 'capitalize',
+              },
+            ]}>
+            Save
+          </Text>
+        )}
       </GradientButton>
       {/* Render single DatePickers outside of the loop */}
       {Platform.OS !== 'web' && currentDayForPicker && (
@@ -256,7 +340,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 15,
     padding: 10,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
@@ -275,5 +359,4 @@ const styles = StyleSheet.create({
     gap: 15,
     marginTop: 6,
   },
-
 });

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Banner from '../../components/Home/Banner';
@@ -8,20 +9,42 @@ import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 const Home = () => {
-  const { themeColors } = useGlobalContext();
-  const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];
+  const { themeColors, height } = useGlobalContext();
+  const [refreshing, setRefreshing] = useState(false);
+  const data = [
+    <Banner refreshing={refreshing} />,
+    <TopBerber refreshing={refreshing} />,
+    <Categories refreshing={refreshing} />,
+    <Parlors refreshing={refreshing} />,
+  ];
   return (
-    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+        height: height,
+      }}>
       <FlatList
+        onRefresh={() => {
+          setRefreshing(true);
+          setTimeout(() => {
+            setRefreshing(false);
+          }, 500);
+        }}
+        refreshing={refreshing}
+        onEndReachedThreshold={0.5}
         data={data}
         renderItem={({ item }) => item}
         ListHeaderComponent={() => <SearchFilterTrigger />}
         stickyHeaderIndices={[0]}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20, gap: 30, paddingHorizontal: 5 }}
+        contentContainerStyle={{
+          paddingBottom: 20,
+          gap: 30,
+          paddingHorizontal: 5,
+        }}
       />
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 

@@ -1,19 +1,30 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import {StyleSheet, Text, View} from 'react-native';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 
 const LocationNotice = () => {
-  const { themeColors } = useGlobalContext()
+  const {themeColors} = useGlobalContext();
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, {
-        color: themeColors.black as string,
-      }]}>📍 Location Notice</Text>
-      <Text style={[styles.description, {
-        color: themeColors.black as string,
-      }]}>
-        Your current location will be saved as your shop location.{" "}
-        If this is not your actual shop, please go to your shop and then create your account.
+      <Text
+        style={[
+          styles.title,
+          {
+            color: themeColors.black as string,
+          },
+        ]}>
+        📍 Location Notice
+      </Text>
+      <Text
+        style={[
+          styles.description,
+          {
+            color: themeColors.black as string,
+          },
+        ]}>
+        Your current location will be saved as your shop location. If this is
+        not your actual shop, please go to your shop and then create your
+        account.
       </Text>
     </View>
   );
