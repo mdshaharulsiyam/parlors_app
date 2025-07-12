@@ -123,7 +123,6 @@ const DrawerLayout = () => {
 function DrawerContent(props: DrawerContentComponentProps) {
   const dispatch = useDispatch()
   const { role } = useSelector((state: any) => state?.user)
-  console.log(role === 'VENDOR')
   const { themeColors, } = useGlobalContext();
   const logout = async () => {
     await Promise.all([

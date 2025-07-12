@@ -52,6 +52,7 @@ const Banner = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefresh
       refetch();
     }
   }, [refreshing]);
+
   if (isLoading || isFetching) {
     return <Loader />
   }
@@ -68,7 +69,6 @@ const Banner = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefresh
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         snapToAlignment="center"
         renderItem={({ item }) => {
-          console.log(generateImageUrl(item?.img))
           return (
             <TouchableOpacity>
               <Image
