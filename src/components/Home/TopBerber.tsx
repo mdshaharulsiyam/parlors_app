@@ -7,7 +7,7 @@ import BusinessCard from '../Shared/BusinessCard';
 import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 
-const TopBerber = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefreshing: (arg1: boolean) => void }) => {
+const TopBerber = ({ refreshing }: { refreshing: boolean }) => {
   const { themeColors, cord } = useGlobalContext();
   const [useFallback, setUseFallback] = useState(false);
 

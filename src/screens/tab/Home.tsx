@@ -12,14 +12,19 @@ const Home = () => {
   const { themeColors, height } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
   const data = [
-    <Banner refreshing={refreshing} setRefreshing={setRefreshing} />,
-    <TopBerber refreshing={refreshing} setRefreshing={setRefreshing} />,
-    <Categories refreshing={refreshing} setRefreshing={setRefreshing} />,
-    <Parlors refreshing={refreshing} setRefreshing={setRefreshing} />];
+    <Banner refreshing={refreshing} />,
+    <TopBerber refreshing={refreshing} />,
+    <Categories refreshing={refreshing} />,
+    <Parlors refreshing={refreshing} />];
   return (
     <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), height: height }}>
       <FlatList
-        onRefresh={() => setRefreshing(true)}
+        onRefresh={() => {
+          setRefreshing(true)
+          setTimeout(() => {
+            setRefreshing(false)
+          }, 500)
+        }}
         refreshing={refreshing}
         data={data}
         renderItem={({ item }) => item}

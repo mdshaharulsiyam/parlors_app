@@ -9,7 +9,7 @@ import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 import ParlorCard from '../Shared/ParlorCard';
 
-const Parlors = ({ horizontal = false, refreshing, setRefreshing }: { horizontal?: boolean, refreshing?: boolean, setRefreshing?: (arg1: boolean) => void }) => {
+const Parlors = ({ horizontal = false, refreshing }: { horizontal?: boolean, refreshing?: boolean, }) => {
   const { width } = Dimensions.get('window');
   const { themeColors } = useGlobalContext();
   const [limit, setLimit] = useState(10);

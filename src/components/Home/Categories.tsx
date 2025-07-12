@@ -8,7 +8,7 @@ import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 
 
-const Categories = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefreshing: (arg1: boolean) => void }) => {
+const Categories = ({ refreshing }: { refreshing: boolean }) => {
   const { themeColors } = useGlobalContext();
   const ref = useRef<FlatList<any | null>>(null);
   const [Index, setIndex] = useState(0);
