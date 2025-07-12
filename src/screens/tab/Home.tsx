@@ -1,15 +1,15 @@
-import {useState} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Banner from '../../components/Home/Banner';
 import Categories from '../../components/Home/Categories';
 import Parlors from '../../components/Home/Parlors';
 import TopBerber from '../../components/Home/TopBerber';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 const Home = () => {
-  const {themeColors, height} = useGlobalContext();
+  const { themeColors, height } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
   const data = [
     <Banner refreshing={refreshing} />,
@@ -31,8 +31,9 @@ const Home = () => {
           }, 500);
         }}
         refreshing={refreshing}
+        onEndReachedThreshold={0.5}
         data={data}
-        renderItem={({item}) => item}
+        renderItem={({ item }) => item}
         ListHeaderComponent={() => <SearchFilterTrigger />}
         stickyHeaderIndices={[0]}
         keyExtractor={(item, index) => index.toString()}
