@@ -4,13 +4,19 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetCategoriesQuery } from '../../Redux/Apis/categoryApis';
 import { commonStyles } from '../../utils/styles/Styles';
 import CategoryCard from '../Shared/CategoryCard';
+import Loader from '../Shared/Loader';
 
 
-const Categories = () => {
+const Categories = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefreshing: (arg1: boolean) => void }) => {
   const { themeColors } = useGlobalContext();
   const ref = useRef<FlatList<any | null>>(null);
   const [Index, setIndex] = useState(0);
-  const { data } = useGetCategoriesQuery({ page: 1, limit: 20 });
+  const { data, isLoading, isFetching, refetch } = useGetCategoriesQuery({ page: 1, limit: 20 });
+  useEffect(() => {
+    if (refreshing) {
+      refetch();
+    }
+  }, [refreshing]);
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex(prevIndex => {
@@ -27,6 +33,9 @@ const Categories = () => {
     return () => clearInterval(interval);
   }, [ref, data?.data?.length]);
 
+  if (isLoading || isFetching) {
+    return <Loader />
+  }
   return (
     <View style={{ paddingHorizontal: 5 }}>
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>

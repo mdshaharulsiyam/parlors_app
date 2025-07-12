@@ -7,17 +7,16 @@ import BusinessCard from '../Shared/BusinessCard';
 import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 
-
-const TopBerber = () => {
+const TopBerber = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefreshing: (arg1: boolean) => void }) => {
   const { themeColors, cord } = useGlobalContext();
   const [useFallback, setUseFallback] = useState(false);
 
   const coordinates = useMemo(() => {
     if (useFallback || !cord) return undefined;
-    return JSON.stringify([cord.lat, cord.lng]);
+    return JSON.stringify([cord.lng, cord.lat]);
   }, [cord, useFallback]);
 
-  const { data, isLoading, isFetching } = useGetVendorQuery({
+  const { data, isLoading, isFetching, refetch } = useGetVendorQuery({
     sort: 'rating',
     order: 'desc',
     top: true,
@@ -29,7 +28,11 @@ const TopBerber = () => {
       setUseFallback(true);
     }
   }, [data, cord, useFallback]);
-
+  useEffect(() => {
+    if (refreshing) {
+      refetch();
+    }
+  }, [refreshing]);
   if (isLoading || isFetching) {
     return <Loader />
   }

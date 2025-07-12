@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Banner from '../../components/Home/Banner';
@@ -9,10 +10,17 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 const Home = () => {
   const { themeColors, height } = useGlobalContext();
-  const data = [<Banner />, <TopBerber />, <Categories />, <Parlors />];
+  const [refreshing, setRefreshing] = useState(false);
+  const data = [
+    <Banner refreshing={refreshing} setRefreshing={setRefreshing} />,
+    <TopBerber refreshing={refreshing} setRefreshing={setRefreshing} />,
+    <Categories refreshing={refreshing} setRefreshing={setRefreshing} />,
+    <Parlors refreshing={refreshing} setRefreshing={setRefreshing} />];
   return (
     <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), height: height }}>
       <FlatList
+        onRefresh={() => setRefreshing(true)}
+        refreshing={refreshing}
         data={data}
         renderItem={({ item }) => item}
         ListHeaderComponent={() => <SearchFilterTrigger />}

@@ -14,11 +14,13 @@ import { useGet_bannersQuery } from '../../Redux/Apis/bannerApis';
 import { generateImageUrl } from '../../Redux/baseApis';
 import { Ratio3_2 } from '../../utils/calculateHeight';
 import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import Empty from '../Shared/Empty';
+import Loader from '../Shared/Loader';
 
 const { width } = Dimensions.get('window');
 
-const Banner = () => {
-  const { data } = useGet_bannersQuery(undefined)
+const Banner = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefreshing: (arg1: boolean) => void }) => {
+  const { data, isLoading, isFetching, refetch } = useGet_bannersQuery(undefined)
   const flatListRef = useRef<FlatList<any> | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigation<DrawerNavigationProp<ScreenParamsType>>();
@@ -45,13 +47,19 @@ const Banner = () => {
 
     return () => clearInterval(interval);
   }, [data?.data?.length]);
-
+  useEffect(() => {
+    if (refreshing) {
+      refetch();
+    }
+  }, [refreshing]);
+  if (isLoading || isFetching) {
+    return <Loader />
+  }
   return (
     <View>
+      <Empty data={data} />
       <FlatList
         ref={flatListRef}
-        onRefresh={() => { }}
-        refreshing={false}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         data={data?.data || []}
