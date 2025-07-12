@@ -7,8 +7,8 @@ import BusinessCard from '../Shared/BusinessCard';
 
 
 const TopBerber = () => {
-  const { themeColors } = useGlobalContext();
-  const { data } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true });
+  const { themeColors, cord } = useGlobalContext();
+  const { data } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: cord ? [cord.lat, cord.lng] : undefined });
   return (
     <View style={{ paddingHorizontal: 5 }}>
       <View>

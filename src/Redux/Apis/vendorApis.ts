@@ -11,7 +11,7 @@ const vendorApis = baseApi.injectEndpoints({
       invalidatesTags: ['auth', 'vendor']
     }),
     getVendor: builder.query({
-      query: ({ limit = 10, search = '', page = 1, sort = '', order = '', top = false }) => ({
+      query: ({ limit = 10, search = '', page = 1, sort = '', order = '', top = false, coordinates = undefined }) => ({
         url: '/business/get-all',
         method: 'GET',
         params: {
@@ -20,7 +20,8 @@ const vendorApis = baseApi.injectEndpoints({
           page,
           sort,
           order,
-          top
+          top,
+          coordinates
         }
       }),
       providesTags: ['vendor']
