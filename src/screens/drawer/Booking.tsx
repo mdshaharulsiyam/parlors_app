@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   Image,
@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { commonStyles } from '../../utils/styles/Styles';
-import { IBooking } from '../../utils/types/Types';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {commonStyles} from '../../utils/styles/Styles';
+import {IBooking} from '../../utils/types/Types';
 
 const data: IBooking[] = [
   {
@@ -218,7 +218,7 @@ const allStatus = ['pending', 'complete', 'accepted', 'canceled'];
 
 const Booking = () => {
   const [status, setStatus] = useState<string>(allStatus[0]);
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const black = themeColors.black as string;
   const white = themeColors.white as string;
   const primary = themeColors.primary as string;
@@ -226,10 +226,11 @@ const Booking = () => {
   const red = themeColors.red as string;
   const green = themeColors.green as string;
   return (
-    <View style={{
-      backgroundColor: hexToRGBA(white, 0.95),
-      paddingHorizontal: 10
-    }}>
+    <View
+      style={{
+        backgroundColor: hexToRGBA(white, 0.95),
+        paddingHorizontal: 10,
+      }}>
       <FlatList
         ListHeaderComponent={() => (
           <View>
@@ -253,19 +254,17 @@ const Booking = () => {
               }}
               showsHorizontalScrollIndicator={false}
               keyExtractor={item => item}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <TouchableOpacity
                   onPress={() => setStatus(item)}
                   activeOpacity={0.7}
                   style={[
                     commonStyles.Button,
                     {
-                      backgroundColor:
-                        item == status
-                          ? primary
-                          : yellow,
+                      backgroundColor: item == status ? primary : yellow,
                       borderRadius: 3,
-                    }]}
+                    },
+                  ]}
                   key={item}>
                   <Text
                     style={{
@@ -279,47 +278,91 @@ const Booking = () => {
               )}
             />
           </View>
-        )
-        }
+        )}
         contentContainerStyle={{
           padding: 5,
         }}
         data={data?.filter(item => item?.status == status)}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => (
-          <View style={[styles.card, {
-            backgroundColor: hexToRGBA(black, 0.1),
-          }]}>
+        renderItem={({item}) => (
+          <View
+            style={[
+              styles.card,
+              {
+                backgroundColor: hexToRGBA(black, 0.1),
+              },
+            ]}>
             {/* Parlor Image */}
-            <Image source={{ uri: item.parlorImage }} style={styles.image} />
+            <Image source={{uri: item.parlorImage}} style={styles.image} />
 
             {/* Booking Details */}
             <View style={[styles.detailsContainer]}>
-              <Text style={[styles.parlor, {
-                color: hexToRGBA(black, 0.9),
-              }]}>{item.parlor}</Text>
-              <Text style={[styles.worker, {
-                color: hexToRGBA(black, 0.7),
-              }]}>Worker: {item.worker}</Text>
-              <Text style={[styles.date, {
-                color: hexToRGBA(black, 0.7),
-              }]}>Date: {item.date}</Text>
-              <Text style={[styles.time, {
-                color: hexToRGBA(black, 0.7),
-              }]}>Time: {item.time}</Text>
-              <Text style={[styles.status, {
-                color: item.status == 'canceled' ? red : item.status == 'pending' ? yellow : item.status == 'accepted' ? primary : green,
-              }]}>
+              <Text
+                style={[
+                  styles.parlor,
+                  {
+                    color: hexToRGBA(black, 0.9),
+                  },
+                ]}>
+                {item.parlor}
+              </Text>
+              <Text
+                style={[
+                  styles.worker,
+                  {
+                    color: hexToRGBA(black, 0.7),
+                  },
+                ]}>
+                Worker: {item.worker}
+              </Text>
+              <Text
+                style={[
+                  styles.date,
+                  {
+                    color: hexToRGBA(black, 0.7),
+                  },
+                ]}>
+                Date: {item.date}
+              </Text>
+              <Text
+                style={[
+                  styles.time,
+                  {
+                    color: hexToRGBA(black, 0.7),
+                  },
+                ]}>
+                Time: {item.time}
+              </Text>
+              <Text
+                style={[
+                  styles.status,
+                  {
+                    color:
+                      item.status == 'canceled'
+                        ? red
+                        : item.status == 'pending'
+                        ? yellow
+                        : item.status == 'accepted'
+                        ? primary
+                        : green,
+                  },
+                ]}>
                 Status: {item.status}
               </Text>
-              <Text style={[styles.service, {
-                color: hexToRGBA(black, 0.7),
-              }]}>Service: {item.service}</Text>
+              <Text
+                style={[
+                  styles.service,
+                  {
+                    color: hexToRGBA(black, 0.7),
+                  },
+                ]}>
+                Service: {item.service}
+              </Text>
             </View>
           </View>
         )}
       />
-    </View >
+    </View>
   );
 };
 

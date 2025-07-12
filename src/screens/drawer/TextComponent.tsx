@@ -1,37 +1,36 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import WebView from 'react-native-webview';
 const TextComponent = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <WebView
         originWhitelist={['*']}
         source={{
-          uri: 'https://personal-shop-ten.vercel.app/login'
+          uri: 'https://personal-shop-ten.vercel.app/login',
         }}
-        onMessage={(event) => {
+        onMessage={event => {
           //console.log('Message from WebView:', event?.nativeEvent?.data);
         }}
         javaScriptEnabled={true}
-        style={{ marginTop: 20 }}
+        style={{marginTop: 20}}
       />
 
       <WebView
         originWhitelist={['*']}
         source={{
-          uri: 'https://ammur.vercel.app/auth/sign-in'
+          uri: 'https://ammur.vercel.app/auth/sign-in',
         }}
-        onMessage={(event) => {
+        onMessage={event => {
           //console.log('Message from WebView:', event?.nativeEvent?.data);
         }}
         javaScriptEnabled={true}
-        style={{ marginTop: 20 }}
+        style={{marginTop: 20}}
       />
-
     </View>
-  )
-}
+  );
+};
 
-export default TextComponent
+export default TextComponent;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

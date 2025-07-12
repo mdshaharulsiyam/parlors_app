@@ -1,10 +1,10 @@
-import React from 'react'
-import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native'
-import { OtherIcons } from '../../constant/images'
+import React from 'react';
+import {Image, ImageSourcePropType, StyleSheet, View} from 'react-native';
+import {OtherIcons} from '../../constant/images';
 
-const Empty = ({ data }: { data: any }) => {
-  return (
-    !data || data?.data?.length === 0 ? <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+const Empty = ({data}: {data: any}) => {
+  return !data || data?.data?.length === 0 ? (
+    <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
       <Image
         source={OtherIcons.Empty as ImageSourcePropType}
         style={{
@@ -13,10 +13,9 @@ const Empty = ({ data }: { data: any }) => {
         }}
       />
     </View>
-      : null
-  )
-}
+  ) : null;
+};
 
-export default Empty
+export default Empty;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

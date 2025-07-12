@@ -1,25 +1,29 @@
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import React from 'react';
 import {
   Image,
   ImageSourcePropType,
   StyleSheet,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { OtherIcons } from '../../constant/images';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { setSearch } from '../../Redux/States/Filters';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {useDispatch, useSelector} from 'react-redux';
+import {OtherIcons} from '../../constant/images';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {setSearch} from '../../Redux/States/Filters';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 import Input from './Input';
-const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
+const SearchInput = ({inputWidth}: {inputWidth?: any}) => {
   const navigate = useNavigation<NavigationProp<ParamListBase>>();
-  const { themeColors, width } = useGlobalContext();
-  const dispatch = useDispatch()
+  const {themeColors, width} = useGlobalContext();
+  const dispatch = useDispatch();
   const search = useSelector((state: any) => state?.filters?.search);
   const handleSubmit = () => {
-    navigate.navigate('Tabs', { screen: 'Parlors', params: { search } });
+    navigate.navigate('Tabs', {screen: 'Parlors', params: {search}});
   };
   return (
     <View
@@ -50,7 +54,7 @@ const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
           position: 'absolute',
           right: 15,
           top: '50%',
-          transform: [{ translateY: '-50%' }],
+          transform: [{translateY: '-50%'}],
         }}>
         <Image
           tintColor={themeColors.primary as string}

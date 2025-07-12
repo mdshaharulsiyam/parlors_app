@@ -1,4 +1,4 @@
-import { IImage } from './Types';
+import {IImage} from './Types';
 
 export interface IImageUploadProps {
   images: IImage[];
@@ -9,7 +9,7 @@ export interface IImageUploadProps {
 }
 export interface ISingleDropDownProps {
   error: any;
-  data: { label: string; value: string }[];
+  data: {label: string; value: string}[];
   name: any;
   value: string;
   inputValue: any;

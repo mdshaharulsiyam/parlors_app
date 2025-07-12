@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export interface IFilters {
   search: string;
@@ -18,5 +18,5 @@ export const filtersSlice = createSlice({
   },
 });
 
-export const { setSearch } = filtersSlice.actions;
+export const {setSearch} = filtersSlice.actions;
 export default filtersSlice.reducer;

@@ -1,5 +1,5 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
+import React, {useCallback} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
 
 import {
@@ -10,33 +10,33 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {Dropdown} from 'react-native-element-dropdown';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { useSelector } from 'react-redux';
-import { ILogin, IUpdateProfile } from '../../../types/loginType';
-import { useUpdateUserProfile } from '../../ApisCalls/authApisCall';
+import {useSelector} from 'react-redux';
+import {ILogin, IUpdateProfile} from '../../../types/loginType';
+import {useUpdateUserProfile} from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
-import { genderData } from '../../constant/data';
-import { OtherIcons } from '../../constant/images';
-import { globalStyles } from '../../constant/styles';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
-import { IUserProfile } from '../../utils/types/Types';
+import {genderData} from '../../constant/data';
+import {OtherIcons} from '../../constant/images';
+import {globalStyles} from '../../constant/styles';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
+import {IUserProfile} from '../../utils/types/Types';
 
 const Profile = () => {
-  const user: IUserProfile = useSelector((state: any) => state?.user?.user)
-  const navigation = useNavigation<NavigationProp<ScreenParamsType>>()
+  const user: IUserProfile = useSelector((state: any) => state?.user?.user);
+  const navigation = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
   const [countryCode, setCountryCode] = React.useState('BD');
   const [callingCode, setCallingCode] = React.useState('880');
-  const { themeColors, width } = useGlobalContext();
+  const {themeColors, width} = useGlobalContext();
   const [error, setError] = React.useState({
-    'name': false,
+    name: false,
     email: false,
     contact: false,
     gender: false,
@@ -45,48 +45,46 @@ const Profile = () => {
   });
 
   const [inputValue, setInputValue] = React.useState<IUpdateProfile>({
-    'name': user?.name,
+    name: user?.name,
     contact: user?.phone,
     email: user?.email,
     gender: user?.gender,
   });
   //rtk
-  const { update, isLoading } = useUpdateUserProfile()
+  const {update, isLoading} = useUpdateUserProfile();
 
   const submitHandler = useCallback(() => {
     let isInvalid = false;
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof IUpdateProfile] === '') {
         isInvalid = true;
-        setError(prev => ({ ...prev, [key]: true }));
+        setError(prev => ({...prev, [key]: true}));
       } else {
-        setError(prev => ({ ...prev, [key]: false }));
+        setError(prev => ({...prev, [key]: false}));
       }
     });
     if (isInvalid) {
       Toast.show({
         type: 'error',
-        text1: "Please fill all fields",
-        text2: "All fields are required",
+        text1: 'Please fill all fields',
+        text2: 'All fields are required',
       });
       return;
     }
 
     const data = {
-      "name": inputValue['name'],
-      "contact": inputValue['contact'],
-      "email": inputValue['email'],
-      "gender": inputValue['gender'],
-    }
+      name: inputValue['name'],
+      contact: inputValue['contact'],
+      email: inputValue['email'],
+      gender: inputValue['gender'],
+    };
 
-    update(data)
-
-  }, [update, inputValue,]);
+    update(data);
+  }, [update, inputValue]);
 
   return (
     <SafeAreaView
-      style={{ backgroundColor: hexToRGBA(themeColors.white as string, .95), }}
-    >
+      style={{backgroundColor: hexToRGBA(themeColors.white as string, 0.95)}}>
       <ScrollView
         style={{
           width: '100%',
@@ -96,11 +94,18 @@ const Profile = () => {
           zIndex: 1,
         }}>
         {Object.keys(inputValue).map((key, index, arr) => {
-
           if (key === 'gender') {
             return (
-              <View key={key} style={{ zIndex: 100000000 }}>
-                <Text style={[globalStyles.inputLabel, { color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string }]}>
+              <View key={key} style={{zIndex: 100000000}}>
+                <Text
+                  style={[
+                    globalStyles.inputLabel,
+                    {
+                      color: error[key as keyof ILogin]
+                        ? (themeColors.red as string)
+                        : (themeColors.black as string),
+                    },
+                  ]}>
                   {key.charAt(0).toUpperCase() + key.slice(1)}
                 </Text>
                 <Dropdown
@@ -108,11 +113,14 @@ const Profile = () => {
                     globalStyles.input,
                     {
                       borderColor: error[key as keyof ILogin]
-                        ? themeColors.red as string
+                        ? (themeColors.red as string)
                         : hexToRGBA(themeColors.black as string, 0.4),
                       borderWidth: error[key as keyof ILogin] ? 1 : 0,
-                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
-                    }
+                      backgroundColor: hexToRGBA(
+                        themeColors.black as string,
+                        0.2,
+                      ),
+                    },
                   ]}
                   data={genderData}
                   labelField="label"
@@ -120,27 +128,38 @@ const Profile = () => {
                   placeholder={`Select ${key}`}
                   value={inputValue.gender}
                   onChange={item => {
-                    setInputValue({ ...inputValue, gender: item.value });
-                    setError({ ...error, gender: false });
+                    setInputValue({...inputValue, gender: item.value});
+                    setError({...error, gender: false});
                   }}
                   placeholderStyle={{
                     color: themeColors.black as string,
                   }}
-                  itemTextStyle={{ color: themeColors.black as string, }}
-                  selectedTextStyle={{ color: themeColors.black as string, }}
-                  containerStyle={{ borderRadius: 5, backgroundColor: hexToRGBA(themeColors.white as string, 1), marginTop: 40 }}
+                  itemTextStyle={{color: themeColors.black as string}}
+                  selectedTextStyle={{color: themeColors.black as string}}
+                  containerStyle={{
+                    borderRadius: 5,
+                    backgroundColor: hexToRGBA(themeColors.white as string, 1),
+                    marginTop: 40,
+                  }}
                   renderItem={(item, selected) => (
                     <View
                       style={{
                         padding: 10,
                         backgroundColor: selected
-                          ? themeColors.secondary as string
-                          : "transparent",
+                          ? (themeColors.secondary as string)
+                          : 'transparent',
                         borderBottomWidth: 1,
-                        borderBottomColor: hexToRGBA(themeColors.white as string, 0.1),
-                      }}
-                    >
-                      <Text style={{ color: selected ? themeColors.white as string : themeColors.black as string }}>
+                        borderBottomColor: hexToRGBA(
+                          themeColors.white as string,
+                          0.1,
+                        ),
+                      }}>
+                      <Text
+                        style={{
+                          color: selected
+                            ? (themeColors.white as string)
+                            : (themeColors.black as string),
+                        }}>
                         {item.label}
                       </Text>
                     </View>
@@ -153,10 +172,18 @@ const Profile = () => {
           if (key === 'contact') {
             return (
               <View key={key}>
-                <Text style={[globalStyles.inputLabel, {
-                  color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string
-                }]}>{key.charAt(0).toUpperCase() + key.slice(1)}</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text
+                  style={[
+                    globalStyles.inputLabel,
+                    {
+                      color: error[key as keyof ILogin]
+                        ? (themeColors.red as string)
+                        : (themeColors.black as string),
+                    },
+                  ]}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </Text>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <CountryPicker
                     countryCode={countryCode as any}
                     withFlag
@@ -175,20 +202,26 @@ const Profile = () => {
                     }}
                     theme={{
                       onBackgroundTextColor: themeColors.black as string,
-                      backgroundColor: hexToRGBA(themeColors.white as string, 0.5),
+                      backgroundColor: hexToRGBA(
+                        themeColors.white as string,
+                        0.5,
+                      ),
                     }}
                   />
 
                   <TextInput
                     value={inputValue.contact}
                     onChangeText={text => {
-                      setInputValue({ ...inputValue, contact: text });
-                      setError({ ...error, contact: false });
+                      setInputValue({...inputValue, contact: text});
+                      setError({...error, contact: false});
                     }}
                     placeholder={`Enter your ${key}`}
                     // keyboardType="phone-pad"
                     keyboardType="decimal-pad"
-                    placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
+                    placeholderTextColor={hexToRGBA(
+                      themeColors.black as string,
+                      0.4,
+                    )}
                     style={[
                       globalStyles.input,
                       {
@@ -197,13 +230,15 @@ const Profile = () => {
                         width: width - 150,
                         marginBottom: 0,
                         borderColor: error[key as keyof ILogin]
-                          ? themeColors.red as string
+                          ? (themeColors.red as string)
                           : hexToRGBA(themeColors.black as string, 0.4),
                         borderWidth: error[key as keyof ILogin] ? 1 : 0,
-                        backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                        backgroundColor: hexToRGBA(
+                          themeColors.black as string,
+                          0.2,
+                        ),
                         color: themeColors.black as string,
                       },
-
                     ]}
                   />
                 </View>
@@ -212,42 +247,54 @@ const Profile = () => {
           }
           return (
             <View key={key} style={{}}>
-              <Text style={[globalStyles.inputLabel, {
-                color: error[key as keyof ILogin] ? themeColors.red as string : themeColors.black as string
-              }]}>
+              <Text
+                style={[
+                  globalStyles.inputLabel,
+                  {
+                    color: error[key as keyof ILogin]
+                      ? (themeColors.red as string)
+                      : (themeColors.black as string),
+                  },
+                ]}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </Text>
-              <View style={{ position: 'relative' }}>
+              <View style={{position: 'relative'}}>
                 <TextInput
                   value={inputValue[key as keyof IUpdateProfile]}
                   onChangeText={text => {
-                    setInputValue({ ...inputValue, [key]: text });
-                    setError({ ...error, [key]: false });
+                    setInputValue({...inputValue, [key]: text});
+                    setError({...error, [key]: false});
                   }}
                   placeholder={`Enter your ${key}`}
-                  placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
+                  placeholderTextColor={hexToRGBA(
+                    themeColors.black as string,
+                    0.4,
+                  )}
                   secureTextEntry={
                     key === 'password'
                       ? passShow
                       : key === 'confirmPassword'
-                        ? cPassShow
-                        : false
+                      ? cPassShow
+                      : false
                   }
                   style={[
                     globalStyles.input,
                     {
                       borderColor: error[key as keyof ILogin]
-                        ? themeColors.red as string
+                        ? (themeColors.red as string)
                         : hexToRGBA(themeColors.black as string, 0.4),
                       borderWidth: error[key as keyof ILogin] ? 1 : 0,
-                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                      backgroundColor: hexToRGBA(
+                        themeColors.black as string,
+                        0.2,
+                      ),
                       color: themeColors.black as string,
-                    }
+                    },
                   ]}
                 />
                 {(key === 'password' || key === 'confirmPassword') && (
                   <TouchableOpacity
-                    style={{ position: 'absolute', right: 10, top: 15 }}
+                    style={{position: 'absolute', right: 10, top: 15}}
                     onPress={() => {
                       if (key === 'password') {
                         setPassShow(!passShow);
@@ -262,10 +309,10 @@ const Profile = () => {
                             ? (OtherIcons.Eye as ImageSourcePropType)
                             : (OtherIcons.EyeX as ImageSourcePropType)
                           : cPassShow
-                            ? (OtherIcons.Eye as ImageSourcePropType)
-                            : (OtherIcons.EyeX as ImageSourcePropType)
+                          ? (OtherIcons.Eye as ImageSourcePropType)
+                          : (OtherIcons.EyeX as ImageSourcePropType)
                       }
-                      style={{ width: 20, height: 20 }}
+                      style={{width: 20, height: 20}}
                     />
                   </TouchableOpacity>
                 )}
@@ -274,10 +321,15 @@ const Profile = () => {
           );
         })}
 
-        <View style={{ paddingHorizontal: 25, marginBottom: 120, }}>
+        <View style={{paddingHorizontal: 25, marginBottom: 120}}>
           <GradientButton handler={() => submitHandler()}>
-            {
-              isLoading ? <ActivityIndicator size="large" color={themeColors.constWhite as string} /> : <Text
+            {isLoading ? (
+              <ActivityIndicator
+                size="large"
+                color={themeColors.constWhite as string}
+              />
+            ) : (
+              <Text
                 style={{
                   color: themeColors.constWhite as string,
                   textAlign: 'center',
@@ -286,13 +338,12 @@ const Profile = () => {
                 }}>
                 Update
               </Text>
-            }
+            )}
           </GradientButton>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-
 
 export default Profile;

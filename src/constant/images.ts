@@ -1,21 +1,21 @@
-import arrowLeft from "../assets/arrowLeft.png";
-import Camera from "../assets/Camera.png";
-import Cross from "../assets/cross.png";
-import Empty from "../assets/empty.png";
-import Eye from "../assets/eye.png";
-import EyeX from "../assets/eyeX.png";
-import Filter from "../assets/filter.png";
-import Home from "../assets/home.png";
+import arrowLeft from '../assets/arrowLeft.png';
+import Camera from '../assets/Camera.png';
+import Cross from '../assets/cross.png';
+import Empty from '../assets/empty.png';
+import Eye from '../assets/eye.png';
+import EyeX from '../assets/eyeX.png';
+import Filter from '../assets/filter.png';
+import Home from '../assets/home.png';
 import logo from '../assets/logo.png';
-import Menu from "../assets/menu.png";
-import Profile from "../assets/Profile.png";
-import Search from "../assets/search.png";
-import Shops from "../assets/shop.png";
+import Menu from '../assets/menu.png';
+import Profile from '../assets/Profile.png';
+import Search from '../assets/search.png';
+import Shops from '../assets/shop.png';
 export const tabIcons = {
   Home: Home,
   Parlors: Shops,
   Menu: Menu,
-}
+};
 export const OtherIcons = {
   Eye: Eye,
   EyeX: EyeX,
@@ -26,5 +26,5 @@ export const OtherIcons = {
   Profile: Profile,
   arrowLeft: arrowLeft,
   Cross: Cross,
-  Empty: Empty
+  Empty: Empty,
 };

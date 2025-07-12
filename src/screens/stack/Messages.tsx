@@ -1,16 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  View
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, {useCallback, useMemo, useState} from 'react';
+import {FlatList, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import GradientButton from '../../components/Shared/GradientButton';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 
 // Dummy message generator wrapped in useMemo
 const useDummyMessages = (count: number) => {
@@ -27,28 +20,42 @@ const useDummyMessages = (count: number) => {
   }, [count]);
 };
 
-const MapMessages = ({ id }: { id: string }) => {
+const MapMessages = ({id}: {id: string}) => {
   const dummyMessages = useDummyMessages(500);
-  const { themeColors } = useGlobalContext();
-  const black = themeColors.black as string
-  const primary = themeColors.primary as string
+  const {themeColors} = useGlobalContext();
+  const black = themeColors.black as string;
+  const primary = themeColors.primary as string;
   // reverse memoized
-  const reversedMessages = useMemo(() => [...dummyMessages].reverse(), [dummyMessages]);
+  const reversedMessages = useMemo(
+    () => [...dummyMessages].reverse(),
+    [dummyMessages],
+  );
 
-  const renderItem = useCallback(({ item }: any) => (
-    <View
-      style={[
-        styles.messageContainer,
-        item.sender === 'me'
-          ? { ...styles.sentMessage, backgroundColor: hexToRGBA(primary, 0.9) }
-          : { ...styles.receivedMessage, backgroundColor: hexToRGBA(black, 0.2) },
-      ]}
-    >
-      <Text style={[styles.messageText, {
-        color: black
-      }]}>{item.message}</Text>
-    </View>
-  ), []);
+  const renderItem = useCallback(
+    ({item}: any) => (
+      <View
+        style={[
+          styles.messageContainer,
+          item.sender === 'me'
+            ? {...styles.sentMessage, backgroundColor: hexToRGBA(primary, 0.9)}
+            : {
+                ...styles.receivedMessage,
+                backgroundColor: hexToRGBA(black, 0.2),
+              },
+        ]}>
+        <Text
+          style={[
+            styles.messageText,
+            {
+              color: black,
+            },
+          ]}>
+          {item.message}
+        </Text>
+      </View>
+    ),
+    [],
+  );
 
   const keyExtractor = useCallback((item: any) => item.id, []);
 
@@ -58,7 +65,7 @@ const MapMessages = ({ id }: { id: string }) => {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       inverted
-      style={{ flex: 1 }}
+      style={{flex: 1}}
       initialNumToRender={20}
       maxToRenderPerBatch={20}
       windowSize={10}
@@ -67,12 +74,12 @@ const MapMessages = ({ id }: { id: string }) => {
   );
 };
 
-const Messages = ({ route }: any) => {
-  const { id } = route.params;
+const Messages = ({route}: any) => {
+  const {id} = route.params;
   const [newMessage, setNewMessage] = useState('');
-  const { themeColors } = useGlobalContext();
-  const black = themeColors.black as string
-  const white = themeColors.white as string
+  const {themeColors} = useGlobalContext();
+  const black = themeColors.black as string;
+  const white = themeColors.white as string;
   const handleSendMessage = useCallback(() => {
     if (newMessage.trim()) {
       //console.log('Sending:', newMessage);
@@ -80,55 +87,87 @@ const Messages = ({ route }: any) => {
     }
   }, [newMessage]);
 
-  const renderHeader = useCallback(() => (
-    <View style={[styles.headerContainer, {
-      backgroundColor: hexToRGBA(black, 0.1),
-      borderBlockColor: hexToRGBA(black, 0.2),
-    }]}>
-      <Image
-        source={{ uri: 'https://randomuser.me/api/portraits/women/1.jpg' }}
-        style={styles.profileImage}
-      />
-      <View style={styles.headerTextContainer}>
-        <Text style={[styles.name, {
-          color: hexToRGBA(black, 0.9),
-        }]}>Alice Smith</Text>
-        <Text style={[styles.lastMessageTime, {
-          color: hexToRGBA(black, 0.7),
-        }]}>30 minutes ago</Text>
+  const renderHeader = useCallback(
+    () => (
+      <View
+        style={[
+          styles.headerContainer,
+          {
+            backgroundColor: hexToRGBA(black, 0.1),
+            borderBlockColor: hexToRGBA(black, 0.2),
+          },
+        ]}>
+        <Image
+          source={{uri: 'https://randomuser.me/api/portraits/women/1.jpg'}}
+          style={styles.profileImage}
+        />
+        <View style={styles.headerTextContainer}>
+          <Text
+            style={[
+              styles.name,
+              {
+                color: hexToRGBA(black, 0.9),
+              },
+            ]}>
+            Alice Smith
+          </Text>
+          <Text
+            style={[
+              styles.lastMessageTime,
+              {
+                color: hexToRGBA(black, 0.7),
+              },
+            ]}>
+            30 minutes ago
+          </Text>
+        </View>
       </View>
-    </View>
-  ), []);
+    ),
+    [],
+  );
 
   return (
-    <SafeAreaView style={[styles.container, {
-      backgroundColor: hexToRGBA(white, 0.95),
-    }]}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: hexToRGBA(white, 0.95),
+        },
+      ]}>
       {renderHeader()}
       <MapMessages id={id} />
-      <View style={[styles.footerContainer, {
-        borderTopColor: hexToRGBA(black, 0.2),
-      }]}>
+      <View
+        style={[
+          styles.footerContainer,
+          {
+            borderTopColor: hexToRGBA(black, 0.2),
+          },
+        ]}>
         <TextInput
-          style={[styles.textInput, {
-            backgroundColor: hexToRGBA(black, 0.1),
-            color: hexToRGBA(black, 0.9),
-          }]}
+          style={[
+            styles.textInput,
+            {
+              backgroundColor: hexToRGBA(black, 0.1),
+              color: hexToRGBA(black, 0.9),
+            },
+          ]}
           value={newMessage}
           onChangeText={setNewMessage}
           placeholder="Type a message..."
           placeholderTextColor={hexToRGBA(black, 0.5)}
         />
         <GradientButton handler={handleSendMessage} padding={8} borderWidth={0}>
-          <Text style={{
-            color: themeColors.constWhite as string,
-          }}>Send</Text>
+          <Text
+            style={{
+              color: themeColors.constWhite as string,
+            }}>
+            Send
+          </Text>
         </GradientButton>
       </View>
     </SafeAreaView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

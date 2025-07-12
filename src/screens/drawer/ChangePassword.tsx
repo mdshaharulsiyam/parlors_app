@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
   ActivityIndicator,
   Dimensions,
@@ -12,25 +12,25 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { IChangePassword } from '../../../types/loginType';
-import { useChangePassword } from '../../ApisCalls/authApisCall';
+import {IChangePassword} from '../../../types/loginType';
+import {useChangePassword} from '../../ApisCalls/authApisCall';
 import GradientButton from '../../components/Shared/GradientButton';
-import { OtherIcons } from '../../constant/images';
-import { globalStyles } from '../../constant/styles';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import {OtherIcons} from '../../constant/images';
+import {globalStyles} from '../../constant/styles';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 
 const ChangePassword = () => {
-  const { themeColors, height } = useGlobalContext();
+  const {themeColors, height} = useGlobalContext();
   const [passShow, setPassShow] = React.useState(true);
   const [opassShow, setOPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
-  const { width } = Dimensions.get('window');
-  const navigate = useNavigation<NavigationProp<ScreenParamsType>>()
-  const { submitHandler: changePassword, isLoading } = useChangePassword()
+  const {width} = Dimensions.get('window');
+  const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
+  const {submitHandler: changePassword, isLoading} = useChangePassword();
 
   const [error, setError] = React.useState({
     'current password': false,
@@ -45,13 +45,13 @@ const ChangePassword = () => {
   });
 
   const submitHandler = () => {
-    let invalid = false
+    let invalid = false;
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof IChangePassword] === '') {
-        setError(prev => ({ ...prev, [key]: true }));
-        invalid = true
+        setError(prev => ({...prev, [key]: true}));
+        invalid = true;
       } else {
-        setError(prev => ({ ...prev, [key]: false }));
+        setError(prev => ({...prev, [key]: false}));
       }
     });
     if (invalid) {
@@ -64,11 +64,11 @@ const ChangePassword = () => {
     const data = {
       password: inputValue['new password'],
       confirm_password: inputValue['confirm password'],
-      old_password: inputValue['current password']
-    }
+      old_password: inputValue['current password'],
+    };
     changePassword(data, () => {
-      navigate.goBack()
-    })
+      navigate.goBack();
+    });
   };
 
   return (
@@ -87,73 +87,84 @@ const ChangePassword = () => {
         {Object.keys(inputValue).map((key, index, arr) => {
           return (
             <View key={key} style={{}}>
-              <Text style={[globalStyles.inputLabel, {
-                color: error[key as keyof IChangePassword]
-                  ? themeColors.red as string
-                  : themeColors.black as string
-              }]}>
+              <Text
+                style={[
+                  globalStyles.inputLabel,
+                  {
+                    color: error[key as keyof IChangePassword]
+                      ? (themeColors.red as string)
+                      : (themeColors.black as string),
+                  },
+                ]}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </Text>
-              <View style={{ position: 'relative' }}>
+              <View style={{position: 'relative'}}>
                 <TextInput
                   value={inputValue[key as keyof IChangePassword]}
                   onChangeText={text => {
-                    setInputValue({ ...inputValue, [key]: text });
-                    setError({ ...error, [key]: false });
+                    setInputValue({...inputValue, [key]: text});
+                    setError({...error, [key]: false});
                   }}
                   placeholder={`Enter your ${key}`}
                   secureTextEntry={
                     key === 'new password'
                       ? passShow
                       : key === 'confirm password'
-                        ? cPassShow
-                        : opassShow
+                      ? cPassShow
+                      : opassShow
                   }
                   placeholderTextColor={
                     error[key as keyof IChangePassword]
-                      ? themeColors.red as string
+                      ? (themeColors.red as string)
                       : hexToRGBA(themeColors.black as string, 0.5)
                   }
                   style={[
                     globalStyles.input,
                     {
                       borderColor: error[key as keyof IChangePassword]
-                        ? themeColors.red as string
+                        ? (themeColors.red as string)
                         : hexToRGBA(themeColors.black as string, 0.4),
                       borderWidth: error[key as keyof IChangePassword] ? 1 : 0,
-                      backgroundColor: hexToRGBA(themeColors.black as string, 0.2),
+                      backgroundColor: hexToRGBA(
+                        themeColors.black as string,
+                        0.2,
+                      ),
                       color: themeColors.black as string,
-                    }
+                    },
                   ]}
                 />
                 {(key === 'new password' ||
                   key === 'confirm password' ||
                   key === 'current password') && (
-                    <TouchableOpacity
-                      style={{ position: 'absolute', right: 10, top: 18 }}
-                      onPress={() => {
-                        if (key === 'new password') {
-                          setPassShow(!passShow);
-                        } else if (key === 'confirm password') {
-                          setCPassShow(!cPassShow);
-                        } else {
-                          setOPassShow(!opassShow);
-                        }
-                      }}>
-                      <Image
-                        source={
-                          key === 'new password'
-                            ? passShow
-                              ? (OtherIcons.Eye as ImageSourcePropType)
-                              : (OtherIcons.EyeX as ImageSourcePropType)
-                            : cPassShow
-                              ? (OtherIcons.Eye as ImageSourcePropType)
-                              : (OtherIcons.EyeX as ImageSourcePropType)
-                        }
-                        style={{ width: 20, height: 20, tintColor: themeColors.black as string }}
-                      />
-                    </TouchableOpacity>
-                  )}
+                  <TouchableOpacity
+                    style={{position: 'absolute', right: 10, top: 18}}
+                    onPress={() => {
+                      if (key === 'new password') {
+                        setPassShow(!passShow);
+                      } else if (key === 'confirm password') {
+                        setCPassShow(!cPassShow);
+                      } else {
+                        setOPassShow(!opassShow);
+                      }
+                    }}>
+                    <Image
+                      source={
+                        key === 'new password'
+                          ? passShow
+                            ? (OtherIcons.Eye as ImageSourcePropType)
+                            : (OtherIcons.EyeX as ImageSourcePropType)
+                          : cPassShow
+                          ? (OtherIcons.Eye as ImageSourcePropType)
+                          : (OtherIcons.EyeX as ImageSourcePropType)
+                      }
+                      style={{
+                        width: 20,
+                        height: 20,
+                        tintColor: themeColors.black as string,
+                      }}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             </View>
           );
@@ -169,21 +180,22 @@ const ChangePassword = () => {
           paddingVertical: 16,
         }}>
         <GradientButton handler={submitHandler}>
-          {
-            isLoading ? (
-              <ActivityIndicator size="small" color={themeColors.constWhite as string} />
-            ) : (
-              <Text
-                style={{
-                  color: themeColors.constWhite as string,
-                  textAlign: 'center',
-                  fontWeight: 700,
-                  fontSize: 18,
-                }}>
-                Save Changes
-              </Text>
-            )
-          }
+          {isLoading ? (
+            <ActivityIndicator
+              size="small"
+              color={themeColors.constWhite as string}
+            />
+          ) : (
+            <Text
+              style={{
+                color: themeColors.constWhite as string,
+                textAlign: 'center',
+                fontWeight: 700,
+                fontSize: 18,
+              }}>
+              Save Changes
+            </Text>
+          )}
         </GradientButton>
       </View>
     </SafeAreaView>

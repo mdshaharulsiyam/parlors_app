@@ -1,60 +1,60 @@
-import { baseApi } from '../baseApis';
+import {baseApi} from '../baseApis';
 
 const addressApis = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getDivisions: builder.query({
-      query: ({ page = 1, limit = 10, search }) => ({
+      query: ({page = 1, limit = 10, search}) => ({
         url: '/divisions/get-all',
         method: 'GET',
         params: {
           page,
           limit,
-          search
-        }
+          search,
+        },
       }),
     }),
     getDistricts: builder.query({
-      query: ({ division_id, page = 1, limit = 10, search }) => ({
+      query: ({division_id, page = 1, limit = 10, search}) => ({
         url: '/districts/get-all',
         method: 'GET',
         params: {
           division_id,
           page,
           limit,
-          search
-        }
+          search,
+        },
       }),
     }),
     getUpazilas: builder.query({
-      query: ({ district_id, page = 1, limit = 10, search }) => ({
+      query: ({district_id, page = 1, limit = 10, search}) => ({
         url: '/upazilas/get-all',
         method: 'GET',
         params: {
           district_id,
           page,
           limit,
-          search
-        }
+          search,
+        },
       }),
     }),
     getUnions: builder.query({
-      query: ({ upazilla_id, page = 1, limit = 10, search }) => ({
+      query: ({upazilla_id, page = 1, limit = 10, search}) => ({
         url: '/union/get-all',
         method: 'GET',
         params: {
           upazilla_id,
           page,
           limit,
-          search
-        }
+          search,
+        },
       }),
-    })
-  })
-})
+    }),
+  }),
+});
 
 export const {
   useGetDivisionsQuery,
   useGetDistrictsQuery,
   useGetUpazilasQuery,
-  useGetUnionsQuery
-} = addressApis
+  useGetUnionsQuery,
+} = addressApis;

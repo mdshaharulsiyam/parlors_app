@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { IImageUploadProps } from '../../utils/types/PropsTypes';
+import {IImageUploadProps} from '../../utils/types/PropsTypes';
 
 /*************  ✨ Windsurf Command ⭐  *************/
 /**
@@ -59,7 +59,6 @@ const ImageUpload = ({
   children,
   multiple = false,
 }: IImageUploadProps) => {
-
   const pickImage = async () => {
     const hasStoragePermission = await requestStoragePermission();
     if (!hasStoragePermission) {
@@ -79,10 +78,10 @@ const ImageUpload = ({
       });
       const newImage = {
         uri: result.path,
-        name: result?.filename ?? "random.jpg",
-        type: result?.mime ?? "image/jpeg",
-        mimeType: result?.mime ?? "image/jpeg",
-      }
+        name: result?.filename ?? 'random.jpg',
+        type: result?.mime ?? 'image/jpeg',
+        mimeType: result?.mime ?? 'image/jpeg',
+      };
       multiple ? setImages([...images, newImage]) : setImages([newImage]);
     } catch (error: any) {
       if (error.code !== 'E_PICKER_CANCELLED') {

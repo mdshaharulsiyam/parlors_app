@@ -1,15 +1,23 @@
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { Dimensions, useColorScheme } from 'react-native';
-import { useDispatch } from 'react-redux';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import {Dimensions, useColorScheme} from 'react-native';
+import {useDispatch} from 'react-redux';
 import FilterOptions from '../components/Shared/FilterOptions';
-import { Colors, ITheme } from '../constant/colors';
-import { useGet_profileQuery } from '../Redux/Apis/authApis';
-import { setRole, setToken, setUser } from '../Redux/States/userSlice';
-import { getLocation } from '../utils/getLocations';
-import { IUserProfile } from '../utils/types/Types';
+import {Colors, ITheme} from '../constant/colors';
+import {useGet_profileQuery} from '../Redux/Apis/authApis';
+import {setRole, setToken, setUser} from '../Redux/States/userSlice';
+import {getLocation} from '../utils/getLocations';
+import {IUserProfile} from '../utils/types/Types';
 export interface ICord {
   lat: number;
   lng: number;
@@ -30,20 +38,20 @@ interface GlobalProviderProps {
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
-const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
+const GlobalContextProvider = ({children}: GlobalProviderProps) => {
   GoogleSignin.configure({
     webClientId:
       '785669277913-sk3g9jodma9o3danl96a7g13kt4grenq.apps.googleusercontent.com', // Replace with your webClientId
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     forceCodeForRefreshToken: false,
   });
-  const dispatch = useDispatch()
-  const { width, height } = Dimensions.get('window');
+  const dispatch = useDispatch();
+  const {width, height} = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const themeColors = useColorScheme() === 'dark' ? Colors.dark : Colors.light;
-  const { data } = useGet_profileQuery(undefined)
+  const {data} = useGet_profileQuery(undefined);
   const bottomSheetRef = useRef<BottomSheet | null>(null);
-  const [cord, setCord] = useState<ICord | null>(null)
+  const [cord, setCord] = useState<ICord | null>(null);
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -71,37 +79,40 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
             dispatch(setRole(JSON.parse(role))),
             dispatch(setToken(JSON.parse(token))),
             dispatch(setUser(data?.data)),
-          ])
+          ]);
         }
       } catch (error) {
         //console.log(error);
       }
-    }
-    getData()
-  }, [])
+    };
+    getData();
+  }, []);
 
   useEffect(() => {
-    dispatch(setRole(data?.data?.role))
-    dispatch(setUser(data?.data))
-  }, [data])
+    dispatch(setRole(data?.data?.role));
+    dispatch(setUser(data?.data));
+  }, [data]);
   useEffect(() => {
     const getCurrentLocation = async () => {
       try {
-        const location = await getLocation() as { latitude: number, longitude: number };
+        const location = (await getLocation()) as {
+          latitude: number;
+          longitude: number;
+        };
         if (location) {
-          setCord({ lat: location.latitude, lng: location.longitude });
+          setCord({lat: location.latitude, lng: location.longitude});
         }
       } catch (error) {
         console.log(error);
       }
     };
     getCurrentLocation();
-  }, [])
+  }, []);
   return (
     <GlobalContext.Provider value={values}>
       {children}
       <BottomSheet
-        backgroundStyle={{ backgroundColor: themeColors.white as string }}
+        backgroundStyle={{backgroundColor: themeColors.white as string}}
         handleIndicatorStyle={{
           backgroundColor: themeColors.black as string,
           height: 5,
@@ -109,8 +120,7 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
         index={-1}
         snapPoints={['25%', '50%', '90%']}
         ref={bottomSheetRef}
-        onChange={handleSheetChanges}
-      >
+        onChange={handleSheetChanges}>
         <BottomSheetView>
           <FilterOptions />
         </BottomSheetView>

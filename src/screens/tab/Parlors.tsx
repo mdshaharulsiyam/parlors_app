@@ -1,26 +1,27 @@
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import React from 'react';
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {Dimensions, FlatList, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import ParlorCard from '../../components/Shared/ParlorCard';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
-import { Ratio3_2 } from '../../utils/calculateHeight';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {useGetServicesQuery} from '../../Redux/Apis/seviceListingApis';
+import {Ratio3_2} from '../../utils/calculateHeight';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 
 const Parlors = () => {
-  const params = useRoute()?.params as { search: string };
+  const params = useRoute()?.params as {search: string};
   const [search, setSearch] = React.useState(params?.search || '');
-  const { width, height } = Dimensions.get('window');
-  const { themeColors, } = useGlobalContext();
-  const { data } = useGetServicesQuery({ limit: 10, page: 1 });
+  const {width, height} = Dimensions.get('window');
+  const {themeColors} = useGlobalContext();
+  const {data} = useGetServicesQuery({limit: 10, page: 1});
   return (
-    <SafeAreaView style={{ backgroundColor: hexToRGBA(themeColors.white as string, 0.95), paddingHorizontal: 5, height }}>
+    <SafeAreaView
+      style={{
+        backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+        paddingHorizontal: 5,
+        height,
+      }}>
       <FlatList
         onEndReached={e => {
           //console.log(e);
@@ -37,7 +38,7 @@ const Parlors = () => {
         showsVerticalScrollIndicator={false}
         data={data?.data || []}
         keyExtractor={item => item?._id}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <ParlorCard
             key={item?._id}
             item={item}

@@ -1,23 +1,42 @@
-import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { Ratio3_2 } from '../../utils/calculateHeight';
-import { topBarbers } from '../Home/Parlors';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {Ratio3_2} from '../../utils/calculateHeight';
+import {topBarbers} from '../Home/Parlors';
 import GradientButton from '../Shared/GradientButton';
 import ParlorCard from '../Shared/ParlorCard';
 
 const Services = () => {
-  const navigation = useNavigation<NavigationProp<ParamListBase>>()
-  const { width, themeColors } = useGlobalContext();
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
+  const {width, themeColors} = useGlobalContext();
   return (
     <FlatList
-      ListFooterComponent={<View style={{ height: 50 }} />}
-      ListHeaderComponent={<View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 }}>
-        <GradientButton handler={() => navigation.navigate('Tabs', { screen: 'Stacks', params: { screen: 'ServiceAddEdit' } })}>
-          <Text style={{ color: themeColors.constWhite as string }}>Add Service</Text>
-        </GradientButton>
-      </View>}
+      ListFooterComponent={<View style={{height: 50}} />}
+      ListHeaderComponent={
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            marginBottom: 10,
+          }}>
+          <GradientButton
+            handler={() =>
+              navigation.navigate('Tabs', {
+                screen: 'Stacks',
+                params: {screen: 'ServiceAddEdit'},
+              })
+            }>
+            <Text style={{color: themeColors.constWhite as string}}>
+              Add Service
+            </Text>
+          </GradientButton>
+        </View>
+      }
       onEndReached={e => {
         //console.log(e);
       }}
@@ -31,7 +50,7 @@ const Services = () => {
       showsVerticalScrollIndicator={false}
       data={topBarbers}
       keyExtractor={item => item?._id}
-      renderItem={({ item }) => (
+      renderItem={({item}) => (
         <ParlorCard
           key={item?._id}
           item={item}
@@ -39,11 +58,10 @@ const Services = () => {
           height={Ratio3_2(width / 2 - 30)}
         />
       )}
-
     />
-  )
-}
+  );
+};
 
-export default Services
+export default Services;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

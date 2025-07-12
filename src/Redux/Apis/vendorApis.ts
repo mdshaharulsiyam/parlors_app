@@ -1,17 +1,25 @@
-import { baseApi } from '../baseApis';
+import {baseApi} from '../baseApis';
 
 const vendorApis = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     createVendor: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: '/business/create',
         method: 'POST',
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['auth', 'vendor']
+      invalidatesTags: ['auth', 'vendor'],
     }),
     getVendor: builder.query({
-      query: ({ limit = 10, search = '', page = 1, sort = '', order = '', top = false, coordinates = undefined }) => ({
+      query: ({
+        limit = 10,
+        search = '',
+        page = 1,
+        sort = '',
+        order = '',
+        top = false,
+        coordinates = undefined,
+      }) => ({
         url: '/business/get-all',
         method: 'GET',
         params: {
@@ -21,13 +29,12 @@ const vendorApis = baseApi.injectEndpoints({
           sort,
           order,
           top,
-          coordinates
-        }
+          coordinates,
+        },
       }),
-      providesTags: ['vendor']
-    })
-  })
+      providesTags: ['vendor'],
+    }),
+  }),
+});
 
-})
-
-export const { useCreateVendorMutation, useGetVendorQuery } = vendorApis
+export const {useCreateVendorMutation, useGetVendorQuery} = vendorApis;

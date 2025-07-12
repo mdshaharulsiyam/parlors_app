@@ -1,76 +1,76 @@
-import { baseApi } from "../baseApis"
+import {baseApi} from '../baseApis';
 
 // auth / profile
 const auth_apis = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     get_profile: builder.query({
       query: () => ({
         url: `auth/profile`,
-        method: 'GET'
+        method: 'GET',
       }),
-      providesTags: ['auth']
+      providesTags: ['auth'],
     }),
     login: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: `/auth/sign-in`,
-        method: "POST",
-        body: data
+        method: 'POST',
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
     register: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: `/auth/sign-up`,
-        method: "POST",
-        body: data
+        method: 'POST',
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
     verify_otp: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: `/verification/verify`,
-        method: "POST",
-        body: data
+        method: 'POST',
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
     reset: builder.mutation({
-      query: ({ data, token }) => ({
+      query: ({data, token}) => ({
         url: `/auth/reset-password`,
-        method: "POST",
+        method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
-        body: data
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
     update: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: `/auth/update-profile`,
-        method: "PATCH",
-        body: data
+        method: 'PATCH',
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
     change_password: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: `auth/change-password`,
-        method: "PATCH",
-        body: data
+        method: 'PATCH',
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
     forget: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: `verification/create`,
-        method: "POST",
-        body: data
+        method: 'POST',
+        body: data,
       }),
-      invalidatesTags: ['auth']
+      invalidatesTags: ['auth'],
     }),
-  })
-})
+  }),
+});
 export const {
   useGet_profileQuery,
   useRegisterMutation,
@@ -79,6 +79,5 @@ export const {
   useChange_passwordMutation,
   useResetMutation,
   useUpdateMutation,
-  useForgetMutation
-
-} = auth_apis
+  useForgetMutation,
+} = auth_apis;

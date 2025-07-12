@@ -1,6 +1,17 @@
-import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
-const baseUrl = 'http://10.0.60.189:5004'
-export const generateImageUrl = (imagePath: string): string => imagePath?.includes('http') ? imagePath : imagePath?.startsWith('/') ? `${baseUrl}${imagePath}` : `${baseUrl}/${imagePath}`;
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+  FetchBaseQueryError,
+} from '@reduxjs/toolkit/query/react';
+const baseUrl = 'http://10.0.60.189:5004';
+export const generateImageUrl = (imagePath: string): string =>
+  imagePath?.includes('http')
+    ? imagePath
+    : imagePath?.startsWith('/')
+    ? `${baseUrl}${imagePath}`
+    : `${baseUrl}/${imagePath}`;
 // export const baseApi = createApi({
 //   reducerPath: 'baseApi',
 //   baseQuery: fetchBaseQuery({
@@ -20,12 +31,12 @@ export const generateImageUrl = (imagePath: string): string => imagePath?.includ
 // })
 
 const timeoutFetchBaseQuery = (
-  { baseUrl }: { baseUrl: string },
-  timeout: number = 5000
+  {baseUrl}: {baseUrl: string},
+  timeout: number = 5000,
 ): BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> => {
   const baseQuery = fetchBaseQuery({
     baseUrl,
-    prepareHeaders: async (headers, { getState }) => {
+    prepareHeaders: async (headers, {getState}) => {
       const token = (getState() as any)?.user?.token;
       if (!headers.has('Authorization') && token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -39,9 +50,9 @@ const timeoutFetchBaseQuery = (
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     const result = await baseQuery(
-      typeof args === 'string' ? args : { ...args, signal: controller.signal },
+      typeof args === 'string' ? args : {...args, signal: controller.signal},
       api,
-      extraOptions
+      extraOptions,
     );
 
     clearTimeout(timeoutId);
@@ -50,7 +61,7 @@ const timeoutFetchBaseQuery = (
 };
 export const baseApi = createApi({
   reducerPath: 'baseApi',
-  baseQuery: timeoutFetchBaseQuery({ baseUrl: baseUrl }, 5000),
-  endpoints: (builder) => ({}),
-  tagTypes: ['auth', 'vendor', 'banner', 'serviceListing']
+  baseQuery: timeoutFetchBaseQuery({baseUrl: baseUrl}, 5000),
+  endpoints: builder => ({}),
+  tagTypes: ['auth', 'vendor', 'banner', 'serviceListing'],
 });
