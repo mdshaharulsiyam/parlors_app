@@ -8,8 +8,9 @@ import FilterOptions from '../components/Shared/FilterOptions';
 import { Colors, ITheme } from '../constant/colors';
 import { useGet_profileQuery } from '../Redux/Apis/authApis';
 import { setRole, setToken, setUser } from '../Redux/States/userSlice';
+import { getLocation } from '../utils/getLocations';
 import { IUserProfile } from '../utils/types/Types';
-export interface ICord {
+interface ICord {
   lat: number;
   lng: number;
 }
@@ -83,7 +84,19 @@ const GlobalContextProvider = ({ children }: GlobalProviderProps) => {
     dispatch(setRole(data?.data?.role))
     dispatch(setUser(data?.data))
   }, [data])
-
+  useEffect(() => {
+    const getCurrentLocation = async () => {
+      try {
+        const location = await getLocation() as { latitude: number, longitude: number };
+        if (location) {
+          setCord({ lat: location.latitude, lng: location.longitude });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getCurrentLocation();
+  }, [])
   return (
     <GlobalContext.Provider value={values}>
       {children}

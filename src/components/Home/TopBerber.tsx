@@ -4,11 +4,13 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetVendorQuery } from '../../Redux/Apis/vendorApis';
 import { commonStyles } from '../../utils/styles/Styles';
 import BusinessCard from '../Shared/BusinessCard';
+import Empty from '../Shared/Empty';
 
 
 const TopBerber = () => {
-  const { themeColors, cord } = useGlobalContext();
-  const { data } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: cord ? [cord.lat, cord.lng] : undefined });
+  const { themeColors, cord, width } = useGlobalContext();
+  const { data } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: cord ? JSON.stringify([12.34, 56.78]) : undefined });
+  console.log(data)
   return (
     <View style={{ paddingHorizontal: 5 }}>
       <View>
@@ -16,6 +18,7 @@ const TopBerber = () => {
           Top Vendors
         </Text>
       </View>
+      <Empty data={data} />
       <FlatList
         horizontal={true}
         showsHorizontalScrollIndicator={false}
