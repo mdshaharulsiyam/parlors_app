@@ -12,8 +12,8 @@ import { hexToRGBA } from '../../utils/hexToRGBA';
 import SearchInput from './SearchInput';
 
 const SearchFilterTrigger = () => {
-  const { themeColors, bottomSheetRef } = useGlobalContext();
 
+  const { themeColors, bottomSheetRef } = useGlobalContext();
 
   return (
     <View style={styles.headerContainer}>

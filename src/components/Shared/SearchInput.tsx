@@ -13,7 +13,8 @@ import Input from './Input';
 const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
   const { themeColors, search, setSearch, width } = useGlobalContext();
   const handleSearch = (value: string) => console.log(value);
-  const handleSubmit = () => {
+  const handleSubmit = (e: any) => {
+    e?.preventDefault?.();
     console.log(search);
   };
   return (
@@ -30,11 +31,13 @@ const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
           height: 50,
         }}
         handleSubmit={handleSearch}
-        setInputValue={value => setSearch(value)}
+        onChange={(value: any) => setSearch(value)}
+        // setInputValue={value => setSearch(value)}
         bordersColor={hexToRGBA(themeColors.primary as string, 0.4)}
         placeholder="Search by name ..."
         placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}
         backgroundColor={hexToRGBA(themeColors.white as string, 0.95)}
+        color={themeColors.black as string}
       />
       <TouchableOpacity
         onPress={handleSubmit}
