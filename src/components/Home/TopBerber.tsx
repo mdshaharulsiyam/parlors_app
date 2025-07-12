@@ -1,17 +1,27 @@
-import React from 'react';
-import { ActivityIndicator, FlatList, Text, View } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, View } from 'react-native';
+import { ICord, useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetVendorQuery } from '../../Redux/Apis/vendorApis';
 import { commonStyles } from '../../utils/styles/Styles';
 import BusinessCard from '../Shared/BusinessCard';
 import Empty from '../Shared/Empty';
+import Loader from '../Shared/Loader';
 
 
 const TopBerber = () => {
   const { themeColors, cord, width } = useGlobalContext();
-  const { data, isLoading } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: cord ? JSON.stringify([12.34, 56.78]) : undefined });
-  if (isLoading) {
-    return <ActivityIndicator size={"large"} color={themeColors.black as string} />
+  const [initialCord, setInitialCord] = useState<ICord | null>(cord);
+
+  const { data, isLoading, isFetching } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: initialCord ? JSON.stringify([initialCord?.lat, initialCord?.lng]) : undefined });
+
+  useEffect(() => {
+    if (data && data?.data?.length === 0 && cord) {
+      setInitialCord(null);
+    }
+  }, [data, cord])
+
+  if (isLoading || isFetching) {
+    return <Loader />
   }
   return (
     <View style={{ paddingHorizontal: 5 }}>

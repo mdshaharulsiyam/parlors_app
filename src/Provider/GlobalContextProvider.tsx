@@ -10,7 +10,7 @@ import { useGet_profileQuery } from '../Redux/Apis/authApis';
 import { setRole, setToken, setUser } from '../Redux/States/userSlice';
 import { getLocation } from '../utils/getLocations';
 import { IUserProfile } from '../utils/types/Types';
-interface ICord {
+export interface ICord {
   lat: number;
   lng: number;
 }
