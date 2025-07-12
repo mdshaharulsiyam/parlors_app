@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetVendorQuery } from '../../Redux/Apis/vendorApis';
 import { commonStyles } from '../../utils/styles/Styles';
@@ -9,8 +9,10 @@ import Empty from '../Shared/Empty';
 
 const TopBerber = () => {
   const { themeColors, cord, width } = useGlobalContext();
-  const { data } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: cord ? JSON.stringify([12.34, 56.78]) : undefined });
-  console.log(data)
+  const { data, isLoading } = useGetVendorQuery({ sort: 'rating', order: 'desc', top: true, coordinates: cord ? JSON.stringify([12.34, 56.78]) : undefined });
+  if (isLoading) {
+    return <ActivityIndicator size={"large"} color={themeColors.black as string} />
+  }
   return (
     <View style={{ paddingHorizontal: 5 }}>
       <View>
