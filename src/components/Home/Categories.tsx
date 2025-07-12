@@ -4,6 +4,7 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetCategoriesQuery } from '../../Redux/Apis/categoryApis';
 import { commonStyles } from '../../utils/styles/Styles';
 import CategoryCard from '../Shared/CategoryCard';
+import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 
 
@@ -41,6 +42,7 @@ const Categories = ({ refreshing, setRefreshing }: { refreshing: boolean, setRef
       <Text style={[commonStyles.headerText, { color: themeColors.black as string }]}>
         Categories
       </Text>
+      <Empty data={data} />
       <FlatList
         ref={ref}
         data={data?.data || []}
