@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import {
   Dimensions,
@@ -13,6 +14,8 @@ import { Ratio3_2 } from '../../utils/calculateHeight';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 
 const Parlors = () => {
+  const params = useRoute()?.params as { search: string };
+  const [search, setSearch] = React.useState(params?.search || '');
   const { width, height } = Dimensions.get('window');
   const { themeColors, } = useGlobalContext();
   const { data } = useGetServicesQuery({ limit: 10, page: 1 });

@@ -1,3 +1,4 @@
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   Image,
@@ -6,16 +7,19 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { OtherIcons } from '../../constant/images';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setSearch } from '../../Redux/States/Filters';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 import Input from './Input';
 const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
-  const { themeColors, search, setSearch, width } = useGlobalContext();
-  const handleSearch = (value: string) => console.log(value);
-  const handleSubmit = (e: any) => {
-    e?.preventDefault?.();
-    console.log(search);
+  const navigate = useNavigation<NavigationProp<ParamListBase>>();
+  const { themeColors, width } = useGlobalContext();
+  const dispatch = useDispatch()
+  const search = useSelector((state: any) => state?.filters?.search);
+  const handleSubmit = () => {
+    navigate.navigate('Tabs', { screen: 'Parlors', params: { search } });
   };
   return (
     <View
@@ -30,9 +34,9 @@ const SearchInput = ({ inputWidth }: { inputWidth?: any }) => {
         style={{
           height: 50,
         }}
-        handleSubmit={handleSearch}
-        onChange={(value: any) => setSearch(value)}
-        // setInputValue={value => setSearch(value)}
+        value={search}
+        handleSubmit={handleSubmit}
+        setInputValue={value => dispatch(setSearch(value))}
         bordersColor={hexToRGBA(themeColors.primary as string, 0.4)}
         placeholder="Search by name ..."
         placeholderTextColor={hexToRGBA(themeColors.black as string, 0.4)}

@@ -1,14 +1,14 @@
+import React from 'react';
 import {
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  TouchableOpacity,
-  TextInputProps,
   Image,
   ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import React from 'react';
 import { OtherIcons } from '../../constant/images';
 
 interface InputProps extends TextInputProps {
@@ -46,7 +46,7 @@ const Input: React.FC<InputProps> = ({
   inputType = 'text',
   bordersColor = 'gray',
   handleSubmit = value => { },
-  setInputValue = value => console.log('setting', value),
+  setInputValue,
   ...props
 }: InputProps) => {
   const [text, setText] = React.useState('');
@@ -54,8 +54,7 @@ const Input: React.FC<InputProps> = ({
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleChangeText = (input: string) => {
-    setText(input);
-    setInputValue(input);
+    setInputValue ? setInputValue(input) : setText(input);
     if (validate) {
       setIsTouched(true);
     }

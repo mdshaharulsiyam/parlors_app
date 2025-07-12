@@ -19,7 +19,7 @@ import Loader from '../Shared/Loader';
 
 const { width } = Dimensions.get('window');
 
-const Banner = ({ refreshing, setRefreshing }: { refreshing: boolean, setRefreshing: (arg1: boolean) => void }) => {
+const Banner = ({ refreshing }: { refreshing: boolean }) => {
   const { data, isLoading, isFetching, refetch } = useGet_bannersQuery(undefined)
   const flatListRef = useRef<FlatList<any> | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
