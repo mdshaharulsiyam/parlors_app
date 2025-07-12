@@ -1,12 +1,12 @@
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {generateImageUrl} from '../../Redux/baseApis';
-import {hexToRGBA} from '../../utils/hexToRGBA';
-import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
-import {IBusiness} from '../../utils/types/Types';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { generateImageUrl } from '../../Redux/baseApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import { IBusiness } from '../../utils/types/Types';
 
 const BusinessCard = ({
   item,
@@ -17,14 +17,14 @@ const BusinessCard = ({
   width?: any;
   height?: any;
 }) => {
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
   return (
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
-          screen: 'ServiceDetails',
-          params: {id: item?._id?.toString()},
+          screen: 'Details',
+          params: { id: item?._id?.toString() },
         })
       }
       activeOpacity={0.8}
@@ -39,7 +39,7 @@ const BusinessCard = ({
         position: 'relative',
       }}>
       <Image
-        source={{uri: generateImageUrl(item?.banner)}}
+        source={{ uri: generateImageUrl(item?.banner) }}
         resizeMode="cover"
         style={[
           {
@@ -63,11 +63,11 @@ const BusinessCard = ({
         }}>
         {item?.rating?.toFixed(2)}⭐ {item?.business_category}
       </Text>
-      <View style={{marginLeft: 10, paddingVertical: 6}}>
-        <Text style={{fontWeight: 'bold', color: themeColors.black as string}}>
+      <View style={{ marginLeft: 10, paddingVertical: 6 }}>
+        <Text style={{ fontWeight: 'bold', color: themeColors.black as string }}>
           {item?.name}
         </Text>
-        <Text style={{color: themeColors.black as string, marginVertical: 2}}>
+        <Text style={{ color: themeColors.black as string, marginVertical: 2 }}>
           {item?.address?.street_address +
             ',' +
             item?.address?.upazilas +
