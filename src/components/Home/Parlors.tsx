@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
-import { Dimensions, FlatList, Text, View } from 'react-native';
+import { Dimensions, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
-import { Ratio3_2 } from '../../utils/calculateHeight';
 import { commonStyles } from '../../utils/styles/Styles';
 import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
-import ParlorCard from '../Shared/ParlorCard';
+import ServiceFlatList from '../Shared/ServiceFlatList';
 
 const Parlors = ({
   horizontal = false,
@@ -39,31 +38,7 @@ const Parlors = ({
         Services
       </Text>
       <Empty data={data} />
-      <FlatList
-        horizontal={horizontal}
-        ListFooterComponent={<View style={{ height: 50 }} />}
-        onEndReachedThreshold={0.5}
-        numColumns={horizontal ? 1 : 2}
-        {...(!horizontal && {
-          columnWrapperStyle: {
-            justifyContent: 'space-between',
-            marginBottom: 10,
-            gap: 10,
-          },
-        })}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={data?.data || []}
-        keyExtractor={item => item?._id}
-        renderItem={({ item }) => (
-          <ParlorCard
-            key={item?._id}
-            item={item}
-            width={width / 2 - 20}
-            height={Ratio3_2(width / 2 - 20)}
-          />
-        )}
-      />
+      <ServiceFlatList horizontal={horizontal} data={data?.data || []} width={width} />
     </SafeAreaView>
   );
 };
