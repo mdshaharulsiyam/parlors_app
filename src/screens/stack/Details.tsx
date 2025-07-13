@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 //
+import { useRoute } from '@react-navigation/native';
 import {
   FlatList,
   Image,
@@ -10,11 +11,48 @@ import {
 } from 'react-native';
 import Parlors from '../../components/Home/Parlors';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useGetVendorByIdQuery } from '../../Redux/Apis/vendorApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+interface IDetails {
+  _id: string;
+  logo: string | null;
+  banner: string;
+  address: {
+    divisions: string;
+    districts: string;
+    unions: string;
+    upazilas: string;
+    street_address: string;
+    _id: string;
+  },
+  business_category: string;
+  business_sub_admins: [];
+  email: string | null;
+  phone: string;
+  reviews: [];
+  coordinates: [
+    number,
+    number
+  ],
+  total_rated: number;
+  rating: number;
+  owner: {
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    _id: string;
+  },
+  total_bookings: number;
+  completed_bookings: number;
+  ongoing_bookings: number;
+  canceled_bookings: number;
+}
 const Details = () => {
+  const params = useRoute().params as { id: string };
   const { themeColors } = useGlobalContext();
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
+  const { data, isLoading, isFetching } = useGetVendorByIdQuery(params.id);
+  console.log(data)
   // Static data
   const shopDetails = {
     id: '1',
@@ -65,12 +103,11 @@ const Details = () => {
       },
     ],
   };
-
-  // Handle book button press
-  const handleBookPress = () => {
-    //console.log('Book button pressed!');
-    // Add your navigation or booking logic here
-  };
+  // workerImages: [
+  //   'https://placehold.co/400x400.png?text=worker 1',
+  //   'https://placehold.co/400x400.png?text=worker 2',
+  //   'https://placehold.co/400x400.png?text=worker 3',
+  // ],
   const textColor = themeColors.constWhite as string;
   return (
     <ScrollView
