@@ -1,4 +1,4 @@
-import {baseApi} from '../baseApis';
+import { baseApi } from '../baseApis';
 
 const vendorApis = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -34,7 +34,14 @@ const vendorApis = baseApi.injectEndpoints({
       }),
       providesTags: ['vendor'],
     }),
+    getVendorById: builder.query({
+      query: id => ({
+        url: `/business/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['vendor'],
+    }),
   }),
 });
 
-export const {useCreateVendorMutation, useGetVendorQuery} = vendorApis;
+export const { useCreateVendorMutation, useGetVendorQuery, useGetVendorByIdQuery } = vendorApis;
