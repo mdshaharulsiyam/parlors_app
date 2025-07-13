@@ -8,12 +8,14 @@ import {
   Text,
   View
 } from 'react-native';
-import Parlors from '../../components/Home/Parlors';
+import Empty from '../../components/Shared/Empty';
 import Loader from '../../components/Shared/Loader';
+import ServiceFlatList from '../../components/Shared/ServiceFlatList';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetVendorByIdQuery } from '../../Redux/Apis/vendorApis';
 import { generateImageUrl } from '../../Redux/baseApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import { commonStyles } from '../../utils/styles/Styles';
 interface IDetails {
   _id: string;
   logo: string | null;
@@ -61,7 +63,7 @@ interface IDetails {
 }
 const Details = () => {
   const params = useRoute().params as { id: string };
-  const { themeColors } = useGlobalContext();
+  const { themeColors, width } = useGlobalContext();
   const { data, isLoading, isFetching } = useGetVendorByIdQuery(params.id);
   console.log(data)
   // Static data
@@ -189,7 +191,14 @@ const Details = () => {
         })}
       </View>
       {/* sevicess */}
-      <Parlors horizontal={true} />
+      <View>
+        <Text
+          style={[commonStyles.headerText, { color: themeColors.black as string }]}>
+          Services
+        </Text>
+        <Empty data={data?.service_listings} />
+        <ServiceFlatList horizontal={true} data={data?.service_listings} width={width} />
+      </View>
       {/* Rating & Review */}
       <View style={styles.ratingInfo}>
         <Text

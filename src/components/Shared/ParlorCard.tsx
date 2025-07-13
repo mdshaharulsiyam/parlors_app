@@ -1,30 +1,32 @@
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {generateImageUrl} from '../../Redux/baseApis';
-import {hexToRGBA} from '../../utils/hexToRGBA';
-import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
-import {IParlor} from '../../utils/types/Types';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { generateImageUrl } from '../../Redux/baseApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
+import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
+import { IParlor } from '../../utils/types/Types';
 
 const ParlorCard = ({
   item,
   width = 250,
   height = 170,
+  horizontal = false,
 }: {
   item: IParlor;
   width?: any;
   height?: any;
+  horizontal?: boolean;
 }) => {
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
   return (
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
           screen: 'ServiceDetails',
-          params: {id: item?._id?.toString()},
+          params: { id: item?._id?.toString() },
         })
       }
       activeOpacity={0.8}
@@ -38,9 +40,10 @@ const ParlorCard = ({
         boxSizing: 'border-box',
         maxWidth: width + 10,
         position: 'relative',
+        marginHorizontal: horizontal ? 5 : 0,
       }}>
       <Image
-        source={{uri: generateImageUrl(item?.img)}}
+        source={{ uri: generateImageUrl(item?.img) }}
         resizeMode="cover"
         style={[
           {
@@ -78,7 +81,7 @@ const ParlorCard = ({
         }}>
         ৳ {item?.price}
       </Text>
-      <View style={{marginLeft: 10, paddingVertical: 6}}>
+      <View style={{ marginLeft: 10, paddingVertical: 6 }}>
         <Text
           style={{
             fontWeight: 'bold',
@@ -87,7 +90,7 @@ const ParlorCard = ({
           }}>
           {item?.name}
         </Text>
-        <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 5}}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
           {item?.services?.map((service, index) => (
             <Text
               style={{
