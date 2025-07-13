@@ -23,10 +23,11 @@ const ServiceFlatList = ({ horizontal = false, data, width }: { horizontal?: boo
       keyExtractor={item => item?._id}
       renderItem={({ item }) => (
         <ParlorCard
+          horizontal={horizontal}
           key={item?._id}
           item={item}
-          width={width / 2 - 20}
-          height={Ratio3_2(width / 2 - 20)}
+          width={width / 2 - 30}
+          height={Ratio3_2(width / 2 - 30)}
         />
       )}
     />

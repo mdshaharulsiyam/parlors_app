@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Dimensions, Text } from 'react-native';
+import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServicesQuery } from '../../Redux/Apis/seviceListingApis';
@@ -15,8 +15,7 @@ const Parlors = ({
   horizontal?: boolean;
   refreshing?: boolean;
 }) => {
-  const { width } = Dimensions.get('window');
-  const { themeColors } = useGlobalContext();
+  const { themeColors, width } = useGlobalContext();
 
   const { data, isLoading, isFetching, refetch } = useGetServicesQuery({
     limit: 20,
