@@ -69,12 +69,14 @@ interface IServiceDetails {
   ongoing_bookings: number;
   canceled_bookings: number;
 }
+type IWeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
 const ServiceDetails = () => {
   const params = useRoute().params as { id: string };
-  const { themeColors } = useGlobalContext();
+  const { themeColors, width } = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [weekDay, setWeekDay] = useState(moment(date).format('dddd')?.toLowerCase());
+  const [weekDay, setWeekDay] = useState<IWeekDay>(moment(date).format('dddd')?.toLowerCase() as IWeekDay);
   const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
   const serviceDetails = data?.data as IServiceDetails;
   // Static data
@@ -85,9 +87,6 @@ const ServiceDetails = () => {
     // Add your navigation or booking logic here
   };
   const textColor = themeColors.constWhite as string;
-  const input = ["10:00 AM", "11:10 PM"];
-  const interval = 24;
-  console.log(splitTimeRangeByInterval(input, interval))
   return (
     <ScrollView
       style={[
@@ -335,6 +334,39 @@ const ServiceDetails = () => {
             Select Date
           </Text>
         </GradientButton>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={splitTimeRangeByInterval(serviceDetails?.business_details?.availability[weekDay], 0.5)}
+          renderItem={({ item }) => {
+            if (item === 'shop is closed') {
+              return (
+                <View style={{ flex: 1, gap: 10, justifyContent: 'center', alignItems: 'center', width: width - 40 }}>
+                  <Empty data={false} />
+                  <Text
+                    style={{
+                      color: themeColors.red as string,
+                      textTransform: 'capitalize',
+                      fontSize: 18,
+                    }}>
+                    No available time please select another date
+                  </Text>
+                </View>
+              )
+            }
+            return (
+              <GradientButton handler={() => { }}>
+                <Text
+                  style={{
+                    color: textColor,
+                  }}>
+                  {item}
+                </Text>
+              </GradientButton>
+            )
+          }}
+          keyExtractor={(item, index) => index.toString()}
+        />
         <DatePicker
           modal
           mode="date"
