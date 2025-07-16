@@ -195,7 +195,7 @@ const Details = () => {
           style={[commonStyles.headerText, { color: themeColors.black as string }]}>
           Services
         </Text>
-        <Empty data={data?.service_listings} />
+        <Empty data={data?.service_listings?.length} />
         <ServiceFlatList horizontal={true} data={data?.service_listings} width={width} />
       </View>
       {/* Rating & Review */}

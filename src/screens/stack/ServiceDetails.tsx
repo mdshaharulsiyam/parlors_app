@@ -220,7 +220,7 @@ const ServiceDetails = () => {
           Total Rating: {serviceDetails?.rating}
         </Text>
         <Text style={[styles.sectionTitle, { color: textColor }]}>Reviews</Text>
-        <Empty data={serviceDetails?.reviews} />
+        <Empty data={data?.reviews?.length} />
         {/* <FlatList
           data={serviceDetails?.reviews}
           horizontal
