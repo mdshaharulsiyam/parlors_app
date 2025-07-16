@@ -79,14 +79,13 @@ const ServiceDetails = () => {
   const [weekDay, setWeekDay] = useState<IWeekDay>(moment(date).format('dddd')?.toLowerCase() as IWeekDay);
   const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
   const serviceDetails = data?.data as IServiceDetails;
-  // Static data
+  const [selectedTime, setSelectedTime] = useState('');
   const [selectedImage, setSelectedImage] = useState(serviceDetails?.img[0]);
-  // Handle book button press
   const handleBookPress = () => {
-    //console.log('Book button pressed!');
-    // Add your navigation or booking logic here
+
   };
   const textColor = themeColors.constWhite as string;
+  console.log(weekDay)
   return (
     <ScrollView
       style={[
@@ -335,6 +334,10 @@ const ServiceDetails = () => {
           </Text>
         </GradientButton>
         <FlatList
+          contentContainerStyle={{
+            paddingVertical: 5,
+            gap: 5,
+          }}
           horizontal
           showsHorizontalScrollIndicator={false}
           data={splitTimeRangeByInterval(serviceDetails?.business_details?.availability[weekDay], 0.5)}
@@ -355,14 +358,20 @@ const ServiceDetails = () => {
               )
             }
             return (
-              <GradientButton handler={() => { }}>
+              <TouchableOpacity
+                onPress={() => setSelectedTime(item)}
+                style={{
+                  backgroundColor: selectedTime === item ? themeColors.black as string : hexToRGBA(themeColors.black as string, 0.1),
+                  padding: 10,
+                  borderRadius: 10,
+                }}>
                 <Text
                   style={{
-                    color: textColor,
+                    color: selectedTime === item ? themeColors.white as string : textColor,
                   }}>
                   {item}
                 </Text>
-              </GradientButton>
+              </TouchableOpacity>
             )
           }}
           keyExtractor={(item, index) => index.toString()}
@@ -375,6 +384,7 @@ const ServiceDetails = () => {
           onConfirm={date => {
             setOpen(false);
             setDate(date);
+            setWeekDay(moment(date).format('dddd')?.toLowerCase() as IWeekDay);
           }}
           onCancel={() => {
             setOpen(false);
