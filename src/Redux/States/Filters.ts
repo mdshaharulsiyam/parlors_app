@@ -43,5 +43,5 @@ export const filtersSlice = createSlice({
   },
 });
 
-export const { setSearch } = filtersSlice.actions;
+export const { setSearch, setDivisions, setDistricts, setUpazilas, setUnions, setStreetAddress } = filtersSlice.actions;
 export default filtersSlice.reducer;
