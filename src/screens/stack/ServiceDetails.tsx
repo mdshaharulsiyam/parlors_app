@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 //
 import { useRoute } from '@react-navigation/native';
+import moment from 'moment';
 import {
   FlatList,
   Image,
@@ -51,6 +52,10 @@ interface IServiceDetails {
       sunday: string[];
     },
   },
+  estimated_time: string,
+  services: string[],
+  description: string,
+  price: number,
   owner: {
     name: string;
     email: string;
@@ -68,11 +73,11 @@ const ServiceDetails = () => {
   const { themeColors } = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-
+  const [weekDay, setWeekDay] = useState(moment(date).format('dddd')?.toLowerCase());
   const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
   const serviceDetails = data?.data as IServiceDetails;
   // Static data
-
+  console.log(weekDay)
   const [selectedImage, setSelectedImage] = useState(serviceDetails?.img[0]);
   // Handle book button press
   const handleBookPress = () => {
@@ -80,6 +85,7 @@ const ServiceDetails = () => {
     // Add your navigation or booking logic here
   };
   const textColor = themeColors.constWhite as string;
+
   return (
     <ScrollView
       style={[
@@ -161,9 +167,52 @@ const ServiceDetails = () => {
           </Text>
         </View>
       </View>
-
+      <View style={styles.bookingInfo}>
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: themeColors.black as string,
+            },
+          ]}>
+          Service Details
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Services: {serviceDetails?.services?.join(', ')}
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Price: {serviceDetails?.price}
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Description: {serviceDetails?.description}
+        </Text>
+        <Text
+          style={{
+            color: textColor,
+          }}>
+          Estimated Time: {serviceDetails?.estimated_time ?? 0.5} hours
+        </Text>
+      </View>
       {/* Booking Information */}
       <View style={styles.bookingInfo}>
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: themeColors.black as string,
+            },
+          ]}>
+          Booking Details
+        </Text>
         <Text
           style={{
             color: textColor,
@@ -367,8 +416,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   bookingInfo: {
-    marginTop: 15,
-    marginBottom: 15,
+    marginVertical: 0,
   },
   openDetails: {
     marginBottom: 20,
