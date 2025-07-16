@@ -15,6 +15,52 @@ import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServiceByIdQuery } from '../../Redux/Apis/seviceListingApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+interface IServiceDetails {
+  _id: string;
+  name: string;
+  img: string[];
+  reviews: [];
+  coordinates: [];
+  total_rated: number;
+  rating: number;
+  business_details: {
+    name: string;
+    logo: string | null;
+    _id: string;
+    address: {
+      divisions: string;
+      districts: string;
+      unions: string;
+      upazilas: string;
+      street_address: string;
+      _id: string;
+    },
+    location: {
+      type: string;
+      coordinates: [number, number];
+    },
+    availability: {
+      monday: string[];
+      tuesday: string[];
+      wednesday: string[];
+      thursday: string[];
+      friday: string[];
+      saturday: string[];
+      sunday: string[];
+    },
+  },
+  owner: {
+    name: string;
+    email: string;
+    phone: string;
+    _id: string;
+    img: string | null;
+  },
+  total_bookings: number;
+  completed_bookings: number;
+  ongoing_bookings: number;
+  canceled_bookings: number;
+}
 const ServiceDetails = () => {
   const params = useRoute().params as { id: string };
   const { themeColors } = useGlobalContext();
