@@ -11,9 +11,11 @@ import {
   View,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import Empty from '../../components/Shared/Empty';
 import GradientButton from '../../components/Shared/GradientButton';
 import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServiceByIdQuery } from '../../Redux/Apis/seviceListingApis';
+import { generateImageUrl } from '../../Redux/baseApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
 interface IServiceDetails {
   _id: string;
@@ -68,64 +70,10 @@ const ServiceDetails = () => {
   const [open, setOpen] = useState(false);
 
   const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
-  console.log(data)
+  const serviceDetails = data?.data as IServiceDetails;
   // Static data
-  const shopDetails = {
-    id: '1',
-    name: 'service name ',
-    img: [
-      'https://placehold.co/400x400.png?text=service+name+1',
-      'https://placehold.co/400x400.png?text=service+name+2',
-      'https://placehold.co/400x400.png?text=service+name+3',
-      'https://placehold.co/400x400.png?text=service+name+4',
-      'https://placehold.co/400x400.png?text=service+name+5',
-    ],
-    totalWorkers: 10,
-    ownerName: 'John Doe',
-    ownerEmail: 'johndoe@example.com',
-    ownerImage: 'https://placehold.co/400x400.png?text=shop owner',
-    workerImages: [
-      'https://placehold.co/400x400.png?text=worker 1',
-      'https://placehold.co/400x400.png?text=worker 2',
-      'https://placehold.co/400x400.png?text=worker 3',
-    ],
-    totalBooking: 50,
-    openDetails: [
-      { day: 'Monday', hours: '9AM-5PM' },
-      { day: 'Tuesday', hours: '9AM-5PM' },
-      { day: 'Wednesday', hours: '9AM-5PM' },
-      { day: 'Thursday', hours: '9AM-5PM' },
-      { day: 'Friday', hours: '9AM-5PM' },
-      { day: 'Saturday', hours: '10AM-4PM' },
-      { day: 'Sunday', hours: 'Closed' },
-    ],
-    completedBooking: 20,
-    ongoingBooking: 15,
-    canceledBooking: 5,
-    totalRated: 100,
-    totalRating: 4.5,
-    reviews: [
-      {
-        userImage: 'https://placehold.co/100x100.png?text=user1',
-        userName: 'Alice Smith',
-        rating: 5,
-        review: 'Amazing service! Highly recommend this place!',
-      },
-      {
-        userImage: 'https://placehold.co/100x100.png?text=user2',
-        userName: 'Bob Johnson',
-        rating: 4,
-        review: 'Great experience, but could improve the waiting time.',
-      },
-      {
-        userImage: 'https://placehold.co/100x100.png?text=user3',
-        userName: 'Charlie Brown',
-        rating: 4.5,
-        review: 'Friendly staff and nice ambiance.',
-      },
-    ],
-  };
-  const [selectedImage, setSelectedImage] = useState(shopDetails?.img[0]);
+
+  const [selectedImage, setSelectedImage] = useState(serviceDetails?.img[0]);
   // Handle book button press
   const handleBookPress = () => {
     //console.log('Book button pressed!');
@@ -147,11 +95,11 @@ const ServiceDetails = () => {
             color: themeColors.black as string,
           },
         ]}>
-        {shopDetails.name}
+        {serviceDetails?.name}
       </Text>
       <Image source={{ uri: selectedImage }} style={styles.img} />
       <FlatList
-        data={shopDetails?.img}
+        data={serviceDetails?.img}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
@@ -189,7 +137,7 @@ const ServiceDetails = () => {
           },
         ]}>
         <Image
-          source={{ uri: shopDetails.ownerImage }}
+          source={{ uri: generateImageUrl(serviceDetails?.owner?.img as string) }}
           style={styles.ownerImage}
         />
         <View style={styles.ownerDetails}>
@@ -200,7 +148,7 @@ const ServiceDetails = () => {
                 color: themeColors.black as string,
               },
             ]}>
-            {shopDetails.ownerName}
+            {serviceDetails?.owner?.name}
           </Text>
           <Text
             style={[
@@ -209,28 +157,10 @@ const ServiceDetails = () => {
                 color: themeColors.black as string,
               },
             ]}>
-            {shopDetails.ownerEmail}
+            {serviceDetails?.owner?.email}
           </Text>
         </View>
       </View>
-
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: themeColors.black as string,
-          },
-        ]}>
-        Total Workers: {shopDetails.totalWorkers}
-      </Text>
-      <FlatList
-        data={shopDetails.workerImages}
-        horizontal
-        renderItem={({ item }) => (
-          <Image source={{ uri: item }} style={styles.workerImage} />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
 
       {/* Booking Information */}
       <View style={styles.bookingInfo}>
@@ -238,19 +168,19 @@ const ServiceDetails = () => {
           style={{
             color: textColor,
           }}>
-          Completed Booking: {shopDetails.completedBooking}
+          Completed Booking: {serviceDetails?.completed_bookings}
         </Text>
         <Text
           style={{
             color: textColor,
           }}>
-          Ongoing Booking: {shopDetails.ongoingBooking}
+          Ongoing Booking: {serviceDetails?.ongoing_bookings}
         </Text>
         <Text
           style={{
             color: textColor,
           }}>
-          Canceled Booking: {shopDetails.canceledBooking}
+          Canceled Booking: {serviceDetails?.canceled_bookings}
         </Text>
       </View>
 
@@ -259,18 +189,20 @@ const ServiceDetails = () => {
         Available Times
       </Text>
       <View style={styles.openDetails}>
-        {shopDetails.openDetails.map((day, index) => (
-          <Text
-            key={index}
-            style={[
-              styles.openingTime,
-              {
-                color: textColor,
-              },
-            ]}>
-            {day.day} - {day.hours}
-          </Text>
-        ))}
+        {Object.entries(serviceDetails?.business_details?.availability ? serviceDetails?.business_details?.availability : {})?.map((day, index) => {
+          return (
+            <Text
+              key={index}
+              style={[
+                styles.openingTime,
+                {
+                  color: textColor,
+                },
+              ]}>
+              {`${day[0]} - ${day[1].length > 0 ? `from ${day[1]?.[0]} to ${day[1]?.[1]}` : 'Closed'}`}
+            </Text>
+          )
+        })}
       </View>
 
       {/* Rating & Review */}
@@ -279,17 +211,18 @@ const ServiceDetails = () => {
           style={{
             color: textColor,
           }}>
-          Total Rated: {shopDetails.totalRated}
+          Total Rated: {serviceDetails?.total_rated}
         </Text>
         <Text
           style={{
             color: textColor,
           }}>
-          Total Rating: {shopDetails.totalRating}
+          Total Rating: {serviceDetails?.rating}
         </Text>
         <Text style={[styles.sectionTitle, { color: textColor }]}>Reviews</Text>
-        <FlatList
-          data={shopDetails.reviews}
+        <Empty data={serviceDetails?.reviews} />
+        {/* <FlatList
+          data={serviceDetails?.reviews}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
@@ -337,7 +270,7 @@ const ServiceDetails = () => {
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}
-        />
+        /> */}
       </View>
       <View style={{ flexDirection: 'column', gap: 10, marginBottom: 70 }}>
         <GradientButton handler={() => setOpen(true)}>
