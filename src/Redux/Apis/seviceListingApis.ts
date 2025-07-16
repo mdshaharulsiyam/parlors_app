@@ -1,9 +1,9 @@
-import {baseApi} from '../baseApis';
+import { baseApi } from '../baseApis';
 
 const serviceListingApis = baseApi.injectEndpoints({
   endpoints: builder => ({
     getServices: builder.query({
-      query: ({limit = 10, search = '', page = 1}) => ({
+      query: ({ limit = 10, search = '', page = 1 }) => ({
         url: '/service_listing/get-all',
         method: 'GET',
         params: {
@@ -14,7 +14,15 @@ const serviceListingApis = baseApi.injectEndpoints({
       }),
       providesTags: ['serviceListing'],
     }),
+    // Get service by id
+    getServiceById: builder.query({
+      query: id => ({
+        url: `/service_listing/get-by-id/${id}`,
+        method: 'GET',
+      }),
+      providesTags: ['serviceListing'],
+    }),
   }),
 });
 
-export const {useGetServicesQuery} = serviceListingApis;
+export const { useGetServicesQuery, useGetServiceByIdQuery } = serviceListingApis;

@@ -65,7 +65,6 @@ const Details = () => {
   const params = useRoute().params as { id: string };
   const { themeColors, width } = useGlobalContext();
   const { data, isLoading, isFetching } = useGetVendorByIdQuery(params.id);
-  console.log(data)
   // Static data
   const shopDetails = data?.data as IDetails;
   // workerImages: [
@@ -136,7 +135,7 @@ const Details = () => {
             color: themeColors.black as string,
           },
         ]}>
-        Total Workers: {shopDetails?.total_bookings}
+        Total Workers: {shopDetails?.business_sub_admins?.length > 0 ? shopDetails?.business_sub_admins?.length : 1}
       </Text>
       {/* 
       <FlatList
@@ -196,7 +195,7 @@ const Details = () => {
           style={[commonStyles.headerText, { color: themeColors.black as string }]}>
           Services
         </Text>
-        <Empty data={data?.service_listings} />
+        <Empty data={data?.service_listings?.length} />
         <ServiceFlatList horizontal={true} data={data?.service_listings} width={width} />
       </View>
       {/* Rating & Review */}
