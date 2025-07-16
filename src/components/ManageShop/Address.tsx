@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
+import React, { useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
-import {useDispatch} from 'react-redux';
-import {useAddressApiCall} from '../../ApisCalls/addressApiCall';
-import {globalStyles} from '../../constant/styles';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {setAddress, setIndex} from '../../Redux/States/vendorSlice';
+import { useDispatch } from 'react-redux';
+import { useAddressApiCall } from '../../ApisCalls/addressApiCall';
+import { globalStyles } from '../../constant/styles';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { setAddress, setIndex } from '../../Redux/States/vendorSlice';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 import {
   IAddressInput,
   IAddressInputError,
@@ -16,9 +16,9 @@ import {
 } from '../../utils/types/Types';
 import GradientButton from '../Shared/GradientButton';
 
-const Address = ({creating = false}: {creating?: boolean}) => {
+const Address = ({ creating = false }: { creating?: boolean }) => {
   const [isUpdating, setIsUpdating] = useState(false);
-  const {themeColors} = useGlobalContext();
+  const { themeColors } = useGlobalContext();
   const dispatch = useDispatch();
   const [divisionSearch, setDivisionSearch] = useState('');
   const [districtSearch, setDistrictSearch] = useState('');
@@ -48,7 +48,7 @@ const Address = ({creating = false}: {creating?: boolean}) => {
     street_address: 'Street Address',
   });
 
-  const {divisions, districts, upazilas, unions} = useAddressApiCall({
+  const { divisions, districts, upazilas, unions } = useAddressApiCall({
     division_id: inputValue.divisions,
     district_id: inputValue.districts,
     upazilla_id: inputValue.upazilas,
@@ -62,10 +62,10 @@ const Address = ({creating = false}: {creating?: boolean}) => {
 
     Object.keys(inputValue).forEach(key => {
       if (inputValue[key as keyof IAddressInput] === '') {
-        setError(prev => ({...prev, [key]: true}));
+        setError(prev => ({ ...prev, [key]: true }));
         isInvalid = true;
       } else {
-        setError(prev => ({...prev, [key]: false}));
+        setError(prev => ({ ...prev, [key]: false }));
       }
     });
 
@@ -164,10 +164,10 @@ const Address = ({creating = false}: {creating?: boolean}) => {
                   key === 'divisions'
                     ? divisions
                     : key === 'districts'
-                    ? districts
-                    : key === 'upazilas'
-                    ? upazilas
-                    : unions
+                      ? districts
+                      : key === 'upazilas'
+                        ? upazilas
+                        : unions
                 }
                 value={inputValue[key as keyof IAddressInput]}
                 inputValue={inputValue}
@@ -178,10 +178,10 @@ const Address = ({creating = false}: {creating?: boolean}) => {
                   key === 'divisions'
                     ? setDivisionSearch
                     : key === 'districts'
-                    ? setDistrictSearch
-                    : key === 'upazilas'
-                    ? setUpazillaSearch
-                    : setUnionSearch
+                      ? setDistrictSearch
+                      : key === 'upazilas'
+                        ? setUpazillaSearch
+                        : setUnionSearch
                 }
                 resetHandler={value =>
                   handleReset(key as keyof IAddressInput, value)
@@ -201,16 +201,15 @@ const Address = ({creating = false}: {creating?: boolean}) => {
               ]}>
               {inputLabel[key as keyof IAddressInputLabel]}
             </Text>
-            <View style={{position: 'relative'}}>
+            <View style={{ position: 'relative' }}>
               <TextInput
                 value={inputValue[key as keyof IAddressInput]}
                 onChangeText={text => {
-                  setInputValue({...inputValue, [key]: text});
-                  setError({...error, [key]: false});
+                  setInputValue({ ...inputValue, [key]: text });
+                  setError({ ...error, [key]: false });
                 }}
-                placeholder={`Enter your ${
-                  inputLabel[key as keyof IAddressInputLabel]
-                }`}
+                placeholder={`Enter your ${inputLabel[key as keyof IAddressInputLabel]
+                  }`}
                 placeholderTextColor={hexToRGBA(
                   themeColors.black as string,
                   0.4,
@@ -276,5 +275,5 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  buttonText: {fontSize: 16, fontWeight: 'bold'},
+  buttonText: { fontSize: 16, fontWeight: 'bold' },
 });
