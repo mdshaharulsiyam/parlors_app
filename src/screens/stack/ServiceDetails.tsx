@@ -85,7 +85,6 @@ const ServiceDetails = () => {
 
   };
   const textColor = themeColors.constWhite as string;
-  console.log(weekDay)
   return (
     <ScrollView
       style={[
