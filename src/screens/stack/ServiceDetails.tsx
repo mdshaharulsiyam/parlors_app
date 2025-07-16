@@ -18,6 +18,7 @@ import { useGlobalContext } from '../../Provider/GlobalContextProvider';
 import { useGetServiceByIdQuery } from '../../Redux/Apis/seviceListingApis';
 import { generateImageUrl } from '../../Redux/baseApis';
 import { hexToRGBA } from '../../utils/hexToRGBA';
+import splitTimeRangeByInterval from '../../utils/splitTimeRangeByInterval';
 interface IServiceDetails {
   _id: string;
   name: string;
@@ -77,7 +78,6 @@ const ServiceDetails = () => {
   const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
   const serviceDetails = data?.data as IServiceDetails;
   // Static data
-  console.log(weekDay)
   const [selectedImage, setSelectedImage] = useState(serviceDetails?.img[0]);
   // Handle book button press
   const handleBookPress = () => {
@@ -85,7 +85,9 @@ const ServiceDetails = () => {
     // Add your navigation or booking logic here
   };
   const textColor = themeColors.constWhite as string;
-
+  const input = ["10:00 AM", "11:10 PM"];
+  const interval = 24;
+  console.log(splitTimeRangeByInterval(input, interval))
   return (
     <ScrollView
       style={[
