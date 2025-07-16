@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 //
+import { useRoute } from '@react-navigation/native';
 import {
   FlatList,
   Image,
@@ -11,12 +12,17 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import GradientButton from '../../components/Shared/GradientButton';
-import {useGlobalContext} from '../../Provider/GlobalContextProvider';
-import {hexToRGBA} from '../../utils/hexToRGBA';
+import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import { useGetServiceByIdQuery } from '../../Redux/Apis/seviceListingApis';
+import { hexToRGBA } from '../../utils/hexToRGBA';
 const ServiceDetails = () => {
-  const {themeColors} = useGlobalContext();
+  const params = useRoute().params as { id: string };
+  const { themeColors } = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
+  const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
+  console.log(data)
   // Static data
   const shopDetails = {
     id: '1',
@@ -39,13 +45,13 @@ const ServiceDetails = () => {
     ],
     totalBooking: 50,
     openDetails: [
-      {day: 'Monday', hours: '9AM-5PM'},
-      {day: 'Tuesday', hours: '9AM-5PM'},
-      {day: 'Wednesday', hours: '9AM-5PM'},
-      {day: 'Thursday', hours: '9AM-5PM'},
-      {day: 'Friday', hours: '9AM-5PM'},
-      {day: 'Saturday', hours: '10AM-4PM'},
-      {day: 'Sunday', hours: 'Closed'},
+      { day: 'Monday', hours: '9AM-5PM' },
+      { day: 'Tuesday', hours: '9AM-5PM' },
+      { day: 'Wednesday', hours: '9AM-5PM' },
+      { day: 'Thursday', hours: '9AM-5PM' },
+      { day: 'Friday', hours: '9AM-5PM' },
+      { day: 'Saturday', hours: '10AM-4PM' },
+      { day: 'Sunday', hours: 'Closed' },
     ],
     completedBooking: 20,
     ongoingBooking: 15,
@@ -97,7 +103,7 @@ const ServiceDetails = () => {
         ]}>
         {shopDetails.name}
       </Text>
-      <Image source={{uri: selectedImage}} style={styles.img} />
+      <Image source={{ uri: selectedImage }} style={styles.img} />
       <FlatList
         data={shopDetails?.img}
         horizontal
@@ -105,10 +111,10 @@ const ServiceDetails = () => {
         contentContainerStyle={{
           paddingVertical: 10,
         }}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <TouchableOpacity onPress={() => setSelectedImage(item)}>
             <Image
-              source={{uri: item}}
+              source={{ uri: item }}
               style={{
                 width: 100,
                 height: 100,
@@ -137,7 +143,7 @@ const ServiceDetails = () => {
           },
         ]}>
         <Image
-          source={{uri: shopDetails.ownerImage}}
+          source={{ uri: shopDetails.ownerImage }}
           style={styles.ownerImage}
         />
         <View style={styles.ownerDetails}>
@@ -174,8 +180,8 @@ const ServiceDetails = () => {
       <FlatList
         data={shopDetails.workerImages}
         horizontal
-        renderItem={({item}) => (
-          <Image source={{uri: item}} style={styles.workerImage} />
+        renderItem={({ item }) => (
+          <Image source={{ uri: item }} style={styles.workerImage} />
         )}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -203,7 +209,7 @@ const ServiceDetails = () => {
       </View>
 
       {/* Shop Timings */}
-      <Text style={[styles.sectionTitle, {color: textColor}]}>
+      <Text style={[styles.sectionTitle, { color: textColor }]}>
         Available Times
       </Text>
       <View style={styles.openDetails}>
@@ -235,7 +241,7 @@ const ServiceDetails = () => {
           }}>
           Total Rating: {shopDetails.totalRating}
         </Text>
-        <Text style={[styles.sectionTitle, {color: textColor}]}>Reviews</Text>
+        <Text style={[styles.sectionTitle, { color: textColor }]}>Reviews</Text>
         <FlatList
           data={shopDetails.reviews}
           horizontal
@@ -243,7 +249,7 @@ const ServiceDetails = () => {
           contentContainerStyle={{
             paddingVertical: 20,
           }}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View
               style={[
                 styles.reviewCard,
@@ -251,7 +257,7 @@ const ServiceDetails = () => {
                   backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
                 },
               ]}>
-              <Image source={{uri: item.userImage}} style={styles.userImage} />
+              <Image source={{ uri: item.userImage }} style={styles.userImage} />
               <View style={styles.reviewContent}>
                 <Text
                   style={[
@@ -287,7 +293,7 @@ const ServiceDetails = () => {
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
-      <View style={{flexDirection: 'column', gap: 10, marginBottom: 70}}>
+      <View style={{ flexDirection: 'column', gap: 10, marginBottom: 70 }}>
         <GradientButton handler={() => setOpen(true)}>
           <Text
             style={{
