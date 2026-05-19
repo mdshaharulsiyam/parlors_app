@@ -30,7 +30,7 @@ const SignUp = () => {
   const [passShow, setPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
   const [countryCode, setCountryCode] = React.useState('BD');
-  const [callingCode, setCallingCode] = React.useState('880');
+  const [, setCallingCode] = React.useState('880');
   const {themeColors, width} = useGlobalContext();
   const [error, setError] = React.useState({
     name: false,
@@ -84,7 +84,7 @@ const SignUp = () => {
         email: inputValue['email'],
       });
     });
-  }, [inputValue, register]);
+  }, [inputValue, navigation, register]);
 
   return (
     <SafeAreaView
@@ -98,7 +98,7 @@ const SignUp = () => {
           marginTop: 40,
           zIndex: 1,
         }}>
-        {Object.keys(inputValue).map((key, index, arr) => {
+        {Object.keys(inputValue).map(key => {
           if (key === 'gender') {
             return (
               <View key={key} style={{zIndex: 100000000}}>

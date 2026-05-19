@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -51,7 +50,7 @@ const ServicesCreateUpdateForm = () => {
     subCategorySearch,
     category: inputValue.category,
   });
-  const [inputLabel, setInputLabel] = useState<IServicesInputLabel>({
+  const [inputLabel] = useState<IServicesInputLabel>({
     name: 'Name',
     price: 'Price',
     img: 'Image',
@@ -92,8 +91,8 @@ const ServicesCreateUpdateForm = () => {
         }}>
         Service Listing Form
       </Text>
-      {Object.keys(inputValue).map((key, index, arr) => {
-        if (key == 'category' || key == 'sub_category') {
+      {Object.keys(inputValue).map(key => {
+        if (key === 'category' || key === 'sub_category') {
           return (
             <View key={key}>
               <Text
@@ -122,7 +121,7 @@ const ServicesCreateUpdateForm = () => {
         }
         if (key === 'img') {
           return (
-            <View>
+            <View key={key}>
               <Text
                 style={[
                   globalStyles.inputLabel,
@@ -223,7 +222,7 @@ const ServicesCreateUpdateForm = () => {
         );
       })}
       <GradientButton handler={submitHandler}>
-        {false ? (
+        {isLoading ? (
           <ActivityIndicator
             size="small"
             color={themeColors.constWhite as string}
@@ -247,5 +246,3 @@ const ServicesCreateUpdateForm = () => {
 };
 
 export default ServicesCreateUpdateForm;
-
-const styles = StyleSheet.create({});

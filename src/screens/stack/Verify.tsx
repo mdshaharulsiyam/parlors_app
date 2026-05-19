@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -26,7 +25,7 @@ import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 
 const Verify = () => {
   const route = useRoute();
-  const params = route?.params as {from: string; email: string};
+  const params = route?.params as {from: 'signup' | 'forget'; email: string};
   const from = params?.from;
   const email = params?.email;
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
@@ -35,7 +34,7 @@ const Verify = () => {
   const {verifyOtp, isLoading} = useVerifyOtp();
   const dispatch = useDispatch();
   const handleOtpChange = useCallback(() => {
-    if (code?.length != 6) {
+    if (code?.length !== 6) {
       return Toast.show({
         type: 'error',
         text1: 'Invalid OTP',
@@ -43,15 +42,15 @@ const Verify = () => {
       });
     }
     const storeData = async (token: any) => {
-      if (from == 'signup') {
-        navigate.navigate('Login');
+      if (from === 'signup') {
+        navigate.navigate('SignIn');
       } else {
         token && dispatch(setResetToken(token));
         navigate.navigate('Reset');
       }
     };
     verifyOtp({code, email}, storeData);
-  }, [code, from, email]);
+  }, [code, dispatch, email, from, navigate, verifyOtp]);
 
   return (
     <SafeAreaView
@@ -147,64 +146,3 @@ const Verify = () => {
 };
 
 export default Verify;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  backButton: {
-    fontSize: 16,
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  message: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    marginBottom: 20,
-  },
-  input: {
-    width: '13%',
-    height: 50,
-    borderRadius: 10,
-    textAlign: 'center',
-    fontSize: 18,
-    borderWidth: 1,
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  errorText: {
-    fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  successText: {
-    fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-});

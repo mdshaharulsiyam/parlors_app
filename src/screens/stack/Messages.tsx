@@ -20,7 +20,7 @@ const useDummyMessages = (count: number) => {
   }, [count]);
 };
 
-const MapMessages = ({id}: {id: string}) => {
+const MapMessages = () => {
   const dummyMessages = useDummyMessages(500);
   const {themeColors} = useGlobalContext();
   const black = themeColors.black as string;
@@ -54,7 +54,7 @@ const MapMessages = ({id}: {id: string}) => {
         </Text>
       </View>
     ),
-    [],
+    [black, primary],
   );
 
   const keyExtractor = useCallback((item: any) => item.id, []);
@@ -74,8 +74,7 @@ const MapMessages = ({id}: {id: string}) => {
   );
 };
 
-const Messages = ({route}: any) => {
-  const {id} = route.params;
+const Messages = () => {
   const [newMessage, setNewMessage] = useState('');
   const {themeColors} = useGlobalContext();
   const black = themeColors.black as string;
@@ -123,7 +122,7 @@ const Messages = ({route}: any) => {
         </View>
       </View>
     ),
-    [],
+    [black],
   );
 
   return (
@@ -135,7 +134,7 @@ const Messages = ({route}: any) => {
         },
       ]}>
       {renderHeader()}
-      <MapMessages id={id} />
+      <MapMessages />
       <View
         style={[
           styles.footerContainer,

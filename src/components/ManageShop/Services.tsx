@@ -4,7 +4,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Text, View} from 'react-native';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {useGetServicesQuery} from '../../Redux/Apis/seviceListingApis';
 import {Ratio3_2} from '../../utils/calculateHeight';
@@ -38,9 +38,7 @@ const Services = () => {
           </GradientButton>
         </View>
       }
-      onEndReached={e => {
-        //console.log(e);
-      }}
+      onEndReached={() => {}}
       onEndReachedThreshold={0.5}
       numColumns={2}
       columnWrapperStyle={{
@@ -64,5 +62,3 @@ const Services = () => {
 };
 
 export default Services;
-
-const styles = StyleSheet.create({});

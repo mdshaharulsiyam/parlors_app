@@ -1,13 +1,21 @@
-import React from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
-import { Ratio3_2 } from '../../utils/calculateHeight'
-import ParlorCard from './ParlorCard'
+import React from 'react';
+import {FlatList, View} from 'react-native';
+import {Ratio3_2} from '../../utils/calculateHeight';
+import ParlorCard from './ParlorCard';
 
-const ServiceFlatList = ({ horizontal = false, data, width }: { horizontal?: boolean, data: any, width: number }) => {
+const ServiceFlatList = ({
+  horizontal = false,
+  data,
+  width,
+}: {
+  horizontal?: boolean;
+  data: any;
+  width: number;
+}) => {
   return (
     <FlatList
       horizontal={horizontal}
-      ListFooterComponent={<View style={{ height: 50 }} />}
+      ListFooterComponent={<View style={{height: 50}} />}
       onEndReachedThreshold={0.5}
       numColumns={horizontal ? 1 : 2}
       {...(!horizontal && {
@@ -21,7 +29,7 @@ const ServiceFlatList = ({ horizontal = false, data, width }: { horizontal?: boo
       showsHorizontalScrollIndicator={false}
       data={data || []}
       keyExtractor={item => item?._id}
-      renderItem={({ item }) => (
+      renderItem={({item}) => (
         <ParlorCard
           horizontal={horizontal}
           key={item?._id}
@@ -31,9 +39,7 @@ const ServiceFlatList = ({ horizontal = false, data, width }: { horizontal?: boo
         />
       )}
     />
-  )
-}
+  );
+};
 
-export default ServiceFlatList
-
-const styles = StyleSheet.create({})
+export default ServiceFlatList;

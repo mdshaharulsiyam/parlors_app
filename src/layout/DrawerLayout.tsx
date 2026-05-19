@@ -5,7 +5,7 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import NameImage from '../components/Shared/NameImage';
 import {useGlobalContext} from '../Provider/GlobalContextProvider';
@@ -25,12 +25,15 @@ const Drawer = createDrawerNavigator();
 
 const DrawerLayout = () => {
   const {themeColors} = useGlobalContext();
-  const headerBaseStyle = (height: number) => ({
-    backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
-    height,
-    borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
-    borderWidth: 0.5,
-  });
+  const headerBaseStyle = useCallback(
+    (height: number) => ({
+      backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
+      height,
+      borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
+      borderWidth: 0.5,
+    }),
+    [themeColors],
+  );
 
   const screens = useMemo(
     () => [
@@ -102,7 +105,7 @@ const DrawerLayout = () => {
         },
       },
     ],
-    [themeColors],
+    [headerBaseStyle, themeColors],
   );
 
   return (
@@ -127,7 +130,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
   const dispatch = useDispatch();
   const {role} = useSelector((state: any) => state?.user);
   const {themeColors} = useGlobalContext();
-  const logout = async () => {
+  const logout = useCallback(async () => {
     await Promise.all([
       AsyncStorage.removeItem('token'),
       AsyncStorage.removeItem('role'),
@@ -140,7 +143,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
         {name: 'Tabs', params: {screen: 'Stacks', params: {screen: 'SignIn'}}},
       ],
     });
-  };
+  }, [dispatch, props.navigation]);
   const baseStyle = {
     backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
     marginBottom: 10,
@@ -166,7 +169,7 @@ function DrawerContent(props: DrawerContentComponentProps) {
       role ? {label: 'Logout', action: () => logout()} : null,
       {label: 'Close', action: () => props.navigation.closeDrawer()},
     ].filter(Boolean);
-  }, [role, props.navigation]);
+  }, [logout, props.navigation, role]);
 
   return (
     <DrawerContentScrollView

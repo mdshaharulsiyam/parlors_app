@@ -12,7 +12,9 @@ const TopBerber = ({refreshing}: {refreshing: boolean}) => {
   const [useFallback, setUseFallback] = useState(false);
 
   const coordinates = useMemo(() => {
-    if (useFallback || !cord) return undefined;
+    if (useFallback || !cord) {
+      return undefined;
+    }
     return JSON.stringify([cord.lng, cord.lat]);
   }, [cord, useFallback]);
 
@@ -32,7 +34,7 @@ const TopBerber = ({refreshing}: {refreshing: boolean}) => {
     if (refreshing) {
       refetch();
     }
-  }, [refreshing]);
+  }, [refetch, refreshing]);
   if (isLoading || isFetching) {
     return <Loader />;
   }

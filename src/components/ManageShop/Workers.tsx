@@ -22,8 +22,7 @@ import GradientButton from '../Shared/GradientButton';
 
 const Workers = () => {
   const {themeColors} = useGlobalContext();
-  const [totalWorkers, setTotalWorkers] = useState(1);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const isUpdating = false;
   const [inputValue, setInputValue] = useState<{workers: string}>({
     workers: '',
   });

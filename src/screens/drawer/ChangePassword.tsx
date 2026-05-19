@@ -60,6 +60,7 @@ const ChangePassword = () => {
         text1: 'failed to change password',
         text2: 'Please fill all fields',
       });
+      return;
     }
     const data = {
       password: inputValue['new password'],
@@ -84,7 +85,7 @@ const ChangePassword = () => {
           paddingHorizontal: 20,
           paddingVertical: 20,
         }}>
-        {Object.keys(inputValue).map((key, index, arr) => {
+        {Object.keys(inputValue).map(key => {
           return (
             <View key={key} style={{}}>
               <Text

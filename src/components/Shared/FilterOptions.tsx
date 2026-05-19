@@ -4,7 +4,6 @@ import {
   Image,
   ImageSourcePropType,
   ScrollView,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -45,7 +44,7 @@ const FilterOptions = () => {
     street_address: false,
   });
 
-  const [inputLabel, setInputLabel] = useState<IAddressInputLabel>({
+  const [inputLabel] = useState<IAddressInputLabel>({
     divisions: 'Division',
     districts: 'District',
     upazilas: 'Upazila',
@@ -61,7 +60,6 @@ const FilterOptions = () => {
     upazillaSearch,
     divisionSearch,
   });
-  const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
     closeFilter();
@@ -138,7 +136,7 @@ const FilterOptions = () => {
       </View>
 
       <SearchInput inputWidth="100%" />
-      {Object.keys(inputValue).map((key, index, arr) => {
+      {Object.keys(inputValue).map(key => {
         if (key !== 'street_address') {
           return (
             <View key={key}>
@@ -254,14 +252,3 @@ const FilterOptions = () => {
 };
 
 export default FilterOptions;
-
-const styles = StyleSheet.create({
-  selectContainer: {
-    marginBottom: 8,
-  },
-  selectHeading: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 5,
-  },
-});

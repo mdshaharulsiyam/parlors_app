@@ -1,8 +1,5 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
-  Animated,
   Dimensions,
   FlatList,
   Image,
@@ -13,7 +10,6 @@ import {
 import {useGet_bannersQuery} from '../../Redux/Apis/bannerApis';
 import {generateImageUrl} from '../../Redux/baseApis';
 import {Ratio3_2} from '../../utils/calculateHeight';
-import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 
@@ -22,19 +18,16 @@ const {width} = Dimensions.get('window');
 const Banner = ({refreshing}: {refreshing: boolean}) => {
   const {data, isLoading, isFetching, refetch} = useGet_bannersQuery(undefined);
   const flatListRef = useRef<FlatList<any> | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const navigate = useNavigation<DrawerNavigationProp<ScreenParamsType>>();
-  const scrollX = useRef(new Animated.Value(0)).current;
-
-  const handleScroll = Animated.event(
-    [{nativeEvent: {contentOffset: {x: scrollX}}}],
-    {useNativeDriver: false},
-  );
+  const [, setActiveIndex] = useState(0);
+  const dataLength = data?.data?.length ?? 0;
 
   useEffect(() => {
+    if (!dataLength) {
+      return;
+    }
     const interval = setInterval(() => {
       setActiveIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1) % data?.data?.length;
+        const nextIndex = (prevIndex + 1) % dataLength;
         if (flatListRef.current) {
           flatListRef.current?.scrollToOffset({
             offset: nextIndex * width + 10 * nextIndex,
@@ -46,12 +39,12 @@ const Banner = ({refreshing}: {refreshing: boolean}) => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [data?.data?.length]);
+  }, [dataLength]);
   useEffect(() => {
     if (refreshing) {
       refetch();
     }
-  }, [refreshing]);
+  }, [refetch, refreshing]);
 
   if (isLoading || isFetching) {
     return <Loader />;

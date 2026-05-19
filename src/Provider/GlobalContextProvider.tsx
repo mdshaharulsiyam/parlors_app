@@ -35,12 +35,21 @@ interface GlobalProviderProps {
 }
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
+const parseStoredRole = (role: string) => {
+  try {
+    return JSON.parse(role);
+  } catch {
+    return role;
+  }
+};
+
 const GlobalContextProvider = ({children}: GlobalProviderProps) => {
   const dispatch = useDispatch();
   const {width, height} = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const themeColors = useColorScheme() === 'dark' ? Colors.dark : Colors.light;
   const {data} = useGet_profileQuery(undefined);
+  const profile = data?.data;
   const [cord, setCord] = useState<ICord | null>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -50,7 +59,7 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
     search,
     width,
     height,
-    profile: data?.data,
+    profile,
     cord,
     isFilterOpen,
     openFilter: () => setIsFilterOpen(true),
@@ -66,9 +75,8 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
         ]);
         if (role && token) {
           await Promise.all([
-            dispatch(setRole(JSON.parse(role))),
-            dispatch(setToken(JSON.parse(token))),
-            dispatch(setUser(data?.data)),
+            dispatch(setRole(parseStoredRole(role))),
+            dispatch(setToken(token)),
           ]);
         }
       } catch (error) {
@@ -76,12 +84,15 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
       }
     };
     getData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(setRole(data?.data?.role));
-    dispatch(setUser(data?.data));
-  }, [data]);
+    if (!profile) {
+      return;
+    }
+    dispatch(setRole(profile?.role));
+    dispatch(setUser(profile));
+  }, [dispatch, profile]);
   useEffect(() => {
     const getCurrentLocation = async () => {
       try {
@@ -104,8 +115,9 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
 };
 export const useGlobalContext = (): GlobalContextType => {
   const context = useContext(GlobalContext);
-  if (!context)
+  if (!context) {
     throw new Error('useGlobalContext must be used within a GlobalProvider');
+  }
   return context;
 };
 export default GlobalContextProvider;

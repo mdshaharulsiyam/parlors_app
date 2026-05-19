@@ -1,4 +1,3 @@
-import {NavigationProp, useNavigation} from '@react-navigation/native';
 import React, {useCallback} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
 
@@ -24,16 +23,14 @@ import {OtherIcons} from '../../constant/images';
 import {globalStyles} from '../../constant/styles';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {hexToRGBA} from '../../utils/hexToRGBA';
-import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 import {IUserProfile} from '../../utils/types/Types';
 
 const Profile = () => {
   const user: IUserProfile = useSelector((state: any) => state?.user?.user);
-  const navigation = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
   const [countryCode, setCountryCode] = React.useState('BD');
-  const [callingCode, setCallingCode] = React.useState('880');
+  const [, setCallingCode] = React.useState('880');
   const {themeColors, width} = useGlobalContext();
   const [error, setError] = React.useState({
     name: false,
@@ -93,7 +90,7 @@ const Profile = () => {
           paddingVertical: 20,
           zIndex: 1,
         }}>
-        {Object.keys(inputValue).map((key, index, arr) => {
+        {Object.keys(inputValue).map(key => {
           if (key === 'gender') {
             return (
               <View key={key} style={{zIndex: 100000000}}>

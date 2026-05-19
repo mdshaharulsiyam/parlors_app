@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -56,6 +55,7 @@ const Reset = () => {
         text1: 'failed to reset password',
         text2: 'Please fill all fields',
       });
+      return;
     }
     const data = {
       password: inputValue.password,
@@ -190,7 +190,5 @@ const Reset = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default Reset;

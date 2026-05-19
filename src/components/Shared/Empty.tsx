@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ImageSourcePropType, StyleSheet, View} from 'react-native';
+import {Image, ImageSourcePropType, View} from 'react-native';
 import {OtherIcons} from '../../constant/images';
 
 const Empty = ({data}: {data: any}) => {
@@ -17,5 +17,3 @@ const Empty = ({data}: {data: any}) => {
 };
 
 export default Empty;
-
-const styles = StyleSheet.create({});

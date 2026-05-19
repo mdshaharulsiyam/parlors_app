@@ -7,7 +7,6 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
-  StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -72,5 +71,3 @@ const SearchInput = ({inputWidth}: {inputWidth?: any}) => {
 };
 
 export default SearchInput;
-
-const styles = StyleSheet.create({});

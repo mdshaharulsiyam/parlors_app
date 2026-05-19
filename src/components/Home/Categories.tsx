@@ -10,20 +10,24 @@ import Loader from '../Shared/Loader';
 const Categories = ({refreshing}: {refreshing: boolean}) => {
   const {themeColors} = useGlobalContext();
   const ref = useRef<FlatList<any | null>>(null);
-  const [Index, setIndex] = useState(0);
+  const [, setIndex] = useState(0);
   const {data, isLoading, isFetching, refetch} = useGetCategoriesQuery({
     page: 1,
     limit: 20,
   });
+  const dataLength = data?.data?.length ?? 0;
   useEffect(() => {
     if (refreshing) {
       refetch();
     }
-  }, [refreshing]);
+  }, [refetch, refreshing]);
   useEffect(() => {
+    if (!dataLength) {
+      return;
+    }
     const interval = setInterval(() => {
       setIndex(prevIndex => {
-        const nextIndex = (prevIndex + 1) % data?.data?.length;
+        const nextIndex = (prevIndex + 1) % dataLength;
         if (ref.current) {
           ref.current?.scrollToOffset({
             offset: nextIndex * 100 + 10 * nextIndex,
@@ -34,7 +38,7 @@ const Categories = ({refreshing}: {refreshing: boolean}) => {
       });
     }, 3000);
     return () => clearInterval(interval);
-  }, [ref, data?.data?.length]);
+  }, [dataLength]);
 
   if (isLoading || isFetching) {
     return <Loader />;

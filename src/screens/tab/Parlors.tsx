@@ -1,6 +1,6 @@
 import {useRoute} from '@react-navigation/native';
 import React from 'react';
-import {Dimensions, FlatList, StyleSheet} from 'react-native';
+import {Dimensions, FlatList} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ParlorCard from '../../components/Shared/ParlorCard';
 import SearchFilterTrigger from '../../components/Shared/SearchFilterTrigger';
@@ -11,10 +11,10 @@ import {hexToRGBA} from '../../utils/hexToRGBA';
 
 const Parlors = () => {
   const params = useRoute()?.params as {search: string};
-  const [search, setSearch] = React.useState(params?.search || '');
+  const search = params?.search || '';
   const {width, height} = Dimensions.get('window');
   const {themeColors} = useGlobalContext();
-  const {data} = useGetServicesQuery({limit: 10, page: 1});
+  const {data} = useGetServicesQuery({limit: 10, page: 1, search});
   return (
     <SafeAreaView
       style={{
@@ -23,9 +23,7 @@ const Parlors = () => {
         height,
       }}>
       <FlatList
-        onEndReached={e => {
-          //console.log(e);
-        }}
+        onEndReached={() => {}}
         ListHeaderComponent={() => <SearchFilterTrigger />}
         stickyHeaderIndices={[0]}
         onEndReachedThreshold={0.5}
@@ -52,14 +50,3 @@ const Parlors = () => {
 };
 
 export default Parlors;
-
-const styles = StyleSheet.create({
-  headerContainer: {
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    // flex: 1,
-    flexDirection: 'row',
-  },
-});

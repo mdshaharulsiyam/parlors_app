@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ServicesCreateUpdateForm from '../../components/ManageShop/ServicesCreateUpdateForm';
@@ -22,5 +21,3 @@ const ServiceAddEdit = () => {
 };
 
 export default ServiceAddEdit;
-
-const styles = StyleSheet.create({});

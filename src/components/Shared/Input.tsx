@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
-  StyleSheet,
   Text,
   TextInput,
   TextInputProps,
@@ -40,12 +39,12 @@ const Input: React.FC<InputProps> = ({
   style,
   validate = false,
   validationMessage = 'Required field',
-  isValid = true,
+  isValid: _isValid = true,
   isInvalid = false,
   errorMessage = 'This field is required',
   inputType = 'text',
   bordersColor = 'gray',
-  handleSubmit = value => {},
+  handleSubmit = _value => {},
   setInputValue,
   ...props
 }: InputProps) => {
@@ -77,7 +76,7 @@ const Input: React.FC<InputProps> = ({
       case 'number':
         return 'numeric';
       default:
-        return 'default';
+        return keyboardType;
     }
   };
 
@@ -138,5 +137,3 @@ const Input: React.FC<InputProps> = ({
 };
 
 export default Input;
-
-const styles = StyleSheet.create({});

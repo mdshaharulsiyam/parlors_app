@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import WebView from 'react-native-webview';
 const TextComponent = () => {
   return (
@@ -9,7 +9,7 @@ const TextComponent = () => {
         source={{
           uri: 'https://personal-shop-ten.vercel.app/login',
         }}
-        onMessage={event => {
+        onMessage={_event => {
           //console.log('Message from WebView:', event?.nativeEvent?.data);
         }}
         javaScriptEnabled={true}
@@ -21,7 +21,7 @@ const TextComponent = () => {
         source={{
           uri: 'https://ammur.vercel.app/auth/sign-in',
         }}
-        onMessage={event => {
+        onMessage={_event => {
           //console.log('Message from WebView:', event?.nativeEvent?.data);
         }}
         javaScriptEnabled={true}
@@ -32,5 +32,3 @@ const TextComponent = () => {
 };
 
 export default TextComponent;
-
-const styles = StyleSheet.create({});

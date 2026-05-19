@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import {globalStyles} from '../../constant/styles';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
@@ -89,5 +89,3 @@ const SingleSelectDropDown = ({
 };
 
 export default SingleSelectDropDown;
-
-const styles = StyleSheet.create({});

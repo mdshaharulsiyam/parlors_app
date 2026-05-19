@@ -38,7 +38,7 @@ const businessCategoryData = [
 const Profile = ({creating = false}: {creating?: boolean}) => {
   const dispatch = useDispatch();
   const {width} = useGlobalContext();
-  const [isUpdating, setIsUpdating] = useState(false);
+  const isUpdating = false;
   const [inputValue, setInputValue] = useState<IShopInput>({
     name: '',
     business_category: '',
@@ -51,7 +51,7 @@ const Profile = ({creating = false}: {creating?: boolean}) => {
     contact: false,
     business_category: false,
   });
-  const [inputLabel, setInputLabel] = useState<IShopInputLabel>({
+  const [inputLabel] = useState<IShopInputLabel>({
     name: 'Shop name',
     business_category: 'Business Category',
     email: 'Shop Email (optional)',

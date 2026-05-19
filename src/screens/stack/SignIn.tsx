@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -37,7 +36,7 @@ const SignIn = () => {
   });
 
   const [inputValue, setInputValue] = React.useState<ILogin>({
-    email: 'siyamoffice0273@gmail.com',
+    email: 'customer@salonpro.local',
     password: '123456',
   });
 
@@ -57,6 +56,7 @@ const SignIn = () => {
         text1: 'failed to login',
         text2: 'Please fill all fields',
       });
+      return;
     }
     const storeData = async (res: any) => {
       await Promise.all([
@@ -207,87 +207,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  info: {
-    fontSize: 16,
-    marginVertical: 5,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    height: 50,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    fontSize: 16,
-    borderWidth: 1,
-  },
-  passwordContainer: {
-    width: '100%',
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    borderWidth: 1.5,
-    marginBottom: 15,
-  },
-  passwordInput: {
-    flex: 1,
-    fontSize: 16,
-  },
-  eyeIcon: {
-    fontSize: 20,
-    marginLeft: 10,
-  },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    fontSize: 14,
-    marginBottom: 20,
-  },
-  button: {
-    width: '100%',
-    height: 50,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  signupContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  signupText: {
-    fontWeight: 'bold',
-  },
-  errorText: {
-    fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-});

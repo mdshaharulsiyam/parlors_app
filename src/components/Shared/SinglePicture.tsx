@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ImageSourcePropType, StyleSheet, Text, View} from 'react-native';
+import {Image, ImageSourcePropType, Text, View} from 'react-native';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {OtherIcons} from '../../constant/images';
 import {globalStyles} from '../../constant/styles';
@@ -67,5 +67,3 @@ const SinglePicture = () => {
 };
 
 export default SinglePicture;
-
-const styles = StyleSheet.create({});

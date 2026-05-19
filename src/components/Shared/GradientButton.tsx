@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {hexToRGBA} from '../../utils/hexToRGBA';
@@ -42,5 +42,3 @@ const GradientButton = ({
 };
 
 export default GradientButton;
-
-const styles = StyleSheet.create({});

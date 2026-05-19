@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 
 const Loader = () => {
@@ -12,5 +12,3 @@ const Loader = () => {
 };
 
 export default Loader;
-
-const styles = StyleSheet.create({});

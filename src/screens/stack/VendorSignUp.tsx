@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import Address from '../../components/ManageShop/Address';
@@ -10,7 +10,7 @@ import {hexToRGBA} from '../../utils/hexToRGBA';
 
 const VendorSignUp = () => {
   const {themeColors} = useGlobalContext();
-  const {index, profile} = useSelector((state: any) => state?.vendor);
+  const {index} = useSelector((state: any) => state?.vendor);
   const components = [
     <Profile creating={true} />,
     <Address creating={true} />,

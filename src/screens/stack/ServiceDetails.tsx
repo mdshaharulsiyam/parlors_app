@@ -17,6 +17,7 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import Empty from '../../components/Shared/Empty';
 import GradientButton from '../../components/Shared/GradientButton';
+import Loader from '../../components/Shared/Loader';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {useGetServiceByIdQuery} from '../../Redux/Apis/seviceListingApis';
 import {generateImageUrl} from '../../Redux/baseApis';
@@ -106,7 +107,9 @@ const ServiceDetails = () => {
     if (Platform.OS === 'ios') setOpen(false);
   };
   const textColor = themeColors.constWhite as string;
-  console.log(weekDay);
+  if (isLoading || isFetching) {
+    return <Loader />;
+  }
   return (
     <ScrollView
       style={[

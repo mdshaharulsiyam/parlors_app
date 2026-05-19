@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Animated,
   StyleSheet,
   Text,
   TextInput,
@@ -81,7 +80,6 @@ const Select: React.FC<SelectProps> = ({
   errorMessage = 'This field is required',
 }) => {
   const {themeColors} = useGlobalContext();
-  const [animation] = useState(new Animated.Value(0));
   const [isTouched, setIsTouched] = useState(false);
 
   const handleSelectChange = (item: any) => {
