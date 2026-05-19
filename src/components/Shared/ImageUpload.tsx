@@ -1,57 +1,8 @@
+import * as ImagePicker from 'expo-image-picker';
 import React from 'react';
-import {
-  Alert,
-  PermissionsAndroid,
-  Platform,
-  TouchableOpacity,
-} from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+import {Alert, TouchableOpacity} from 'react-native';
 import {IImageUploadProps} from '../../utils/types/PropsTypes';
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
-
-/*******  1de9abf0-3697-409d-a18f-e0bc82f5265b  *******/
-export const requestCameraPermission = async () => {
-  if (Platform.OS !== 'android') return true;
-
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-      {
-        title: 'Camera Permission',
-        message: 'App needs access to your camera',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    return granted === PermissionsAndroid.RESULTS.GRANTED;
-  } catch (err) {
-    console.warn(err);
-    return false;
-  }
-};
-export const requestStoragePermission = async () => {
-  if (Platform.OS !== 'android') return true;
-
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      {
-        title: 'Storage Permission',
-        message: 'App needs access to your storage to select images',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
-    return granted === PermissionsAndroid.RESULTS.GRANTED;
-  } catch (err) {
-    console.warn(err);
-    return false;
-  }
-};
 const ImageUpload = ({
   images,
   setImages,
@@ -60,33 +11,44 @@ const ImageUpload = ({
   multiple = false,
 }: IImageUploadProps) => {
   const pickImage = async () => {
-    const hasStoragePermission = await requestStoragePermission();
-    if (!hasStoragePermission) {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
       Alert.alert(
         'Permission denied',
         'Storage permission is required to select images',
       );
       return;
     }
+
     try {
-      const result = await ImagePicker.openPicker({
-        multiple: multiple,
-        cropping: true,
-        height: 500,
-        width: 500,
-        maxFiles: maxNumber,
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: !multiple,
+        allowsMultipleSelection: multiple,
+        aspect: [1, 1],
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 0.9,
+        selectionLimit: maxNumber,
       });
-      const newImage = {
-        uri: result.path,
-        name: result?.filename ?? 'random.jpg',
-        type: result?.mime ?? 'image/jpeg',
-        mimeType: result?.mime ?? 'image/jpeg',
-      };
-      multiple ? setImages([...images, newImage]) : setImages([newImage]);
-    } catch (error: any) {
-      if (error.code !== 'E_PICKER_CANCELLED') {
-        Alert.alert('Error', 'Failed to pick image');
-      }
+
+      if (result.canceled) return;
+
+      const pickedImages = result.assets.map((asset, index) => {
+        const mimeType = asset.mimeType ?? 'image/jpeg';
+        return {
+          uri: asset.uri,
+          name: asset.fileName ?? `parlors-upload-${Date.now()}-${index}.jpg`,
+          type: mimeType,
+          mimeType,
+        };
+      });
+
+      setImages(
+        multiple
+          ? [...images, ...pickedImages].slice(0, maxNumber)
+          : pickedImages,
+      );
+    } catch (error) {
+      Alert.alert('Error', 'Failed to pick image');
     }
   };
 

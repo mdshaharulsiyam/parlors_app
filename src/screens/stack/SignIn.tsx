@@ -1,8 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
 import {Link, NavigationProp, useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {
@@ -27,44 +23,7 @@ import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {setRole, setToken} from '../../Redux/States/userSlice';
 import {hexToRGBA} from '../../utils/hexToRGBA';
 import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
-export const signIn = async () => {
-  try {
-    //   await GoogleSignin.hasPlayServices();
-    const response = await GoogleSignin.signIn();
-    //console.log(response);
-    if (response) {
-    } else {
-      // sign in was cancelled by user
-    }
-  } catch (error: any) {
-    //console.log(error);
-    if (error) {
-      switch (error?.code) {
-        case statusCodes.IN_PROGRESS:
-          break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          break;
-        default:
-      }
-    } else {
-    }
-  }
-};
 
-export interface GoogleSignInResponse {
-  idToken: string;
-  scopes: string[];
-  serverAuthCode: string | null;
-  user: {
-    email: string;
-    familyName: string;
-    givenName: string;
-    id: string;
-    name: string;
-    photo: string;
-  };
-  type: 'success' | 'error';
-}
 const SignIn = () => {
   const dispatch = useDispatch();
 
@@ -241,37 +200,6 @@ const SignIn = () => {
               {'  '} Sign Up
             </Text>
           </Link>
-        </View>
-
-        <View
-          style={{
-            paddingHorizontal: 25,
-            marginTop: 20,
-          }}>
-          {/* <GoogleSigninButton
-            onPress={signIn}
-            disabled={isSigninInProgress}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-          /> */}
-          <GradientButton handler={() => signIn()}>
-            {isLoading ? (
-              <ActivityIndicator
-                size="small"
-                color={themeColors.constWhite as string}
-              />
-            ) : (
-              <Text
-                style={{
-                  color: themeColors.constWhite as string,
-                  textAlign: 'center',
-                  fontWeight: 700,
-                  fontSize: 18,
-                }}>
-                Login with Google
-              </Text>
-            )}
-          </GradientButton>
         </View>
       </View>
     </SafeAreaView>

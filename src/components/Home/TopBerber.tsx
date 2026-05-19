@@ -45,7 +45,7 @@ const TopBerber = ({refreshing}: {refreshing: boolean}) => {
             commonStyles.headerText,
             {color: themeColors.black as string},
           ]}>
-          Top Vendors
+          Top salons
         </Text>
       </View>
       <Empty data={data} />

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
+  Modal,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -9,17 +10,19 @@ import {
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {OtherIcons} from '../../constant/images';
 import {hexToRGBA} from '../../utils/hexToRGBA';
+import FilterOptions from './FilterOptions';
 import SearchInput from './SearchInput';
 
 const SearchFilterTrigger = () => {
-  const {themeColors, bottomSheetRef} = useGlobalContext();
+  const {themeColors, isFilterOpen, openFilter, closeFilter} =
+    useGlobalContext();
 
   return (
     <View style={styles.headerContainer}>
       <SearchInput />
 
       <TouchableOpacity
-        onPress={() => bottomSheetRef.current?.snapToIndex(1)}
+        onPress={openFilter}
         style={{
           backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
           padding: 6,
@@ -37,6 +40,21 @@ const SearchFilterTrigger = () => {
           }}
         />
       </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        transparent
+        visible={isFilterOpen}
+        onRequestClose={closeFilter}>
+        <View style={styles.modalScrim}>
+          <View
+            style={[
+              styles.modalSheet,
+              {backgroundColor: themeColors.white as string},
+            ]}>
+            <FilterOptions />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -50,5 +68,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // flex: 1,
     flexDirection: 'row',
+  },
+  modalScrim: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(15, 23, 42, 0.35)',
+  },
+  modalSheet: {
+    maxHeight: '86%',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    overflow: 'hidden',
   },
 });

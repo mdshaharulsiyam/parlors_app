@@ -40,7 +40,9 @@ export const useCreateVendor = () => {
     };
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value);
+      if (value !== undefined && value !== null) {
+        formData.append(key, String(value));
+      }
     });
     createVendor(formData)
       .unwrap()

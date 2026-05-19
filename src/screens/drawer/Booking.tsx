@@ -1,431 +1,422 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   FlatList,
   Image,
+  ImageSourcePropType,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {OtherIcons} from '../../constant/images';
 import {hexToRGBA} from '../../utils/hexToRGBA';
-import {commonStyles} from '../../utils/styles/Styles';
-import {IBooking} from '../../utils/types/Types';
 
-const data: IBooking[] = [
+type BookingStatus =
+  | 'pending'
+  | 'confirmed'
+  | 'in-progress'
+  | 'completed'
+  | 'no-show'
+  | 'cancelled';
+
+type BookingItem = {
+  id: string;
+  reference: string;
+  salon: string;
+  service: string;
+  worker: string;
+  date: string;
+  time: string;
+  capacity: string;
+  status: BookingStatus;
+};
+
+const bookings: BookingItem[] = [
   {
-    _id: '1',
-    parlor: 'Shiny Cuts',
+    id: '1',
+    reference: 'PB-1048',
+    salon: 'Shiny Cuts',
+    service: 'Haircut and styling',
     worker: 'John Doe',
-    date: '2025-04-24',
+    date: 'May 20, 2026',
     time: '10:00 AM',
-    status: 'accepted',
-    service: 'Haircut',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
+    capacity: '2 slots left',
+    status: 'confirmed',
   },
   {
-    _id: '2',
-    parlor: 'Glamour Hair Studio',
+    id: '2',
+    reference: 'PB-1049',
+    salon: 'Glamour Hair Studio',
+    service: 'Manicure',
     worker: 'Jane Smith',
-    date: '2025-04-24',
-    time: '11:00 AM',
+    date: 'May 21, 2026',
+    time: '11:30 AM',
+    capacity: 'Full after this booking',
     status: 'pending',
-    service: 'Manicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Glamour+Hair+Studio', // Placeholder image
   },
   {
-    _id: '3',
-    parlor: 'Beauty Haven',
+    id: '3',
+    reference: 'PB-1032',
+    salon: 'Beauty Haven',
+    service: 'Pedicure',
     worker: 'Emily Clark',
-    date: '2025-04-24',
+    date: 'May 14, 2026',
     time: '12:00 PM',
-    status: 'complete',
-    service: 'Pedicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
+    capacity: 'Completed',
+    status: 'completed',
   },
   {
-    _id: '4',
-    parlor: 'Shiny Cuts',
+    id: '4',
+    reference: 'PB-1026',
+    salon: 'Shiny Cuts',
+    service: 'Facial',
     worker: 'Mike Johnson',
-    date: '2025-04-24',
+    date: 'May 12, 2026',
     time: '1:00 PM',
-    status: 'accepted',
-    service: 'Facial',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
+    capacity: 'Released for rebooking',
+    status: 'cancelled',
   },
   {
-    _id: '5',
-    parlor: 'Glamour Hair Studio',
+    id: '5',
+    reference: 'PB-1018',
+    salon: 'Glamour Hair Studio',
+    service: 'Massage',
     worker: 'Lisa Brown',
-    date: '2025-04-24',
+    date: 'May 8, 2026',
     time: '2:00 PM',
-    status: 'canceled',
-    service: 'Massage',
-    parlorImage: 'https://via.placeholder.com/150?text=Glamour+Hair+Studio', // Placeholder image
-  },
-  {
-    _id: '6',
-    parlor: 'Beauty Haven',
-    worker: 'Karen Lee',
-    date: '2025-04-24',
-    time: '3:00 PM',
-    status: 'accepted',
-    service: 'Haircut',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
-  },
-  {
-    _id: '7',
-    parlor: 'Shiny Cuts',
-    worker: 'John Doe',
-    date: '2025-04-25',
-    time: '9:00 AM',
-    status: 'complete',
-    service: 'Manicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
-  },
-  {
-    _id: '8',
-    parlor: 'Beauty Haven',
-    worker: 'Emily Clark',
-    date: '2025-04-25',
-    time: '10:00 AM',
-    status: 'pending',
-    service: 'Pedicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
-  },
-  {
-    _id: '9',
-    parlor: 'Glamour Hair Studio',
-    worker: 'Jane Smith',
-    date: '2025-04-25',
-    time: '11:00 AM',
-    status: 'accepted',
-    service: 'Facial',
-    parlorImage: 'https://via.placeholder.com/150?text=Glamour+Hair+Studio', // Placeholder image
-  },
-  {
-    _id: '10',
-    parlor: 'Shiny Cuts',
-    worker: 'Mike Johnson',
-    date: '2025-04-25',
-    time: '12:00 PM',
-    status: 'canceled',
-    service: 'Massage',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
-  },
-  {
-    _id: '11',
-    parlor: 'Beauty Haven',
-    worker: 'Karen Lee',
-    date: '2025-04-25',
-    time: '1:00 PM',
-    status: 'complete',
-    service: 'Haircut',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
-  },
-  {
-    _id: '12',
-    parlor: 'Glamour Hair Studio',
-    worker: 'Lisa Brown',
-    date: '2025-04-25',
-    time: '2:00 PM',
-    status: 'pending',
-    service: 'Manicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Glamour+Hair+Studio', // Placeholder image
-  },
-  {
-    _id: '13',
-    parlor: 'Shiny Cuts',
-    worker: 'John Doe',
-    date: '2025-04-26',
-    time: '9:00 AM',
-    status: 'accepted',
-    service: 'Pedicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
-  },
-  {
-    _id: '14',
-    parlor: 'Beauty Haven',
-    worker: 'Emily Clark',
-    date: '2025-04-26',
-    time: '10:00 AM',
-    status: 'canceled',
-    service: 'Facial',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
-  },
-  {
-    _id: '15',
-    parlor: 'Glamour Hair Studio',
-    worker: 'Jane Smith',
-    date: '2025-04-26',
-    time: '11:00 AM',
-    status: 'complete',
-    service: 'Massage',
-    parlorImage: 'https://via.placeholder.com/150?text=Glamour+Hair+Studio', // Placeholder image
-  },
-  {
-    _id: '16',
-    parlor: 'Shiny Cuts',
-    worker: 'Mike Johnson',
-    date: '2025-04-26',
-    time: '12:00 PM',
-    status: 'accepted',
-    service: 'Haircut',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
-  },
-  {
-    _id: '17',
-    parlor: 'Beauty Haven',
-    worker: 'Karen Lee',
-    date: '2025-04-26',
-    time: '1:00 PM',
-    status: 'pending',
-    service: 'Manicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
-  },
-  {
-    _id: '18',
-    parlor: 'Glamour Hair Studio',
-    worker: 'Lisa Brown',
-    date: '2025-04-26',
-    time: '2:00 PM',
-    status: 'accepted',
-    service: 'Pedicure',
-    parlorImage: 'https://via.placeholder.com/150?text=Glamour+Hair+Studio', // Placeholder image
-  },
-  {
-    _id: '19',
-    parlor: 'Shiny Cuts',
-    worker: 'John Doe',
-    date: '2025-04-27',
-    time: '9:00 AM',
-    status: 'canceled',
-    service: 'Facial',
-    parlorImage: 'https://via.placeholder.com/150?text=Shiny+Cuts', // Placeholder image
-  },
-  {
-    _id: '20',
-    parlor: 'Beauty Haven',
-    worker: 'Emily Clark',
-    date: '2025-04-27',
-    time: '10:00 AM',
-    status: 'complete',
-    service: 'Massage',
-    parlorImage: 'https://via.placeholder.com/150?text=Beauty+Haven', // Placeholder image
+    capacity: 'Flagged for review',
+    status: 'no-show',
   },
 ];
-const allStatus = ['pending', 'complete', 'accepted', 'canceled'];
+
+const filters: Array<'all' | BookingStatus> = [
+  'all',
+  'pending',
+  'confirmed',
+  'in-progress',
+  'completed',
+  'cancelled',
+];
+
+const statusColors: Record<BookingStatus, string> = {
+  pending: '#D97706',
+  confirmed: '#0F766E',
+  'in-progress': '#2563EB',
+  completed: '#16A34A',
+  'no-show': '#7C2D12',
+  cancelled: '#DC2626',
+};
 
 const Booking = () => {
-  const [status, setStatus] = useState<string>(allStatus[0]);
+  const [status, setStatus] = useState<'all' | BookingStatus>('all');
   const {themeColors} = useGlobalContext();
-  const black = themeColors.black as string;
-  const white = themeColors.white as string;
-  const primary = themeColors.primary as string;
-  const yellow = themeColors.yellow as string;
-  const red = themeColors.red as string;
-  const green = themeColors.green as string;
+  const textColor = themeColors.black as string;
+  const border = hexToRGBA(textColor, 0.08);
+  const filteredBookings = useMemo(() => {
+    if (status === 'all') return bookings;
+    return bookings.filter(item => item.status === status);
+  }, [status]);
+
   return (
-    <View
-      style={{
-        backgroundColor: hexToRGBA(white, 0.95),
-        paddingHorizontal: 10,
-      }}>
+    <SafeAreaView
+      style={[styles.safeArea, {backgroundColor: themeColors.white as string}]}>
       <FlatList
+        data={filteredBookings}
+        keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.content}
         ListHeaderComponent={() => (
-          <View>
-            <Text
-              style={{
-                color: black,
-                fontWeight: '600',
-                fontSize: 20,
-                textTransform: 'capitalize',
-                marginTop: 5,
-                marginBottom: 10,
-              }}>
-              {status} Bookings
-            </Text>
+          <View style={styles.header}>
+            <View style={[styles.summaryPanel, {borderColor: border}]}>
+              <Text
+                style={[
+                  styles.eyebrow,
+                  {color: themeColors.primary as string},
+                ]}>
+                Booking lifecycle
+              </Text>
+              <Text style={[styles.title, {color: textColor}]}>
+                Upcoming slots, cancellation rules, and service history.
+              </Text>
+              <View style={styles.summaryRow}>
+                <SummaryMetric label="Active" value="2" color={textColor} />
+                <SummaryMetric
+                  label="Reviews due"
+                  value="1"
+                  color={textColor}
+                />
+                <SummaryMetric label="Points" value="120" color={textColor} />
+              </View>
+            </View>
             <FlatList
-              data={allStatus}
+              data={filters}
               horizontal
-              contentContainerStyle={{
-                gap: 5,
-                marginVertical: 8,
-              }}
               showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.filterRow}
               keyExtractor={item => item}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() => setStatus(item)}
-                  activeOpacity={0.7}
-                  style={[
-                    commonStyles.Button,
-                    {
-                      backgroundColor: item == status ? primary : yellow,
-                      borderRadius: 3,
-                    },
-                  ]}
-                  key={item}>
-                  <Text
-                    style={{
-                      textTransform: 'uppercase',
-                      fontWeight: '600',
-                      color: black,
-                    }}>
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-              )}
+              renderItem={({item}) => {
+                const active = item === status;
+                return (
+                  <TouchableOpacity
+                    activeOpacity={0.78}
+                    onPress={() => setStatus(item)}
+                    style={[
+                      styles.filterButton,
+                      {
+                        backgroundColor: active
+                          ? (themeColors.primary as string)
+                          : hexToRGBA(textColor, 0.06),
+                      },
+                    ]}>
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        styles.filterText,
+                        {color: active ? '#FFFFFF' : textColor},
+                      ]}>
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
             />
           </View>
         )}
-        contentContainerStyle={{
-          padding: 5,
-        }}
-        data={data?.filter(item => item?.status == status)}
-        keyExtractor={item => item?._id}
         renderItem={({item}) => (
-          <View
-            style={[
-              styles.card,
-              {
-                backgroundColor: hexToRGBA(black, 0.1),
-              },
-            ]}>
-            {/* Parlor Image */}
-            <Image source={{uri: item.parlorImage}} style={styles.image} />
-
-            {/* Booking Details */}
-            <View style={[styles.detailsContainer]}>
-              <Text
-                style={[
-                  styles.parlor,
-                  {
-                    color: hexToRGBA(black, 0.9),
-                  },
-                ]}>
-                {item.parlor}
-              </Text>
-              <Text
-                style={[
-                  styles.worker,
-                  {
-                    color: hexToRGBA(black, 0.7),
-                  },
-                ]}>
-                Worker: {item.worker}
-              </Text>
-              <Text
-                style={[
-                  styles.date,
-                  {
-                    color: hexToRGBA(black, 0.7),
-                  },
-                ]}>
-                Date: {item.date}
-              </Text>
-              <Text
-                style={[
-                  styles.time,
-                  {
-                    color: hexToRGBA(black, 0.7),
-                  },
-                ]}>
-                Time: {item.time}
-              </Text>
-              <Text
-                style={[
-                  styles.status,
-                  {
-                    color:
-                      item.status == 'canceled'
-                        ? red
-                        : item.status == 'pending'
-                        ? yellow
-                        : item.status == 'accepted'
-                        ? primary
-                        : green,
-                  },
-                ]}>
-                Status: {item.status}
-              </Text>
-              <Text
-                style={[
-                  styles.service,
-                  {
-                    color: hexToRGBA(black, 0.7),
-                  },
-                ]}>
-                Service: {item.service}
-              </Text>
-            </View>
-          </View>
+          <BookingCard item={item} textColor={textColor} border={border} />
         )}
       />
+    </SafeAreaView>
+  );
+};
+
+type SummaryMetricProps = {
+  label: string;
+  value: string;
+  color: string;
+};
+
+const SummaryMetric = ({label, value, color}: SummaryMetricProps) => (
+  <View style={styles.metric}>
+    <Text style={[styles.metricValue, {color}]}>{value}</Text>
+    <Text style={[styles.metricLabel, {color: hexToRGBA(color, 0.62)}]}>
+      {label}
+    </Text>
+  </View>
+);
+
+type BookingCardProps = {
+  item: BookingItem;
+  textColor: string;
+  border: string;
+};
+
+const BookingCard = ({item, textColor, border}: BookingCardProps) => {
+  const statusColor = statusColors[item.status];
+  return (
+    <View style={[styles.card, {borderColor: border}]}>
+      <View style={styles.cardTop}>
+        <View style={styles.logoWrap}>
+          <Image
+            source={OtherIcons.Logo as ImageSourcePropType}
+            style={styles.logo}
+          />
+        </View>
+        <View style={styles.cardTitleWrap}>
+          <Text numberOfLines={1} style={[styles.salon, {color: textColor}]}>
+            {item.salon}
+          </Text>
+          <Text style={[styles.reference, {color: hexToRGBA(textColor, 0.56)}]}>
+            {item.reference}
+          </Text>
+        </View>
+        <View
+          style={[
+            styles.statusPill,
+            {backgroundColor: hexToRGBA(statusColor, 0.12)},
+          ]}>
+          <Text style={[styles.statusText, {color: statusColor}]}>
+            {item.status}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.detailGrid}>
+        <Detail label="Service" value={item.service} color={textColor} />
+        <Detail label="Worker" value={item.worker} color={textColor} />
+        <Detail label="Date" value={item.date} color={textColor} />
+        <Detail label="Time" value={item.time} color={textColor} />
+      </View>
+
+      <View
+        style={[
+          styles.policyNote,
+          {backgroundColor: hexToRGBA(textColor, 0.05)},
+        ]}>
+        <Text style={[styles.policyText, {color: hexToRGBA(textColor, 0.68)}]}>
+          {item.capacity}. Free cancellation is available until 2 hours before
+          the slot.
+        </Text>
+      </View>
     </View>
   );
 };
 
+type DetailProps = {
+  label: string;
+  value: string;
+  color: string;
+};
+
+const Detail = ({label, value, color}: DetailProps) => (
+  <View style={styles.detail}>
+    <Text style={[styles.detailLabel, {color: hexToRGBA(color, 0.52)}]}>
+      {label}
+    </Text>
+    <Text numberOfLines={1} style={[styles.detailValue, {color}]}>
+      {value}
+    </Text>
+  </View>
+);
+
 export default Booking;
 
 const styles = StyleSheet.create({
-  card: {
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
-    flexDirection: 'row',
-  },
-  image: {
-    width: 130,
-    height: 130,
-    borderRadius: 30,
-    marginRight: 15,
-  },
-  detailsContainer: {
+  safeArea: {
     flex: 1,
+  },
+  content: {
+    padding: 16,
+    paddingBottom: 96,
+    gap: 12,
+  },
+  header: {
+    gap: 14,
+    marginBottom: 2,
+  },
+  summaryPanel: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 18,
+    gap: 14,
+  },
+  eyebrow: {
+    fontSize: 12,
+    fontWeight: '800',
+    textTransform: 'uppercase',
+  },
+  title: {
+    fontSize: 23,
+    lineHeight: 30,
+    fontWeight: '800',
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  metric: {
+    flex: 1,
+    minWidth: 0,
+  },
+  metricValue: {
+    fontSize: 22,
+    fontWeight: '800',
+  },
+  metricLabel: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  filterRow: {
+    gap: 8,
+    paddingRight: 16,
+  },
+  filterButton: {
+    height: 36,
+    minWidth: 78,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+  },
+  filterText: {
+    fontSize: 12,
+    fontWeight: '800',
+    textTransform: 'capitalize',
+  },
+  card: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 14,
+    gap: 14,
+  },
+  cardTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  logoWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
     justifyContent: 'center',
   },
-  parlor: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+  logo: {
+    width: 30,
+    height: 30,
+    resizeMode: 'contain',
   },
-  worker: {
+  cardTitleWrap: {
+    flex: 1,
+    minWidth: 0,
+  },
+  salon: {
     fontSize: 16,
-    color: '#666',
-    marginTop: 5,
+    fontWeight: '800',
   },
-  date: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 5,
+  reference: {
+    marginTop: 3,
+    fontSize: 12,
+    fontWeight: '700',
   },
-  time: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 5,
+  statusPill: {
+    borderRadius: 999,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
   },
-  status: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 5,
+  statusText: {
+    fontSize: 11,
+    fontWeight: '800',
+    textTransform: 'capitalize',
   },
-  service: {
-    fontSize: 16,
-    color: '#444',
-    marginTop: 5,
+  detailGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
   },
-  // Status styles (conditional styling based on status)
-  accepted: {
-    color: '#00b300', // Green for accepted
+  detail: {
+    width: '47%',
+    minWidth: 0,
   },
-  pending: {
-    color: '#ffcc00', // Yellow for pending
+  detailLabel: {
+    fontSize: 11,
+    fontWeight: '800',
+    textTransform: 'uppercase',
   },
-  canceled: {
-    color: '#ff3333', // Red for canceled
+  detailValue: {
+    marginTop: 3,
+    fontSize: 13,
+    fontWeight: '700',
   },
-  complete: {
-    color: '#3399ff', // Blue for complete
+  policyNote: {
+    borderRadius: 8,
+    padding: 11,
+  },
+  policyText: {
+    fontSize: 12,
+    lineHeight: 17,
   },
 });

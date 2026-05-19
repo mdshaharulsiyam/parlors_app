@@ -5,7 +5,18 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-const baseUrl = 'http://10.0.60.189:5004';
+import Constants from 'expo-constants';
+
+const getDevServerHost = () => {
+  const hostUri = Constants.expoConfig?.hostUri;
+  const host = hostUri?.split(':')[0];
+  return host || 'localhost';
+};
+
+export const baseUrl =
+  (globalThis as any)?.process?.env?.EXPO_PUBLIC_API_URL ||
+  `http://${getDevServerHost()}:5004`;
+
 export const generateImageUrl = (imagePath: string): string =>
   imagePath?.includes('http')
     ? imagePath
@@ -63,5 +74,20 @@ export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: timeoutFetchBaseQuery({baseUrl: baseUrl}, 5000),
   endpoints: builder => ({}),
-  tagTypes: ['auth', 'vendor', 'banner', 'serviceListing'],
+  tagTypes: [
+    'auth',
+    'vendor',
+    'banner',
+    'serviceListing',
+    'salon',
+    'salonService',
+    'worker',
+    'slot',
+    'booking',
+    'notification',
+    'point',
+    'review',
+    'dispute',
+    'admin',
+  ],
 });

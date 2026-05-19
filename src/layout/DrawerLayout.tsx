@@ -107,6 +107,7 @@ const DrawerLayout = () => {
 
   return (
     <Drawer.Navigator
+      id={undefined}
       drawerContent={props => <DrawerContent {...props} />}
       screenOptions={{drawerType: 'back'}}
       initialRouteName="Tabs">

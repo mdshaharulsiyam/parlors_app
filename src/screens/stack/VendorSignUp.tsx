@@ -34,4 +34,3 @@ const VendorSignUp = () => {
 
 export default VendorSignUp;
 
-const styles = StyleSheet.create({});

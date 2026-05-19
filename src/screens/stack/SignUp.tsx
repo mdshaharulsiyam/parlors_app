@@ -24,7 +24,6 @@ import {globalStyles} from '../../constant/styles';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {hexToRGBA} from '../../utils/hexToRGBA';
 import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
-import {signIn} from './SignIn';
 
 const SignUp = () => {
   const navigation = useNavigation<NavigationProp<ScreenParamsType>>();
@@ -368,26 +367,7 @@ const SignUp = () => {
             <Text style={[{marginLeft: 5}, globalStyles.text]}>Login</Text>
           </Link>
         </View>
-        <View style={{marginBottom: 120, marginTop: 20}}>
-          <GradientButton handler={() => signIn()}>
-            {isLoadingSignup ? (
-              <ActivityIndicator
-                size="small"
-                color={themeColors.constWhite as string}
-              />
-            ) : (
-              <Text
-                style={{
-                  color: themeColors.constWhite as string,
-                  textAlign: 'center',
-                  fontWeight: 700,
-                  fontSize: 18,
-                }}>
-                Login with Google
-              </Text>
-            )}
-          </GradientButton>
-        </View>
+        <View style={{marginBottom: 120}} />
       </ScrollView>
     </SafeAreaView>
   );

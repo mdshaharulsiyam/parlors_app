@@ -6,14 +6,15 @@ import {
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {useGetServicesQuery} from '../../Redux/Apis/seviceListingApis';
 import {Ratio3_2} from '../../utils/calculateHeight';
-import {topBarbers} from '../Home/Parlors';
 import GradientButton from '../Shared/GradientButton';
 import ParlorCard from '../Shared/ParlorCard';
 
 const Services = () => {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const {width, themeColors} = useGlobalContext();
+  const {data} = useGetServicesQuery({limit: 20, page: 1});
   return (
     <FlatList
       ListFooterComponent={<View style={{height: 50}} />}
@@ -48,7 +49,7 @@ const Services = () => {
         gap: 10,
       }}
       showsVerticalScrollIndicator={false}
-      data={topBarbers}
+      data={data?.data || []}
       keyExtractor={item => item?._id}
       renderItem={({item}) => (
         <ParlorCard

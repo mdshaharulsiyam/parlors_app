@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 const StackLayout = () => {
   const {themeColors} = useGlobalContext();
   return (
-    <Stack.Navigator>
+    <Stack.Navigator id={undefined}>
       <Stack.Screen
         name="ServiceAddEdit"
         component={ServiceAddEdit}

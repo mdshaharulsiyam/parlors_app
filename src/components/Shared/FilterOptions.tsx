@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -10,18 +10,22 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useAddressApiCall } from '../../ApisCalls/addressApiCall';
-import { OtherIcons } from '../../constant/images';
-import { globalStyles } from '../../constant/styles';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
+import {useAddressApiCall} from '../../ApisCalls/addressApiCall';
+import {OtherIcons} from '../../constant/images';
+import {globalStyles} from '../../constant/styles';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import SingleSelectDropDown from '../../screens/drawer/SingleSelectDropDown';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { IAddressInput, IAddressInputError, IAddressInputLabel } from '../../utils/types/Types';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {
+  IAddressInput,
+  IAddressInputError,
+  IAddressInputLabel,
+} from '../../utils/types/Types';
 import GradientButton from './GradientButton';
 import SearchInput from './SearchInput';
 
 const FilterOptions = () => {
-  const { themeColors, search, setSearch, bottomSheetRef } = useGlobalContext();
+  const {themeColors, search, closeFilter} = useGlobalContext();
   const [divisionSearch, setDivisionSearch] = useState('');
   const [districtSearch, setDistrictSearch] = useState('');
   const [upazillaSearch, setUpazillaSearch] = useState('');
@@ -48,7 +52,7 @@ const FilterOptions = () => {
     unions: 'Union',
     street_address: 'Street Address',
   });
-  const { divisions, districts, upazilas, unions } = useAddressApiCall({
+  const {divisions, districts, upazilas, unions} = useAddressApiCall({
     division_id: inputValue.divisions,
     district_id: inputValue.districts,
     upazilla_id: inputValue.upazilas,
@@ -60,7 +64,7 @@ const FilterOptions = () => {
   const handleSearch = (value: string) => console.log(value);
   const handleSubmit = () => {
     console.log(search);
-    bottomSheetRef.current?.close();
+    closeFilter();
   };
   const handleReset = (key: keyof IAddressInput, value?: string) => {
     if (key === 'divisions') {
@@ -121,17 +125,15 @@ const FilterOptions = () => {
           }}>
           Filter by
         </Text>
-        <TouchableOpacity onPress={() => bottomSheetRef?.current?.close()}>
-          <Text style={{ color: themeColors.black as string }}>
-            <Image
-              source={OtherIcons.Cross as ImageSourcePropType}
-              style={{
-                height: 30,
-                width: 30,
-                tintColor: themeColors.black as string,
-              }}
-            />
-          </Text>
+        <TouchableOpacity onPress={closeFilter}>
+          <Image
+            source={OtherIcons.Cross as ImageSourcePropType}
+            style={{
+              height: 30,
+              width: 30,
+              tintColor: themeColors.black as string,
+            }}
+          />
         </TouchableOpacity>
       </View>
 
@@ -155,10 +157,10 @@ const FilterOptions = () => {
                   key === 'divisions'
                     ? divisions
                     : key === 'districts'
-                      ? districts
-                      : key === 'upazilas'
-                        ? upazilas
-                        : unions
+                    ? districts
+                    : key === 'upazilas'
+                    ? upazilas
+                    : unions
                 }
                 value={inputValue[key as keyof IAddressInput]}
                 inputValue={inputValue}
@@ -169,10 +171,10 @@ const FilterOptions = () => {
                   key === 'divisions'
                     ? setDivisionSearch
                     : key === 'districts'
-                      ? setDistrictSearch
-                      : key === 'upazilas'
-                        ? setUpazillaSearch
-                        : setUnionSearch
+                    ? setDistrictSearch
+                    : key === 'upazilas'
+                    ? setUpazillaSearch
+                    : setUnionSearch
                 }
                 resetHandler={value =>
                   handleReset(key as keyof IAddressInput, value)
@@ -192,15 +194,16 @@ const FilterOptions = () => {
               ]}>
               {inputLabel[key as keyof IAddressInputLabel]}
             </Text>
-            <View style={{ position: 'relative' }}>
+            <View style={{position: 'relative'}}>
               <TextInput
                 value={inputValue[key as keyof IAddressInput]}
                 onChangeText={text => {
-                  setInputValue({ ...inputValue, [key]: text });
-                  setError({ ...error, [key]: false });
+                  setInputValue({...inputValue, [key]: text});
+                  setError({...error, [key]: false});
                 }}
-                placeholder={`Enter your ${inputLabel[key as keyof IAddressInputLabel]
-                  }`}
+                placeholder={`Enter your ${
+                  inputLabel[key as keyof IAddressInputLabel]
+                }`}
                 placeholderTextColor={hexToRGBA(
                   themeColors.black as string,
                   0.4,
@@ -224,7 +227,7 @@ const FilterOptions = () => {
           </View>
         );
       })}
-      <View style={{ marginTop: 10, marginBottom: 160 }}>
+      <View style={{marginTop: 10, marginBottom: 160}}>
         <GradientButton handler={handleSubmit}>
           {false ? (
             <ActivityIndicator

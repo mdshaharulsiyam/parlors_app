@@ -1,5 +1,8 @@
 export type ScreenParamsType = {
   Home: undefined;
+  Parlors: undefined;
+  Bookings: undefined;
+  Workspace: undefined;
   Profile: undefined;
   Settings: undefined;
   Details: {id: string};

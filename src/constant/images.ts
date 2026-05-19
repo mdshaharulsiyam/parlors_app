@@ -14,6 +14,8 @@ import Shops from '../assets/shop.png';
 export const tabIcons = {
   Home: Home,
   Parlors: Shops,
+  Bookings: Profile,
+  Workspace: Menu,
   Menu: Menu,
 };
 export const OtherIcons = {

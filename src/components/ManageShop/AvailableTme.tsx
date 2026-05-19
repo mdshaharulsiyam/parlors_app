@@ -13,8 +13,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import DatePicker from 'react-native-date-picker';
 import {useDispatch} from 'react-redux';
 import {useCreateVendor} from '../../ApisCalls/vendorApisCall';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
@@ -99,6 +101,17 @@ const AvailableTime: React.FC<{creating?: boolean}> = ({creating = false}) => {
     setTimeout(() => setOpenToPicker(true), 300);
   };
 
+  const handleNativeFromTimeChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ): void => {
+    if (event.type === 'dismissed') {
+      setOpenFromPicker(false);
+      return;
+    }
+    if (selectedDate) handleFromTimeChange(selectedDate);
+  };
+
   const handleToTimeChange = (date: Date): void => {
     if (currentDayForPicker) {
       setSelectedTime(prevState => ({
@@ -107,6 +120,17 @@ const AvailableTime: React.FC<{creating?: boolean}> = ({creating = false}) => {
       }));
     }
     setOpenToPicker(false);
+  };
+
+  const handleNativeToTimeChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ): void => {
+    if (event.type === 'dismissed') {
+      setOpenToPicker(false);
+      return;
+    }
+    if (selectedDate) handleToTimeChange(selectedDate);
   };
 
   const openFromTimePicker = (day: keyof SelectedTime): void => {
@@ -299,25 +323,24 @@ const AvailableTime: React.FC<{creating?: boolean}> = ({creating = false}) => {
           </Text>
         )}
       </GradientButton>
-      {/* Render single DatePickers outside of the loop */}
-      {Platform.OS !== 'web' && currentDayForPicker && (
+      {currentDayForPicker && (
         <>
-          <DatePicker
-            modal
-            open={openFromPicker}
-            date={selectedTime[currentDayForPicker]?.from || new Date()}
-            mode="time"
-            onConfirm={handleFromTimeChange}
-            onCancel={() => setOpenFromPicker(false)}
-          />
-          <DatePicker
-            modal
-            open={openToPicker}
-            date={selectedTime[currentDayForPicker]?.to || new Date()}
-            mode="time"
-            onConfirm={handleToTimeChange}
-            onCancel={() => setOpenToPicker(false)}
-          />
+          {openFromPicker && (
+            <DateTimePicker
+              value={selectedTime[currentDayForPicker]?.from || new Date()}
+              mode="time"
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleNativeFromTimeChange}
+            />
+          )}
+          {openToPicker && (
+            <DateTimePicker
+              value={selectedTime[currentDayForPicker]?.to || new Date()}
+              mode="time"
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleNativeToTimeChange}
+            />
+          )}
         </>
       )}
     </View>

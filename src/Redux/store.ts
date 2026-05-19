@@ -15,4 +15,4 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(baseApi.middleware),
 });
-setupListeners(store.dispatch);
+export const unsubscribeStoreListeners = setupListeners(store.dispatch);

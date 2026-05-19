@@ -1,18 +1,13 @@
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import React, {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import {Dimensions, useColorScheme} from 'react-native';
 import {useDispatch} from 'react-redux';
-import FilterOptions from '../components/Shared/FilterOptions';
 import {Colors, ITheme} from '../constant/colors';
 import {useGet_profileQuery} from '../Redux/Apis/authApis';
 import {setRole, setToken, setUser} from '../Redux/States/userSlice';
@@ -29,8 +24,10 @@ interface GlobalContextType {
   width: number;
   height: number;
   profile: IUserProfile | null;
-  bottomSheetRef: React.RefObject<BottomSheet | null>;
   cord: ICord | null;
+  isFilterOpen: boolean;
+  openFilter: () => void;
+  closeFilter: () => void;
 }
 
 interface GlobalProviderProps {
@@ -39,22 +36,13 @@ interface GlobalProviderProps {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 const GlobalContextProvider = ({children}: GlobalProviderProps) => {
-  GoogleSignin.configure({
-    webClientId:
-      '785669277913-sk3g9jodma9o3danl96a7g13kt4grenq.apps.googleusercontent.com', // Replace with your webClientId
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    forceCodeForRefreshToken: false,
-  });
   const dispatch = useDispatch();
   const {width, height} = Dimensions.get('window');
   const [search, setSearch] = useState<string>('');
   const themeColors = useColorScheme() === 'dark' ? Colors.dark : Colors.light;
   const {data} = useGet_profileQuery(undefined);
-  const bottomSheetRef = useRef<BottomSheet | null>(null);
   const [cord, setCord] = useState<ICord | null>(null);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const values = {
     themeColors,
@@ -63,8 +51,10 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
     width,
     height,
     profile: data?.data,
-    bottomSheetRef,
     cord,
+    isFilterOpen,
+    openFilter: () => setIsFilterOpen(true),
+    closeFilter: () => setIsFilterOpen(false),
   };
 
   useEffect(() => {
@@ -109,23 +99,7 @@ const GlobalContextProvider = ({children}: GlobalProviderProps) => {
     getCurrentLocation();
   }, []);
   return (
-    <GlobalContext.Provider value={values}>
-      {children}
-      <BottomSheet
-        backgroundStyle={{backgroundColor: themeColors.white as string}}
-        handleIndicatorStyle={{
-          backgroundColor: themeColors.black as string,
-          height: 5,
-        }}
-        index={-1}
-        snapPoints={['25%', '50%', '90%']}
-        ref={bottomSheetRef}
-        onChange={handleSheetChanges}>
-        <BottomSheetView>
-          <FilterOptions />
-        </BottomSheetView>
-      </BottomSheet>
-    </GlobalContext.Provider>
+    <GlobalContext.Provider value={values}>{children}</GlobalContext.Provider>
   );
 };
 export const useGlobalContext = (): GlobalContextType => {

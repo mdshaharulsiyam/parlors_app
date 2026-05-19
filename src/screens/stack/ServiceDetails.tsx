@@ -1,23 +1,26 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 //
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import {
   FlatList,
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import DatePicker from 'react-native-date-picker';
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import Empty from '../../components/Shared/Empty';
 import GradientButton from '../../components/Shared/GradientButton';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { useGetServiceByIdQuery } from '../../Redux/Apis/seviceListingApis';
-import { generateImageUrl } from '../../Redux/baseApis';
-import { hexToRGBA } from '../../utils/hexToRGBA';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {useGetServiceByIdQuery} from '../../Redux/Apis/seviceListingApis';
+import {generateImageUrl} from '../../Redux/baseApis';
+import {hexToRGBA} from '../../utils/hexToRGBA';
 import splitTimeRangeByInterval from '../../utils/splitTimeRangeByInterval';
 interface IServiceDetails {
   _id: string;
@@ -38,11 +41,11 @@ interface IServiceDetails {
       upazilas: string;
       street_address: string;
       _id: string;
-    },
+    };
     location: {
       type: string;
       coordinates: [number, number];
-    },
+    };
     availability: {
       monday: string[];
       tuesday: string[];
@@ -51,41 +54,59 @@ interface IServiceDetails {
       friday: string[];
       saturday: string[];
       sunday: string[];
-    },
-  },
-  estimated_time: string,
-  services: string[],
-  description: string,
-  price: number,
+    };
+  };
+  estimated_time: string;
+  services: string[];
+  description: string;
+  price: number;
   owner: {
     name: string;
     email: string;
     phone: string;
     _id: string;
     img: string | null;
-  },
+  };
   total_bookings: number;
   completed_bookings: number;
   ongoing_bookings: number;
   canceled_bookings: number;
 }
-type IWeekDay = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+type IWeekDay =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
 
 const ServiceDetails = () => {
-  const params = useRoute().params as { id: string };
-  const { themeColors, width } = useGlobalContext();
+  const params = useRoute().params as {id: string};
+  const {themeColors, width} = useGlobalContext();
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
-  const [weekDay, setWeekDay] = useState<IWeekDay>(moment(date).format('dddd')?.toLowerCase() as IWeekDay);
-  const { data, isLoading, isFetching } = useGetServiceByIdQuery(params?.id)
+  const [weekDay, setWeekDay] = useState<IWeekDay>(
+    moment(date).format('dddd')?.toLowerCase() as IWeekDay,
+  );
+  const {data, isLoading, isFetching} = useGetServiceByIdQuery(params?.id);
   const serviceDetails = data?.data as IServiceDetails;
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedImage, setSelectedImage] = useState(serviceDetails?.img[0]);
-  const handleBookPress = () => {
+  const handleBookPress = () => {};
+  const handleDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => {
+    if (Platform.OS === 'android') setOpen(false);
+    if (event.type === 'dismissed' || !selectedDate) return;
 
+    setDate(selectedDate);
+    setWeekDay(moment(selectedDate).format('dddd')?.toLowerCase() as IWeekDay);
+    if (Platform.OS === 'ios') setOpen(false);
   };
   const textColor = themeColors.constWhite as string;
-  console.log(weekDay)
+  console.log(weekDay);
   return (
     <ScrollView
       style={[
@@ -103,7 +124,7 @@ const ServiceDetails = () => {
         ]}>
         {serviceDetails?.name}
       </Text>
-      <Image source={{ uri: selectedImage }} style={styles.img} />
+      <Image source={{uri: selectedImage}} style={styles.img} />
       <FlatList
         data={serviceDetails?.img}
         horizontal
@@ -111,10 +132,10 @@ const ServiceDetails = () => {
         contentContainerStyle={{
           paddingVertical: 10,
         }}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TouchableOpacity onPress={() => setSelectedImage(item)}>
             <Image
-              source={{ uri: item }}
+              source={{uri: item}}
               style={{
                 width: 100,
                 height: 100,
@@ -143,7 +164,7 @@ const ServiceDetails = () => {
           },
         ]}>
         <Image
-          source={{ uri: generateImageUrl(serviceDetails?.owner?.img as string) }}
+          source={{uri: generateImageUrl(serviceDetails?.owner?.img as string)}}
           style={styles.ownerImage}
         />
         <View style={styles.ownerDetails}>
@@ -234,11 +255,15 @@ const ServiceDetails = () => {
       </View>
 
       {/* Shop Timings */}
-      <Text style={[styles.sectionTitle, { color: textColor }]}>
+      <Text style={[styles.sectionTitle, {color: textColor}]}>
         Available Times
       </Text>
       <View style={styles.openDetails}>
-        {Object.entries(serviceDetails?.business_details?.availability ? serviceDetails?.business_details?.availability : {})?.map((day, index) => {
+        {Object.entries(
+          serviceDetails?.business_details?.availability
+            ? serviceDetails?.business_details?.availability
+            : {},
+        )?.map((day, index) => {
           return (
             <Text
               key={index}
@@ -248,9 +273,13 @@ const ServiceDetails = () => {
                   color: textColor,
                 },
               ]}>
-              {`${day[0]} - ${day[1].length > 0 ? `from ${day[1]?.[0]} to ${day[1]?.[1]}` : 'Closed'}`}
+              {`${day[0]} - ${
+                day[1].length > 0
+                  ? `from ${day[1]?.[0]} to ${day[1]?.[1]}`
+                  : 'Closed'
+              }`}
             </Text>
-          )
+          );
         })}
       </View>
 
@@ -268,7 +297,7 @@ const ServiceDetails = () => {
           }}>
           Total Rating: {serviceDetails?.rating}
         </Text>
-        <Text style={[styles.sectionTitle, { color: textColor }]}>Reviews</Text>
+        <Text style={[styles.sectionTitle, {color: textColor}]}>Reviews</Text>
         <Empty data={data?.reviews?.length} />
         {/* <FlatList
           data={serviceDetails?.reviews}
@@ -321,7 +350,7 @@ const ServiceDetails = () => {
           keyExtractor={(item, index) => index.toString()}
         /> */}
       </View>
-      <View style={{ flexDirection: 'column', gap: 10, marginBottom: 70 }}>
+      <View style={{flexDirection: 'column', gap: 10, marginBottom: 70}}>
         <GradientButton handler={() => setOpen(true)}>
           <Text
             style={{
@@ -340,11 +369,21 @@ const ServiceDetails = () => {
           }}
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={splitTimeRangeByInterval(serviceDetails?.business_details?.availability[weekDay], 0.5)}
-          renderItem={({ item }) => {
+          data={splitTimeRangeByInterval(
+            serviceDetails?.business_details?.availability[weekDay],
+            0.5,
+          )}
+          renderItem={({item}) => {
             if (item === 'shop is closed') {
               return (
-                <View style={{ flex: 1, gap: 10, justifyContent: 'center', alignItems: 'center', width: width - 40 }}>
+                <View
+                  style={{
+                    flex: 1,
+                    gap: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: width - 40,
+                  }}>
                   <Empty data={false} />
                   <Text
                     style={{
@@ -355,41 +394,42 @@ const ServiceDetails = () => {
                     No available time please select another date
                   </Text>
                 </View>
-              )
+              );
             }
             return (
               <TouchableOpacity
                 onPress={() => setSelectedTime(item)}
                 style={{
-                  backgroundColor: selectedTime === item ? themeColors.black as string : hexToRGBA(themeColors.black as string, 0.1),
+                  backgroundColor:
+                    selectedTime === item
+                      ? (themeColors.black as string)
+                      : hexToRGBA(themeColors.black as string, 0.1),
                   padding: 10,
                   borderRadius: 10,
                 }}>
                 <Text
                   style={{
-                    color: selectedTime === item ? themeColors.white as string : textColor,
+                    color:
+                      selectedTime === item
+                        ? (themeColors.white as string)
+                        : textColor,
                   }}>
                   {item}
                 </Text>
               </TouchableOpacity>
-            )
+            );
           }}
           keyExtractor={(item, index) => index.toString()}
         />
-        <DatePicker
-          modal
-          mode="date"
-          open={open}
-          date={date}
-          onConfirm={date => {
-            setOpen(false);
-            setDate(date);
-            setWeekDay(moment(date).format('dddd')?.toLowerCase() as IWeekDay);
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
+        {open && (
+          <DateTimePicker
+            mode="date"
+            value={date}
+            minimumDate={new Date()}
+            display={Platform.OS === 'ios' ? 'inline' : 'default'}
+            onChange={handleDateChange}
+          />
+        )}
         <GradientButton handler={handleBookPress}>
           <Text
             style={{

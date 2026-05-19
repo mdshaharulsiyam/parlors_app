@@ -1,4 +1,48 @@
 {
-  "name": "Parlors",
-  "displayName": "Parlors"
+  "expo": {
+    "name": "Parlors",
+    "slug": "parlors",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/logo.png",
+    "scheme": "parlors",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./src/assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F8FAFC"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.parlors.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Parlors uses your location to show nearby salons.",
+        "NSPhotoLibraryUsageDescription": "Parlors lets you pick profile, salon, and service photos."
+      }
+    },
+    "android": {
+      "package": "com.parlors.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/logo.png",
+        "backgroundColor": "#F8FAFC"
+      },
+      "permissions": ["ACCESS_FINE_LOCATION"]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Parlors lets you pick profile, salon, and service photos."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Parlors uses your location to show nearby salons."
+        }
+      ]
+    ]
+  }
 }
