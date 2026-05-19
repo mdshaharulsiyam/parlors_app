@@ -39,9 +39,9 @@ const ChangePassword = () => {
   });
 
   const [inputValue, setInputValue] = React.useState<IChangePassword>({
-    'current password': '123456',
-    'new password': '123456',
-    'confirm password': '123456',
+    'current password': '',
+    'new password': '',
+    'confirm password': '',
   });
 
   const submitHandler = () => {
@@ -154,7 +154,11 @@ const ChangePassword = () => {
                           ? passShow
                             ? (OtherIcons.Eye as ImageSourcePropType)
                             : (OtherIcons.EyeX as ImageSourcePropType)
-                          : cPassShow
+                          : key === 'confirm password'
+                          ? cPassShow
+                            ? (OtherIcons.Eye as ImageSourcePropType)
+                            : (OtherIcons.EyeX as ImageSourcePropType)
+                          : opassShow
                           ? (OtherIcons.Eye as ImageSourcePropType)
                           : (OtherIcons.EyeX as ImageSourcePropType)
                       }

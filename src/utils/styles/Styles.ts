@@ -7,9 +7,10 @@ export const commonStyles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 18,
+    fontWeight: '800',
+    marginBottom: 12,
+    letterSpacing: 0,
   },
   Button: {
     paddingVertical: 12,

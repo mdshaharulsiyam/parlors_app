@@ -5,9 +5,17 @@ import {
   DrawerContentScrollView,
   DrawerItem,
 } from '@react-navigation/drawer';
+import {DrawerActions} from '@react-navigation/native';
 import React, {useCallback, useMemo} from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import NameImage from '../components/Shared/NameImage';
+import {tabIcons} from '../constant/images';
 import {useGlobalContext} from '../Provider/GlobalContextProvider';
 import {setRole, setToken} from '../Redux/States/userSlice';
 import About from '../screens/drawer/About';
@@ -25,12 +33,13 @@ const Drawer = createDrawerNavigator();
 
 const DrawerLayout = () => {
   const {themeColors} = useGlobalContext();
-  const headerBaseStyle = useCallback(
-    (height: number) => ({
-      backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
-      height,
-      borderBottomColor: hexToRGBA(themeColors.black as string, 0.2),
-      borderWidth: 0.5,
+  const headerBaseStyle = useMemo(
+    () => ({
+      backgroundColor: themeColors.white as string,
+      borderBottomColor: hexToRGBA(themeColors.black as string, 0.1),
+      borderBottomWidth: 1,
+      shadowColor: 'transparent',
+      elevation: 0,
     }),
     [themeColors],
   );
@@ -45,74 +54,86 @@ const DrawerLayout = () => {
       {
         name: 'Profile',
         component: Profile,
-        options: {
-          headerShown: true,
-          headerStyle: headerBaseStyle(50),
-          headerTintColor: themeColors.black as string,
-        },
+        options: {title: 'Profile'},
       },
       {
         name: 'Chat',
         component: Chat,
-        options: {
-          headerShown: true,
-          headerStyle: headerBaseStyle(50),
-          headerTintColor: themeColors.black as string,
-        },
+        options: {title: 'Chat'},
       },
       {
         name: 'ShopManage',
         component: ShopManage,
-        options: {headerShown: false},
+        options: {title: 'Manage Shop'},
       },
       {
         name: 'Privacy',
         component: Privacy,
-        options: {headerShown: false},
+        options: {title: 'Privacy'},
       },
       {
         name: 'About',
         component: About,
-        options: {headerShown: false},
+        options: {title: 'About'},
       },
       {
         name: 'Booking',
         component: Booking,
-        options: {
-          headerTitle: 'My Bookings',
-          headerShown: true,
-          headerStyle: headerBaseStyle(60),
-          headerTintColor: themeColors.black as string,
-        },
+        options: {title: 'My Bookings'},
       },
       {
         name: 'changePassword',
         component: ChangePassword,
-        options: {
-          headerShown: true,
-          headerStyle: headerBaseStyle(50),
-          headerTintColor: themeColors.black as string,
-        },
+        options: {title: 'Change Password'},
       },
       {
         name: 'VendorSignUp',
         component: VendorSignUp,
-        options: {
-          headerTitle: 'Vendor Sign Up',
-          headerShown: true,
-          headerStyle: headerBaseStyle(50),
-          headerTintColor: themeColors.black as string,
-        },
+        options: {title: 'Vendor Sign Up'},
       },
     ],
-    [headerBaseStyle, themeColors],
+    [],
   );
 
   return (
     <Drawer.Navigator
       id={undefined}
       drawerContent={props => <DrawerContent {...props} />}
-      screenOptions={{drawerType: 'back'}}
+      screenOptions={({navigation}) => ({
+        drawerType: 'back',
+        headerShown: true,
+        headerStyle: headerBaseStyle,
+        headerTitleAlign: 'center',
+        headerTintColor: themeColors.black as string,
+        headerTitleStyle: {
+          color: themeColors.black as string,
+          fontSize: 18,
+          fontWeight: '800',
+        },
+        headerLeftContainerStyle: styles.headerLeftContainer,
+        headerLeft: () => (
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Open drawer"
+            activeOpacity={0.76}
+            onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+            style={[
+              styles.menuButton,
+              {
+                backgroundColor: hexToRGBA(themeColors.primary as string, 0.08),
+                borderColor: hexToRGBA(themeColors.primary as string, 0.16),
+              },
+            ]}>
+            <Image
+              source={tabIcons.Menu as ImageSourcePropType}
+              style={[
+                styles.menuIcon,
+                {tintColor: themeColors.primary as string},
+              ]}
+            />
+          </TouchableOpacity>
+        ),
+      })}
       initialRouteName="Tabs">
       {screens.map(screen => (
         <Drawer.Screen
@@ -200,3 +221,21 @@ function DrawerContent(props: DrawerContentComponentProps) {
 }
 
 export default DrawerLayout;
+
+const styles = StyleSheet.create({
+  headerLeftContainer: {
+    paddingLeft: 12,
+  },
+  menuButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  menuIcon: {
+    width: 22,
+    height: 22,
+  },
+});

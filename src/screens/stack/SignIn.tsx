@@ -5,6 +5,10 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
@@ -25,7 +29,6 @@ import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 
 const SignIn = () => {
   const dispatch = useDispatch();
-
   const {themeColors} = useGlobalContext();
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const [passShow, setPassShow] = React.useState(true);
@@ -34,16 +37,15 @@ const SignIn = () => {
     email: false,
     password: false,
   });
-
   const [inputValue, setInputValue] = React.useState<ILogin>({
-    email: 'customer@salonpro.local',
-    password: '123456',
+    email: '',
+    password: '',
   });
 
   const submitHandler = async () => {
     let isInvalid = false;
     Object.keys(inputValue).forEach(key => {
-      if (inputValue[key as keyof ILogin] === '') {
+      if (inputValue[key as keyof ILogin].trim() === '') {
         setError(prev => ({...prev, [key]: true}));
         isInvalid = true;
       } else {
@@ -53,7 +55,7 @@ const SignIn = () => {
     if (isInvalid) {
       Toast.show({
         type: 'error',
-        text1: 'failed to login',
+        text1: 'Login failed',
         text2: 'Please fill all fields',
       });
       return;
@@ -69,141 +71,219 @@ const SignIn = () => {
     };
     signInHandler(inputValue, storeData);
   };
+
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
-      }}>
-      {/* form */}
-      <View style={{width: '100%', paddingHorizontal: 20}}>
-        {Object.keys(inputValue).map((key, index) => (
-          <View key={index}>
+      style={[styles.safeArea, {backgroundColor: themeColors.white as string}]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.keyboard}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={styles.scrollContent}>
+          <View style={styles.brandBlock}>
+            <Image
+              source={OtherIcons.Logo as ImageSourcePropType}
+              style={styles.logo}
+            />
+            <Text style={[styles.title, {color: themeColors.black as string}]}>
+              Welcome back
+            </Text>
             <Text
               style={[
-                globalStyles.inputLabel,
-                {
-                  color: error[key as keyof ILogin]
-                    ? (themeColors.red as string)
-                    : (themeColors.black as string),
-                },
+                styles.subtitle,
+                {color: hexToRGBA(themeColors.black as string, 0.64)},
               ]}>
-              {key.charAt(0).toUpperCase() + key.slice(1)}
+              Sign in to manage bookings, services, and saved salons.
             </Text>
-            <View style={{position: 'relative'}}>
-              <TextInput
-                value={inputValue[key as keyof ILogin]}
-                onChangeText={text => {
-                  setInputValue({...inputValue, [key]: text});
-                  setError({...error, [key]: false});
-                }}
-                placeholder={`Enter your ${key}`}
-                secureTextEntry={key === 'password' ? passShow : false}
-                placeholderTextColor={hexToRGBA(
-                  themeColors.black as string,
-                  0.3,
-                )}
-                style={[
-                  globalStyles.input,
-                  {
-                    borderColor: error[key as keyof ILogin]
-                      ? (themeColors.red as string)
-                      : hexToRGBA(themeColors.black as string, 0.4),
-                    borderWidth: error[key as keyof ILogin] ? 1 : 0,
-                    backgroundColor: hexToRGBA(
-                      themeColors.black as string,
-                      0.2,
-                    ),
-                    color: themeColors.black as string,
-                  },
-                ]}
-              />
-              {key === 'password' && (
-                <TouchableOpacity
+          </View>
+
+          <View style={styles.form}>
+            {Object.keys(inputValue).map(key => (
+              <View key={key} style={styles.field}>
+                <Text
                   style={[
+                    globalStyles.inputLabel,
                     {
-                      position: 'absolute',
-                      right: 10,
-                      top: 18,
+                      color: error[key as keyof ILogin]
+                        ? (themeColors.red as string)
+                        : (themeColors.black as string),
                     },
-                  ]}
-                  onPress={() => setPassShow(!passShow)}>
-                  <Image
-                    source={
-                      passShow
-                        ? (OtherIcons.Eye as ImageSourcePropType)
-                        : (OtherIcons.EyeX as ImageSourcePropType)
-                    }
-                    style={{
-                      width: 20,
-                      height: 20,
-                      tintColor: themeColors.black as string,
+                  ]}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
+                </Text>
+                <View style={styles.inputWrap}>
+                  <TextInput
+                    value={inputValue[key as keyof ILogin]}
+                    onChangeText={text => {
+                      setInputValue({...inputValue, [key]: text});
+                      setError({...error, [key]: false});
                     }}
+                    placeholder={`Enter your ${key}`}
+                    secureTextEntry={key === 'password' ? passShow : false}
+                    keyboardType={key === 'email' ? 'email-address' : 'default'}
+                    autoCapitalize="none"
+                    placeholderTextColor={hexToRGBA(
+                      themeColors.black as string,
+                      0.36,
+                    )}
+                    style={[
+                      globalStyles.input,
+                      styles.input,
+                      {
+                        borderColor: error[key as keyof ILogin]
+                          ? (themeColors.red as string)
+                          : hexToRGBA(themeColors.black as string, 0.12),
+                        backgroundColor: hexToRGBA(
+                          themeColors.black as string,
+                          0.055,
+                        ),
+                        color: themeColors.black as string,
+                      },
+                    ]}
                   />
-                </TouchableOpacity>
+                  {key === 'password' && (
+                    <TouchableOpacity
+                      style={styles.eyeButton}
+                      onPress={() => setPassShow(!passShow)}>
+                      <Image
+                        source={
+                          passShow
+                            ? (OtherIcons.Eye as ImageSourcePropType)
+                            : (OtherIcons.EyeX as ImageSourcePropType)
+                        }
+                        style={[
+                          styles.eyeIcon,
+                          {tintColor: themeColors.black as string},
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+            ))}
+
+            <Link style={styles.forgotLink} screen="Forget" params={{}}>
+              <Text style={{color: themeColors.primary as string}}>
+                Forgot password?
+              </Text>
+            </Link>
+
+            <GradientButton handler={submitHandler} disabled={isLoading}>
+              {isLoading ? (
+                <ActivityIndicator
+                  size="small"
+                  color={themeColors.constWhite as string}
+                />
+              ) : (
+                <Text style={styles.buttonText}>Login</Text>
               )}
+            </GradientButton>
+
+            <View style={styles.footerRow}>
+              <Text
+                style={[
+                  globalStyles.text,
+                  {color: hexToRGBA(themeColors.black as string, 0.72)},
+                ]}>
+                Do not have an account?
+              </Text>
+              <Link screen="SignUp" params={{}}>
+                <Text
+                  style={[
+                    globalStyles.text,
+                    styles.footerLink,
+                    {color: themeColors.primary as string},
+                  ]}>
+                  Sign Up
+                </Text>
+              </Link>
             </View>
           </View>
-        ))}
-
-        <Link
-          style={{textAlign: 'right', marginBottom: 20}}
-          screen="Forget"
-          params={{}}>
-          <Text style={{color: themeColors.primary as string}}>
-            Forgot password?
-          </Text>
-        </Link>
-
-        <View
-          style={{
-            paddingHorizontal: 25,
-          }}>
-          <GradientButton handler={() => submitHandler()}>
-            {isLoading ? (
-              <ActivityIndicator
-                size="small"
-                color={themeColors.constWhite as string}
-              />
-            ) : (
-              <Text
-                style={{
-                  color: themeColors.constWhite as string,
-                  textAlign: 'center',
-                  fontWeight: 700,
-                  fontSize: 18,
-                }}>
-                Login
-              </Text>
-            )}
-          </GradientButton>
-        </View>
-
-        <View style={[globalStyles.flex, {marginTop: 20}]}>
-          <Text
-            style={[
-              globalStyles.text,
-              {
-                color: themeColors.black as string,
-              },
-            ]}>
-            Don't have an account ?
-          </Text>
-          <Link screen="SignUp" params={{}}>
-            <Text
-              style={[
-                {marginLeft: 5, color: themeColors.primary as string},
-                globalStyles.text,
-              ]}>
-              {'  '} Sign Up
-            </Text>
-          </Link>
-        </View>
-      </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 export default SignIn;
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  keyboard: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 22,
+    paddingVertical: 28,
+  },
+  brandBlock: {
+    alignItems: 'center',
+    marginBottom: 28,
+  },
+  logo: {
+    height: 78,
+    width: 78,
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: '800',
+    textAlign: 'center',
+    letterSpacing: 0,
+  },
+  subtitle: {
+    marginTop: 8,
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
+  form: {
+    gap: 4,
+  },
+  field: {
+    marginBottom: 4,
+  },
+  inputWrap: {
+    position: 'relative',
+  },
+  input: {
+    borderWidth: 1,
+    paddingRight: 46,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 12,
+    top: 17,
+  },
+  eyeIcon: {
+    width: 20,
+    height: 20,
+  },
+  forgotLink: {
+    alignSelf: 'flex-end',
+    marginBottom: 18,
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: '800',
+    fontSize: 16,
+  },
+  footerRow: {
+    marginTop: 22,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 6,
+  },
+  footerLink: {
+    fontWeight: '800',
+  },
+});

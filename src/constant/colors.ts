@@ -1,13 +1,13 @@
 export interface ITheme {
-  primary: String;
-  secondary: String;
-  black: String;
-  white: String;
-  yellow: String;
-  red: String;
-  green: String;
-  constWhite: String;
-  constBlack: String;
+  primary: string;
+  secondary: string;
+  black: string;
+  white: string;
+  yellow: string;
+  red: string;
+  green: string;
+  constWhite: string;
+  constBlack: string;
 }
 export const Colors = {
   light: {

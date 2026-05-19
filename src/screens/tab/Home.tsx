@@ -11,9 +11,9 @@ import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {hexToRGBA} from '../../utils/hexToRGBA';
 
 const quickActions = [
-  {label: 'Book service', route: 'Parlors'},
-  {label: 'My bookings', route: 'Bookings'},
-  {label: 'Owner tools', route: 'Workspace'},
+  {label: 'Services', route: 'Parlors'},
+  {label: 'Bookings', route: 'Bookings'},
+  {label: 'Workspace', route: 'Workspace'},
 ];
 
 const Home = () => {
@@ -81,9 +81,9 @@ const HomeHero = ({
 }: HomeHeroProps) => {
   return (
     <View style={[styles.hero, {borderColor: border}]}>
-      <Text style={[styles.kicker, {color: primary}]}>Salon booking</Text>
+      <Text style={[styles.kicker, {color: primary}]}>Salon Pro</Text>
       <Text style={[styles.title, {color: textColor}]}>
-        Find the right parlor, reserve a slot, and keep every visit on track.
+        Book and manage salon visits in one place.
       </Text>
       <View style={styles.actionRow}>
         {quickActions.map(action => (
@@ -115,21 +115,21 @@ const HomeHero = ({
           <Text style={[styles.policyValue, {color: textColor}]}>2h</Text>
           <Text
             style={[styles.policyLabel, {color: hexToRGBA(textColor, 0.62)}]}>
-            free cancel window
+            cancel window
           </Text>
         </View>
         <View style={styles.policyItem}>
           <Text style={[styles.policyValue, {color: textColor}]}>UTC</Text>
           <Text
             style={[styles.policyLabel, {color: hexToRGBA(textColor, 0.62)}]}>
-            reliable slot storage
+            slot tracking
           </Text>
         </View>
         <View style={styles.policyItem}>
           <Text style={[styles.policyValue, {color: textColor}]}>Pts</Text>
           <Text
             style={[styles.policyLabel, {color: hexToRGBA(textColor, 0.62)}]}>
-            loyalty after visits
+            loyalty points
           </Text>
         </View>
       </View>

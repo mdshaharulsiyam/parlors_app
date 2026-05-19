@@ -41,12 +41,12 @@ const SignUp = () => {
     confirmPassword: false,
   });
   const [inputValue, setInputValue] = React.useState<ISignUp>({
-    name: 'shaharul',
-    contact: '01700000000',
-    email: 'siyamoffice0273@gmail.com',
-    gender: 'MALE',
-    password: '123456',
-    confirmPassword: '123456',
+    name: '',
+    contact: '',
+    email: '',
+    gender: '',
+    password: '',
+    confirmPassword: '',
   });
   //api calls
   const {register, isLoading: isLoadingSignup} = useSignup();
@@ -70,18 +70,18 @@ const SignUp = () => {
       return;
     }
     const data = {
-      name: inputValue['name'],
-      phone: inputValue['contact'],
-      email: inputValue['email'],
-      gender: inputValue['gender'],
-      password: inputValue['password'],
-      confirm_password: inputValue['confirmPassword'],
+      name: inputValue.name,
+      phone: inputValue.contact,
+      email: inputValue.email,
+      gender: inputValue.gender,
+      password: inputValue.password,
+      confirm_password: inputValue.confirmPassword,
     };
 
     register(data, () => {
       navigation.navigate('Verify', {
         from: 'signup',
-        email: inputValue['email'],
+        email: inputValue.email,
       });
     });
   }, [inputValue, navigation, register]);

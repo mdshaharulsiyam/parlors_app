@@ -19,25 +19,21 @@ const SearchFilterTrigger = () => {
 
   return (
     <View style={styles.headerContainer}>
-      <SearchInput />
+      <SearchInput inputWidth="100%" />
 
       <TouchableOpacity
         onPress={openFilter}
-        style={{
-          backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
-          padding: 6,
-          paddingHorizontal: 10,
-          borderRadius: 2,
-        }}>
+        style={[
+          styles.filterButton,
+          {
+            backgroundColor: hexToRGBA(themeColors.primary as string, 0.08),
+            borderColor: hexToRGBA(themeColors.primary as string, 0.18),
+          },
+        ]}>
         <Image
           tintColor={themeColors.primary as string}
           source={OtherIcons.Filter as ImageSourcePropType}
-          height={10}
-          width={10}
-          style={{
-            height: 35,
-            width: 35,
-          }}
+          style={styles.filterIcon}
         />
       </TouchableOpacity>
       <Modal
@@ -63,11 +59,22 @@ export default SearchFilterTrigger;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    paddingVertical: 5,
-    justifyContent: 'space-between',
+    paddingVertical: 6,
     alignItems: 'center',
-    // flex: 1,
     flexDirection: 'row',
+    gap: 10,
+  },
+  filterButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  filterIcon: {
+    height: 25,
+    width: 25,
   },
   modalScrim: {
     flex: 1,

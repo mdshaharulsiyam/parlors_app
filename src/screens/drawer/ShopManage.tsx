@@ -1,13 +1,6 @@
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation,
-} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
   FlatList,
-  Image,
-  ImagePropsBase,
   Text,
   TouchableOpacity,
   View,
@@ -19,14 +12,11 @@ import AvailableTme from '../../components/ManageShop/AvailableTme';
 import Profile from '../../components/ManageShop/Profile';
 import Services from '../../components/ManageShop/Services';
 import Workers from '../../components/ManageShop/Workers';
-import GradientButton from '../../components/Shared/GradientButton';
-import {OtherIcons} from '../../constant/images';
 import {hexToRGBA} from '../../utils/hexToRGBA';
 import {commonStyles} from '../../utils/styles/Styles';
 
 const tabs = ['profile', 'address', 'workers', 'available time', 'services'];
 const ShopManage = () => {
-  const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const [currentTab, setCurrentTab] = useState(tabs[0]);
   const {themeColors, height} = useGlobalContext();
   const components = {
@@ -50,31 +40,17 @@ const ShopManage = () => {
             }}>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginVertical: 10,
+                marginTop: 10,
+                marginBottom: 6,
               }}>
-              <GradientButton
-                handler={() => navigation.goBack()}
-                padding={5}
-                borderWidth={0}>
-                <Image
-                  source={OtherIcons.arrowLeft as ImagePropsBase}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    tintColor: themeColors.constWhite as string,
-                  }}
-                />
-              </GradientButton>
               <Text
                 style={{
                   color: themeColors.black as string,
-                  fontWeight: '600',
+                  fontWeight: '800',
                   fontSize: 20,
                   textTransform: 'capitalize',
                 }}>
-                Manage Shop {currentTab}
+                {currentTab}
               </Text>
             </View>
             <FlatList
@@ -95,10 +71,14 @@ const ShopManage = () => {
                     commonStyles.Button,
                     {
                       backgroundColor:
-                        item == currentTab
+                        item === currentTab
                           ? (themeColors.primary as string)
-                          : (themeColors.yellow as string),
-                      borderRadius: 3,
+                          : hexToRGBA(themeColors.black as string, 0.06),
+                      borderRadius: 8,
+                      borderColor:
+                        item === currentTab
+                          ? (themeColors.primary as string)
+                          : hexToRGBA(themeColors.black as string, 0.08),
                     },
                   ]}
                   key={item}>
@@ -106,7 +86,10 @@ const ShopManage = () => {
                     style={{
                       textTransform: 'uppercase',
                       fontWeight: '600',
-                      color: themeColors.black as string,
+                      color:
+                        item === currentTab
+                          ? (themeColors.constWhite as string)
+                          : (themeColors.black as string),
                     }}>
                     {item}
                   </Text>

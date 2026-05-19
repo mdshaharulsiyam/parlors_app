@@ -1,12 +1,20 @@
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { useGlobalContext } from '../../Provider/GlobalContextProvider';
-import { generateImageUrl } from '../../Redux/baseApis';
-import { hexToRGBA } from '../../utils/hexToRGBA';
-import { ScreenParamsType } from '../../utils/types/ScreenParamsType';
-import { IParlor } from '../../utils/types/Types';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {OtherIcons} from '../../constant/images';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
+import {generateImageUrl} from '../../Redux/baseApis';
+import {hexToRGBA} from '../../utils/hexToRGBA';
+import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
+import {IParlor} from '../../utils/types/Types';
 
 const ParlorCard = ({
   item,
@@ -19,88 +27,68 @@ const ParlorCard = ({
   height?: any;
   horizontal?: boolean;
 }) => {
-  const { themeColors } = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const navigate = useNavigation<StackNavigationProp<ScreenParamsType>>();
+  const imageSource = item?.img
+    ? {uri: generateImageUrl(item.img)}
+    : (OtherIcons.Logo as ImageSourcePropType);
+
   return (
     <TouchableOpacity
       onPress={() =>
         navigate.navigate('Stacks', {
           screen: 'ServiceDetails',
-          params: { id: item?._id?.toString() },
+          params: {id: item?._id?.toString()},
         })
       }
-      activeOpacity={0.8}
-      style={{
-        flex: 1,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
-        padding: 5,
-        borderRadius: 5,
-        boxSizing: 'border-box',
-        maxWidth: width + 10,
-        position: 'relative',
-        marginHorizontal: horizontal ? 5 : 0,
-      }}>
+      activeOpacity={0.84}
+      style={[
+        styles.card,
+        {
+          backgroundColor: themeColors.constWhite as string,
+          borderColor: hexToRGBA(themeColors.black as string, 0.08),
+          maxWidth: width + 12,
+          marginHorizontal: horizontal ? 5 : 0,
+        },
+      ]}>
       <Image
-        source={{ uri: generateImageUrl(item?.img) }}
+        source={imageSource}
         resizeMode="cover"
-        style={[
-          {
-            width: width,
-            height: height,
-            borderRadius: 5,
-          },
-        ]}
+        style={[styles.image, {width, height}]}
       />
-      <Text
-        style={{
-          color: themeColors.white as string,
-          position: 'absolute',
-          top: 10,
-          right: 10,
-          backgroundColor: themeColors.black as string,
-          padding: 5,
-          borderRadius: 5,
-          opacity: 0.8,
-          fontWeight: 'bold',
-        }}>
-        {item?.rating?.toFixed(2)}⭐
-      </Text>
-      <Text
-        style={{
-          color: themeColors.white as string,
-          position: 'absolute',
-          top: 10,
-          left: 10,
-          backgroundColor: themeColors.black as string,
-          padding: 5,
-          borderRadius: 5,
-          opacity: 0.8,
-          fontWeight: 'bold',
-        }}>
-        ৳ {item?.price}
-      </Text>
-      <View style={{ marginLeft: 10, paddingVertical: 6 }}>
+      <View style={styles.badgeRow}>
+        <Text style={[styles.badge, styles.darkBadge]}>
+          Rating {item?.rating ? item.rating.toFixed(1) : '0.0'}
+        </Text>
         <Text
-          style={{
-            fontWeight: 'bold',
-            color: themeColors.black as string,
-            marginBottom: 5,
-          }}>
+          style={[
+            styles.badge,
+            {backgroundColor: themeColors.primary as string},
+          ]}>
+          BDT {item?.price ?? 0}
+        </Text>
+      </View>
+      <View style={styles.body}>
+        <Text
+          numberOfLines={1}
+          style={[styles.name, {color: themeColors.black as string}]}>
           {item?.name}
         </Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
-          {item?.services?.map((service, index) => (
+        <View style={styles.serviceRow}>
+          {item?.services?.slice(0, 3)?.map((service, index) => (
             <Text
-              style={{
-                color: themeColors.black as string,
-                padding: 2,
-                paddingHorizontal: 5,
-                borderRadius: 5,
-                backgroundColor: hexToRGBA(themeColors.black as string, 0.1),
-              }}
-              key={index}>
+              numberOfLines={1}
+              style={[
+                styles.servicePill,
+                {
+                  color: themeColors.black as string,
+                  backgroundColor: hexToRGBA(
+                    themeColors.primary as string,
+                    0.09,
+                  ),
+                },
+              ]}
+              key={`${service}-${index}`}>
               {service}
             </Text>
           ))}
@@ -111,3 +99,61 @@ const ParlorCard = ({
 };
 
 export default ParlorCard;
+
+const styles = StyleSheet.create({
+  card: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  image: {
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    backgroundColor: '#E5E7EB',
+  },
+  badgeRow: {
+    position: 'absolute',
+    top: 8,
+    left: 8,
+    right: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  badge: {
+    color: '#FFFFFF',
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    fontSize: 11,
+    fontWeight: '800',
+    overflow: 'hidden',
+  },
+  darkBadge: {
+    backgroundColor: 'rgba(0, 0, 0, 0.72)',
+  },
+  body: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    gap: 7,
+  },
+  name: {
+    fontSize: 15,
+    fontWeight: '800',
+  },
+  serviceRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 5,
+  },
+  servicePill: {
+    maxWidth: '100%',
+    paddingVertical: 3,
+    paddingHorizontal: 7,
+    borderRadius: 6,
+    fontSize: 11,
+    fontWeight: '600',
+  },
+});

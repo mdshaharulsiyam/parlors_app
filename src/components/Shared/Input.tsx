@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
+  StyleSheet,
   Text,
   TextInput,
   TextInputProps,
@@ -59,6 +60,7 @@ const Input: React.FC<InputProps> = ({
     }
   };
 
+  const inputValue = typeof props.value === 'string' ? props.value : text;
   const borderColor =
     isInvalid || (validate && isTouched && text.trim() === '')
       ? 'red'
@@ -81,23 +83,17 @@ const Input: React.FC<InputProps> = ({
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
         style={[
-          {
-            height: multiline ? 'auto' : 40,
-            borderColor: borderColor,
-            borderWidth: 1,
-            padding: 10,
-            borderRadius: 5,
-            textAlignVertical: multiline ? 'top' : 'center',
-            // color: 'black',
-          },
+          styles.input,
+          multiline && styles.multiline,
+          {borderColor, textAlignVertical: multiline ? 'top' : 'center'},
           style,
         ]}
-        onSubmitEditing={() => handleSubmit(text)}
+        onSubmitEditing={() => handleSubmit(inputValue)}
         onChangeText={handleChangeText}
-        value={text}
+        value={inputValue}
         secureTextEntry={
           inputType === 'password' ? !showPassword : secureTextEntry
         }
@@ -113,22 +109,22 @@ const Input: React.FC<InputProps> = ({
       {inputType === 'password' && (
         <TouchableOpacity
           onPress={togglePasswordVisibility}
-          style={{position: 'absolute', right: 10, top: 10}}>
+          style={styles.passwordButton}>
           {showPassword ? (
             <Image
               source={OtherIcons.Eye as ImageSourcePropType}
-              style={{width: 20, height: 20}}
+              style={styles.passwordIcon}
             />
           ) : (
             <Image
               source={OtherIcons.EyeX as ImageSourcePropType}
-              style={{width: 20, height: 20}}
+              style={styles.passwordIcon}
             />
           )}
         </TouchableOpacity>
       )}
       {showValidationMessage && (
-        <Text style={{color: 'red', fontSize: 12, marginTop: 5}}>
+        <Text style={styles.errorText}>
           {errorMessage || validationMessage}
         </Text>
       )}
@@ -137,3 +133,34 @@ const Input: React.FC<InputProps> = ({
 };
 
 export default Input;
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+  },
+  input: {
+    minHeight: 48,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 15,
+  },
+  multiline: {
+    minHeight: 96,
+  },
+  passwordButton: {
+    position: 'absolute',
+    right: 12,
+    top: 14,
+  },
+  passwordIcon: {
+    width: 20,
+    height: 20,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
+  },
+});

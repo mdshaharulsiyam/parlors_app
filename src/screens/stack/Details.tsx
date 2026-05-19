@@ -72,7 +72,7 @@ const Details = () => {
   //   'https://placehold.co/400x400.png?text=worker 2',
   //   'https://placehold.co/400x400.png?text=worker 3',
   // ],
-  const textColor = themeColors.constWhite as string;
+  const textColor = themeColors.black as string;
   if (isLoading || isFetching) {
     return <Loader />
   }
@@ -195,7 +195,7 @@ const Details = () => {
           style={[commonStyles.headerText, { color: themeColors.black as string }]}>
           Services
         </Text>
-        <Empty data={data?.service_listings?.length} />
+        <Empty data={data?.service_listings || []} label="No services listed" />
         <ServiceFlatList horizontal={true} data={data?.service_listings} width={width} />
       </View>
       {/* Rating & Review */}

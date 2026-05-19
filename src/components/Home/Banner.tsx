@@ -1,25 +1,25 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
-  Dimensions,
   FlatList,
   Image,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {useGet_bannersQuery} from '../../Redux/Apis/bannerApis';
 import {generateImageUrl} from '../../Redux/baseApis';
 import {Ratio3_2} from '../../utils/calculateHeight';
 import Empty from '../Shared/Empty';
 import Loader from '../Shared/Loader';
 
-const {width} = Dimensions.get('window');
-
 const Banner = ({refreshing}: {refreshing: boolean}) => {
+  const {width} = useGlobalContext();
   const {data, isLoading, isFetching, refetch} = useGet_bannersQuery(undefined);
   const flatListRef = useRef<FlatList<any> | null>(null);
   const [, setActiveIndex] = useState(0);
   const dataLength = data?.data?.length ?? 0;
+  const cardWidth = width - 24;
 
   useEffect(() => {
     if (!dataLength) {
@@ -30,7 +30,7 @@ const Banner = ({refreshing}: {refreshing: boolean}) => {
         const nextIndex = (prevIndex + 1) % dataLength;
         if (flatListRef.current) {
           flatListRef.current?.scrollToOffset({
-            offset: nextIndex * width + 10 * nextIndex,
+            offset: nextIndex * cardWidth + 10 * nextIndex,
             animated: true,
           });
         }
@@ -39,7 +39,7 @@ const Banner = ({refreshing}: {refreshing: boolean}) => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [dataLength]);
+  }, [cardWidth, dataLength]);
   useEffect(() => {
     if (refreshing) {
       refetch();
@@ -51,7 +51,7 @@ const Banner = ({refreshing}: {refreshing: boolean}) => {
   }
   return (
     <View>
-      <Empty data={data} />
+      <Empty data={data} label="No promotions available" />
       <FlatList
         ref={flatListRef}
         horizontal={true}
@@ -66,7 +66,10 @@ const Banner = ({refreshing}: {refreshing: boolean}) => {
             <TouchableOpacity>
               <Image
                 source={{uri: generateImageUrl(item?.img)}}
-                style={styles.image}
+                style={[
+                  styles.image,
+                  {width: cardWidth, height: Ratio3_2(cardWidth)},
+                ]}
               />
             </TouchableOpacity>
           );
@@ -83,9 +86,9 @@ const Banner = ({refreshing}: {refreshing: boolean}) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: width,
-    height: Ratio3_2(width),
     marginRight: 10,
+    borderRadius: 8,
+    backgroundColor: '#E5E7EB',
   },
   text: {
     fontSize: 16,

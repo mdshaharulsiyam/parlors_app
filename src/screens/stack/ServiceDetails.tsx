@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 //
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import {
   FlatList,
   Image,
+  ImageSourcePropType,
   Platform,
   ScrollView,
   StyleSheet,
@@ -18,6 +19,7 @@ import DateTimePicker, {
 import Empty from '../../components/Shared/Empty';
 import GradientButton from '../../components/Shared/GradientButton';
 import Loader from '../../components/Shared/Loader';
+import {OtherIcons} from '../../constant/images';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {useGetServiceByIdQuery} from '../../Redux/Apis/seviceListingApis';
 import {generateImageUrl} from '../../Redux/baseApis';
@@ -93,20 +95,36 @@ const ServiceDetails = () => {
   const {data, isLoading, isFetching} = useGetServiceByIdQuery(params?.id);
   const serviceDetails = data?.data as IServiceDetails;
   const [selectedTime, setSelectedTime] = useState('');
-  const [selectedImage, setSelectedImage] = useState(serviceDetails?.img[0]);
+  const [selectedImage, setSelectedImage] = useState('');
   const handleBookPress = () => {};
   const handleDateChange = (
     event: DateTimePickerEvent,
     selectedDate?: Date,
   ) => {
-    if (Platform.OS === 'android') setOpen(false);
-    if (event.type === 'dismissed' || !selectedDate) return;
+    if (Platform.OS === 'android') {
+      setOpen(false);
+    }
+    if (event.type === 'dismissed' || !selectedDate) {
+      return;
+    }
 
     setDate(selectedDate);
     setWeekDay(moment(selectedDate).format('dddd')?.toLowerCase() as IWeekDay);
-    if (Platform.OS === 'ios') setOpen(false);
+    if (Platform.OS === 'ios') {
+      setOpen(false);
+    }
   };
-  const textColor = themeColors.constWhite as string;
+  useEffect(() => {
+    if (serviceDetails?.img?.[0]) {
+      setSelectedImage(serviceDetails.img[0]);
+    }
+  }, [serviceDetails?.img]);
+
+  const textColor = themeColors.black as string;
+  const buttonTextColor = themeColors.constWhite as string;
+  const imageSource: ImageSourcePropType = selectedImage
+    ? {uri: generateImageUrl(selectedImage)}
+    : (OtherIcons.Logo as ImageSourcePropType);
   if (isLoading || isFetching) {
     return <Loader />;
   }
@@ -127,7 +145,7 @@ const ServiceDetails = () => {
         ]}>
         {serviceDetails?.name}
       </Text>
-      <Image source={{uri: selectedImage}} style={styles.img} />
+      <Image source={imageSource} style={styles.img} />
       <FlatList
         data={serviceDetails?.img}
         horizontal
@@ -138,7 +156,7 @@ const ServiceDetails = () => {
         renderItem={({item}) => (
           <TouchableOpacity onPress={() => setSelectedImage(item)}>
             <Image
-              source={{uri: item}}
+              source={{uri: generateImageUrl(item)}}
               style={{
                 width: 100,
                 height: 100,
@@ -301,7 +319,7 @@ const ServiceDetails = () => {
           Total Rating: {serviceDetails?.rating}
         </Text>
         <Text style={[styles.sectionTitle, {color: textColor}]}>Reviews</Text>
-        <Empty data={data?.reviews?.length} />
+        <Empty data={serviceDetails?.reviews || []} />
         {/* <FlatList
           data={serviceDetails?.reviews}
           horizontal
@@ -357,7 +375,7 @@ const ServiceDetails = () => {
         <GradientButton handler={() => setOpen(true)}>
           <Text
             style={{
-              color: textColor,
+              color: buttonTextColor,
               fontWeight: 'bold',
               fontSize: 16,
               textAlign: 'center',
@@ -387,7 +405,7 @@ const ServiceDetails = () => {
                     alignItems: 'center',
                     width: width - 40,
                   }}>
-                  <Empty data={false} />
+                  <Empty data={[]} label="No available slots" />
                   <Text
                     style={{
                       color: themeColors.red as string,
@@ -414,7 +432,7 @@ const ServiceDetails = () => {
                   style={{
                     color:
                       selectedTime === item
-                        ? (themeColors.white as string)
+                        ? (themeColors.constWhite as string)
                         : textColor,
                   }}>
                   {item}
@@ -436,7 +454,7 @@ const ServiceDetails = () => {
         <GradientButton handler={handleBookPress}>
           <Text
             style={{
-              color: textColor,
+              color: buttonTextColor,
               fontWeight: 'bold',
               fontSize: 16,
               textAlign: 'center',
