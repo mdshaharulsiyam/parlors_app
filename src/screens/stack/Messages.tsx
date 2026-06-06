@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react';
 import {FlatList, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {KeyboardStickyView} from 'react-native-keyboard-controller';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import GradientButton from '../../components/Shared/GradientButton';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
@@ -81,7 +82,6 @@ const Messages = () => {
   const white = themeColors.white as string;
   const handleSendMessage = useCallback(() => {
     if (newMessage.trim()) {
-      //console.log('Sending:', newMessage);
       setNewMessage('');
     }
   }, [newMessage]);
@@ -135,11 +135,12 @@ const Messages = () => {
       ]}>
       {renderHeader()}
       <MapMessages />
-      <View
+      <KeyboardStickyView
         style={[
           styles.footerContainer,
           {
             borderTopColor: hexToRGBA(black, 0.2),
+            backgroundColor: hexToRGBA(white, 0.95),
           },
         ]}>
         <TextInput
@@ -163,7 +164,7 @@ const Messages = () => {
             Send
           </Text>
         </GradientButton>
-      </View>
+      </KeyboardStickyView>
     </SafeAreaView>
   );
 };
@@ -226,16 +227,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 10,
     marginRight: 10,
-  },
-  sendButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    backgroundColor: '#0078fe',
-    borderRadius: 20,
-  },
-  sendButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
   },
 });
 

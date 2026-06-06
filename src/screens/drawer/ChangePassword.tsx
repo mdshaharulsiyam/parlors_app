@@ -1,17 +1,15 @@
 import React from 'react';
-
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
   ActivityIndicator,
-  Dimensions,
   Image,
   ImageSourcePropType,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {IChangePassword} from '../../../types/loginType';
@@ -24,11 +22,11 @@ import {hexToRGBA} from '../../utils/hexToRGBA';
 import {ScreenParamsType} from '../../utils/types/ScreenParamsType';
 
 const ChangePassword = () => {
-  const {themeColors, height} = useGlobalContext();
+  const {themeColors} = useGlobalContext();
   const [passShow, setPassShow] = React.useState(true);
   const [opassShow, setOPassShow] = React.useState(true);
   const [cPassShow, setCPassShow] = React.useState(true);
-  const {width} = Dimensions.get('window');
+
   const navigate = useNavigation<NavigationProp<ScreenParamsType>>();
   const {submitHandler: changePassword, isLoading} = useChangePassword();
 
@@ -75,11 +73,11 @@ const ChangePassword = () => {
   return (
     <SafeAreaView
       style={{
-        position: 'relative',
-        height: height,
+        flex: 1,
         backgroundColor: hexToRGBA(themeColors.white as string, 0.95),
       }}>
-      <ScrollView
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
         style={{
           width: '100%',
           paddingHorizontal: 20,
@@ -174,35 +172,34 @@ const ChangePassword = () => {
             </View>
           );
         })}
-      </ScrollView>
 
-      <View
-        style={{
-          paddingHorizontal: 25,
-          position: 'absolute',
-          bottom: 100,
-          width: width,
-          paddingVertical: 16,
-        }}>
-        <GradientButton handler={submitHandler}>
-          {isLoading ? (
-            <ActivityIndicator
-              size="small"
-              color={themeColors.constWhite as string}
-            />
-          ) : (
-            <Text
-              style={{
-                color: themeColors.constWhite as string,
-                textAlign: 'center',
-                fontWeight: 700,
-                fontSize: 18,
-              }}>
-              Save Changes
-            </Text>
-          )}
-        </GradientButton>
-      </View>
+        <View
+          style={{
+            paddingHorizontal: 5,
+            marginTop: 40,
+            marginBottom: 60,
+            width: '100%',
+          }}>
+          <GradientButton handler={submitHandler}>
+            {isLoading ? (
+              <ActivityIndicator
+                size="small"
+                color={themeColors.constWhite as string}
+              />
+            ) : (
+              <Text
+                style={{
+                  color: themeColors.constWhite as string,
+                  textAlign: 'center',
+                  fontWeight: 700,
+                  fontSize: 18,
+                }}>
+                Save Changes
+              </Text>
+            )}
+          </GradientButton>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

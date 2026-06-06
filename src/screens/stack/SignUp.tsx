@@ -6,12 +6,12 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {Dropdown} from 'react-native-element-dropdown';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -89,7 +89,7 @@ const SignUp = () => {
   return (
     <SafeAreaView
       style={{backgroundColor: hexToRGBA(themeColors.white as string, 0.95)}}>
-      <ScrollView
+      <KeyboardAwareScrollView
         style={{
           width: '100%',
           height: '100%',
@@ -368,7 +368,7 @@ const SignUp = () => {
           </Link>
         </View>
         <View style={{marginBottom: 120}} />
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
