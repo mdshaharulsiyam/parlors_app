@@ -5,15 +5,13 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {useDispatch} from 'react-redux';
@@ -75,133 +73,130 @@ const SignIn = () => {
   return (
     <SafeAreaView
       style={[styles.safeArea, {backgroundColor: themeColors.white as string}]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.scrollContent}
         style={styles.keyboard}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={styles.scrollContent}>
-          <View style={styles.brandBlock}>
-            <Image
-              source={OtherIcons.Logo as ImageSourcePropType}
-              style={styles.logo}
-            />
-            <Text style={[styles.title, {color: themeColors.black as string}]}>
-              Welcome back
+        <View style={styles.brandBlock}>
+          <Image
+            source={OtherIcons.Logo as ImageSourcePropType}
+            style={styles.logo}
+          />
+          <Text style={[styles.title, {color: themeColors.black as string}]}>
+            Welcome back
+          </Text>
+          <Text
+            style={[
+              styles.subtitle,
+              {color: hexToRGBA(themeColors.black as string, 0.64)},
+            ]}>
+            Sign in to manage bookings, services, and saved salons.
+          </Text>
+        </View>
+
+        <View style={styles.form}>
+          {Object.keys(inputValue).map(key => (
+            <View key={key} style={styles.field}>
+              <Text
+                style={[
+                  globalStyles.inputLabel,
+                  {
+                    color: error[key as keyof ILogin]
+                      ? (themeColors.red as string)
+                      : (themeColors.black as string),
+                  },
+                ]}>
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </Text>
+              <View style={styles.inputWrap}>
+                <TextInput
+                  value={inputValue[key as keyof ILogin]}
+                  onChangeText={text => {
+                    setInputValue({...inputValue, [key]: text});
+                    setError({...error, [key]: false});
+                  }}
+                  placeholder={`Enter your ${key}`}
+                  secureTextEntry={key === 'password' ? passShow : false}
+                  keyboardType={key === 'email' ? 'email-address' : 'default'}
+                  autoCapitalize="none"
+                  placeholderTextColor={hexToRGBA(
+                    themeColors.black as string,
+                    0.36,
+                  )}
+                  style={[
+                    globalStyles.input,
+                    styles.input,
+                    {
+                      borderColor: error[key as keyof ILogin]
+                        ? (themeColors.red as string)
+                        : hexToRGBA(themeColors.black as string, 0.12),
+                      backgroundColor: hexToRGBA(
+                        themeColors.black as string,
+                        0.055,
+                      ),
+                      color: themeColors.black as string,
+                    },
+                  ]}
+                />
+                {key === 'password' && (
+                  <TouchableOpacity
+                    style={styles.eyeButton}
+                    onPress={() => setPassShow(!passShow)}>
+                    <Image
+                      source={
+                        passShow
+                          ? (OtherIcons.Eye as ImageSourcePropType)
+                          : (OtherIcons.EyeX as ImageSourcePropType)
+                      }
+                      style={[
+                        styles.eyeIcon,
+                        {tintColor: themeColors.black as string},
+                      ]}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            </View>
+          ))}
+
+          <Link style={styles.forgotLink} screen="Forget" params={{}}>
+            <Text style={{color: themeColors.primary as string}}>
+              Forgot password?
             </Text>
+          </Link>
+
+          <GradientButton handler={submitHandler} disabled={isLoading}>
+            {isLoading ? (
+              <ActivityIndicator
+                size="small"
+                color={themeColors.constWhite as string}
+              />
+            ) : (
+              <Text style={styles.buttonText}>Login</Text>
+            )}
+          </GradientButton>
+
+          <View style={styles.footerRow}>
             <Text
               style={[
-                styles.subtitle,
-                {color: hexToRGBA(themeColors.black as string, 0.64)},
+                globalStyles.text,
+                {color: hexToRGBA(themeColors.black as string, 0.72)},
               ]}>
-              Sign in to manage bookings, services, and saved salons.
+              Do not have an account?
             </Text>
-          </View>
-
-          <View style={styles.form}>
-            {Object.keys(inputValue).map(key => (
-              <View key={key} style={styles.field}>
-                <Text
-                  style={[
-                    globalStyles.inputLabel,
-                    {
-                      color: error[key as keyof ILogin]
-                        ? (themeColors.red as string)
-                        : (themeColors.black as string),
-                    },
-                  ]}>
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </Text>
-                <View style={styles.inputWrap}>
-                  <TextInput
-                    value={inputValue[key as keyof ILogin]}
-                    onChangeText={text => {
-                      setInputValue({...inputValue, [key]: text});
-                      setError({...error, [key]: false});
-                    }}
-                    placeholder={`Enter your ${key}`}
-                    secureTextEntry={key === 'password' ? passShow : false}
-                    keyboardType={key === 'email' ? 'email-address' : 'default'}
-                    autoCapitalize="none"
-                    placeholderTextColor={hexToRGBA(
-                      themeColors.black as string,
-                      0.36,
-                    )}
-                    style={[
-                      globalStyles.input,
-                      styles.input,
-                      {
-                        borderColor: error[key as keyof ILogin]
-                          ? (themeColors.red as string)
-                          : hexToRGBA(themeColors.black as string, 0.12),
-                        backgroundColor: hexToRGBA(
-                          themeColors.black as string,
-                          0.055,
-                        ),
-                        color: themeColors.black as string,
-                      },
-                    ]}
-                  />
-                  {key === 'password' && (
-                    <TouchableOpacity
-                      style={styles.eyeButton}
-                      onPress={() => setPassShow(!passShow)}>
-                      <Image
-                        source={
-                          passShow
-                            ? (OtherIcons.Eye as ImageSourcePropType)
-                            : (OtherIcons.EyeX as ImageSourcePropType)
-                        }
-                        style={[
-                          styles.eyeIcon,
-                          {tintColor: themeColors.black as string},
-                        ]}
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </View>
-            ))}
-
-            <Link style={styles.forgotLink} screen="Forget" params={{}}>
-              <Text style={{color: themeColors.primary as string}}>
-                Forgot password?
-              </Text>
-            </Link>
-
-            <GradientButton handler={submitHandler} disabled={isLoading}>
-              {isLoading ? (
-                <ActivityIndicator
-                  size="small"
-                  color={themeColors.constWhite as string}
-                />
-              ) : (
-                <Text style={styles.buttonText}>Login</Text>
-              )}
-            </GradientButton>
-
-            <View style={styles.footerRow}>
+            <Link screen="SignUp" params={{}}>
               <Text
                 style={[
                   globalStyles.text,
-                  {color: hexToRGBA(themeColors.black as string, 0.72)},
+                  styles.footerLink,
+                  {color: themeColors.primary as string},
                 ]}>
-                Do not have an account?
+                Sign Up
               </Text>
-              <Link screen="SignUp" params={{}}>
-                <Text
-                  style={[
-                    globalStyles.text,
-                    styles.footerLink,
-                    {color: themeColors.primary as string},
-                  ]}>
-                  Sign Up
-                </Text>
-              </Link>
-            </View>
+            </Link>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

@@ -3,13 +3,11 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {useForgetPassword} from '../../ApisCalls/authApisCall';
@@ -39,54 +37,51 @@ const Forget = () => {
   return (
     <SafeAreaView
       style={[styles.container, {backgroundColor: themeColors.white as string}]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.scrollContainer}
         style={styles.keyboard}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={styles.scrollContainer}>
-          <Text style={[styles.title, {color: themeColors.black as string}]}>
-            Forgot password
-          </Text>
-          <Text
-            style={[
-              styles.subtitle,
-              {color: hexToRGBA(themeColors.black as string, 0.64)},
-            ]}>
-            We will send a verification code to your email.
-          </Text>
+        <Text style={[styles.title, {color: themeColors.black as string}]}>
+          Forgot password
+        </Text>
+        <Text
+          style={[
+            styles.subtitle,
+            {color: hexToRGBA(themeColors.black as string, 0.64)},
+          ]}>
+          We will send a verification code to your email.
+        </Text>
 
-          <TextInput
-            style={[
-              styles.input,
-              {
-                backgroundColor: hexToRGBA(themeColors.black as string, 0.055),
-                color: themeColors.black as string,
-                borderColor: hexToRGBA(themeColors.black as string, 0.12),
-              },
-            ]}
-            placeholder="Enter your email"
-            placeholderTextColor={hexToRGBA(themeColors.black as string, 0.36)}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={email}
-            onChangeText={setEmail}
-          />
+        <TextInput
+          style={[
+            styles.input,
+            {
+              backgroundColor: hexToRGBA(themeColors.black as string, 0.055),
+              color: themeColors.black as string,
+              borderColor: hexToRGBA(themeColors.black as string, 0.12),
+            },
+          ]}
+          placeholder="Enter your email"
+          placeholderTextColor={hexToRGBA(themeColors.black as string, 0.36)}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
 
-          <GradientButton
-            handler={handleSendVerificationEmail}
-            disabled={isLoading}>
-            {isLoading ? (
-              <ActivityIndicator
-                size="small"
-                color={themeColors.constWhite as string}
-              />
-            ) : (
-              <Text style={styles.buttonText}>Send Verification Email</Text>
-            )}
-          </GradientButton>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <GradientButton
+          handler={handleSendVerificationEmail}
+          disabled={isLoading}>
+          {isLoading ? (
+            <ActivityIndicator
+              size="small"
+              color={themeColors.constWhite as string}
+            />
+          ) : (
+            <Text style={styles.buttonText}>Send Verification Email</Text>
+          )}
+        </GradientButton>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

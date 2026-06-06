@@ -4,15 +4,13 @@ import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import {useDispatch} from 'react-redux';
@@ -74,117 +72,114 @@ const Reset = () => {
   return (
     <SafeAreaView
       style={[styles.safeArea, {backgroundColor: themeColors.white as string}]}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.scrollContent}
         style={styles.keyboard}>
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          contentContainerStyle={styles.scrollContent}>
-          <Image
-            source={OtherIcons.Logo as ImageSourcePropType}
-            style={styles.logo}
-          />
-          <Text style={[styles.title, {color: themeColors.black as string}]}>
-            Create a new password
-          </Text>
-          <Text
-            style={[
-              styles.subtitle,
-              {color: hexToRGBA(themeColors.black as string, 0.64)},
-            ]}>
-            Use a secure password you have not used here before.
-          </Text>
+        <Image
+          source={OtherIcons.Logo as ImageSourcePropType}
+          style={styles.logo}
+        />
+        <Text style={[styles.title, {color: themeColors.black as string}]}>
+          Create a new password
+        </Text>
+        <Text
+          style={[
+            styles.subtitle,
+            {color: hexToRGBA(themeColors.black as string, 0.64)},
+          ]}>
+          Use a secure password you have not used here before.
+        </Text>
 
-          <View style={styles.form}>
-            {Object.keys(inputValue).map(key => (
-              <View key={key} style={styles.field}>
-                <Text
+        <View style={styles.form}>
+          {Object.keys(inputValue).map(key => (
+            <View key={key} style={styles.field}>
+              <Text
+                style={[
+                  globalStyles.inputLabel,
+                  {
+                    color: error[key as keyof INewPassword]
+                      ? (themeColors.red as string)
+                      : (themeColors.black as string),
+                  },
+                ]}>
+                {key === 'confirmPassword' ? 'Confirm password' : 'Password'}
+              </Text>
+              <View style={styles.inputWrap}>
+                <TextInput
+                  value={inputValue[key as keyof INewPassword]}
+                  onChangeText={text => {
+                    setInputValue({...inputValue, [key]: text});
+                    setError({...error, [key]: false});
+                  }}
+                  placeholder={
+                    key === 'confirmPassword'
+                      ? 'Confirm your password'
+                      : 'Enter new password'
+                  }
+                  secureTextEntry={
+                    key === 'password' ? passShow : cPassShow
+                  }
+                  placeholderTextColor={hexToRGBA(
+                    themeColors.black as string,
+                    0.4,
+                  )}
                   style={[
-                    globalStyles.inputLabel,
+                    globalStyles.input,
+                    styles.input,
                     {
-                      color: error[key as keyof INewPassword]
+                      borderColor: error[key as keyof INewPassword]
                         ? (themeColors.red as string)
-                        : (themeColors.black as string),
+                        : hexToRGBA(themeColors.black as string, 0.12),
+                      backgroundColor: hexToRGBA(
+                        themeColors.black as string,
+                        0.055,
+                      ),
+                      color: themeColors.black as string,
                     },
-                  ]}>
-                  {key === 'confirmPassword' ? 'Confirm password' : 'Password'}
-                </Text>
-                <View style={styles.inputWrap}>
-                  <TextInput
-                    value={inputValue[key as keyof INewPassword]}
-                    onChangeText={text => {
-                      setInputValue({...inputValue, [key]: text});
-                      setError({...error, [key]: false});
-                    }}
-                    placeholder={
-                      key === 'confirmPassword'
-                        ? 'Confirm your password'
-                        : 'Enter new password'
+                  ]}
+                />
+                <TouchableOpacity
+                  style={styles.eyeButton}
+                  onPress={() => {
+                    if (key === 'password') {
+                      setPassShow(!passShow);
+                    } else {
+                      setCPassShow(!cPassShow);
                     }
-                    secureTextEntry={
-                      key === 'password' ? passShow : cPassShow
-                    }
-                    placeholderTextColor={hexToRGBA(
-                      themeColors.black as string,
-                      0.4,
-                    )}
-                    style={[
-                      globalStyles.input,
-                      styles.input,
-                      {
-                        borderColor: error[key as keyof INewPassword]
-                          ? (themeColors.red as string)
-                          : hexToRGBA(themeColors.black as string, 0.12),
-                        backgroundColor: hexToRGBA(
-                          themeColors.black as string,
-                          0.055,
-                        ),
-                        color: themeColors.black as string,
-                      },
-                    ]}
-                  />
-                  <TouchableOpacity
-                    style={styles.eyeButton}
-                    onPress={() => {
-                      if (key === 'password') {
-                        setPassShow(!passShow);
-                      } else {
-                        setCPassShow(!cPassShow);
-                      }
-                    }}>
-                    <Image
-                      source={
-                        key === 'password'
-                          ? passShow
-                            ? (OtherIcons.Eye as ImageSourcePropType)
-                            : (OtherIcons.EyeX as ImageSourcePropType)
-                          : cPassShow
+                  }}>
+                  <Image
+                    source={
+                      key === 'password'
+                        ? passShow
                           ? (OtherIcons.Eye as ImageSourcePropType)
                           : (OtherIcons.EyeX as ImageSourcePropType)
-                      }
-                      style={[
-                        styles.eyeIcon,
-                        {tintColor: themeColors.black as string},
-                      ]}
-                    />
-                  </TouchableOpacity>
-                </View>
+                        : cPassShow
+                        ? (OtherIcons.Eye as ImageSourcePropType)
+                        : (OtherIcons.EyeX as ImageSourcePropType)
+                    }
+                    style={[
+                      styles.eyeIcon,
+                      {tintColor: themeColors.black as string},
+                    ]}
+                  />
+                </TouchableOpacity>
               </View>
-            ))}
+            </View>
+          ))}
 
-            <GradientButton handler={submitHandler} disabled={resetLoading}>
-              {resetLoading ? (
-                <ActivityIndicator
-                  size="small"
-                  color={themeColors.constWhite as string}
-                />
-              ) : (
-                <Text style={styles.buttonText}>Save Password</Text>
-              )}
-            </GradientButton>
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <GradientButton handler={submitHandler} disabled={resetLoading}>
+            {resetLoading ? (
+              <ActivityIndicator
+                size="small"
+                color={themeColors.constWhite as string}
+              />
+            ) : (
+              <Text style={styles.buttonText}>Save Password</Text>
+            )}
+          </GradientButton>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };

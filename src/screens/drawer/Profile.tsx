@@ -1,16 +1,15 @@
 import React, {useCallback} from 'react';
 import CountryPicker from 'react-native-country-picker-modal';
-
 import {
   ActivityIndicator,
   Image,
   ImageSourcePropType,
-  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {Dropdown} from 'react-native-element-dropdown';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -24,6 +23,7 @@ import {globalStyles} from '../../constant/styles';
 import {useGlobalContext} from '../../Provider/GlobalContextProvider';
 import {hexToRGBA} from '../../utils/hexToRGBA';
 import {IUserProfile} from '../../utils/types/Types';
+
 
 const Profile = () => {
   const user: IUserProfile = useSelector((state: any) => state?.user?.user);
@@ -81,8 +81,9 @@ const Profile = () => {
 
   return (
     <SafeAreaView
-      style={{backgroundColor: hexToRGBA(themeColors.white as string, 0.95)}}>
-      <ScrollView
+      style={{backgroundColor: hexToRGBA(themeColors.white as string, 0.95), flex: 1}}>
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
         style={{
           width: '100%',
           height: '100%',
@@ -338,7 +339,7 @@ const Profile = () => {
             )}
           </GradientButton>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 };
